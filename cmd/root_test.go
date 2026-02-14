@@ -57,6 +57,7 @@ func TestExecute_Injection(t *testing.T) {
 	dockerfile = ""
 	outputFile = ""
 	dryRun = false
+	imageTag = ""
 
 	tmpDir := t.TempDir()
 	dockerfileLoc := filepath.Join(tmpDir, "Dockerfile")
@@ -103,6 +104,11 @@ func TestExecute_Injection(t *testing.T) {
 }
 
 func TestExecute_NoMarkers_Stdout(t *testing.T) {
+	dockerfile = ""
+	outputFile = ""
+	dryRun = false
+	imageTag = ""
+
 	tmpDir := t.TempDir()
 	dockerfile := filepath.Join(tmpDir, "Dockerfile")
 	readme := filepath.Join(tmpDir, "README.md")
@@ -133,5 +139,40 @@ func TestExecute_NoMarkers_Stdout(t *testing.T) {
 	content, _ := os.ReadFile(readme)
 	if strings.Contains(string(content), "| BAZ | ENV |") {
 		t.Error("expected file to remain unchanged when markers are missing")
+	}
+}
+
+func TestExecute_WithImageFlag(t *testing.T) {
+	// Smoke test for --image flag
+	// Since we can't guarantee 'docker' or other tools are present/mocked easily here,
+	// we just ensure it runs and doesn't crash.
+
+	dockerfile = ""
+	outputFile = ""
+	dryRun = false
+	imageTag = ""
+
+	tmpDir := t.TempDir()
+	dockerfile := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(dockerfile, []byte("FROM alpine"), 0644); err != nil {
+		t.Fatalf("failed to write Dockerfile: %v", err)
+	}
+
+	rootCmd.SetArgs([]string{"--file", dockerfile, "--image", "fake-image:latest", "--dry-run"})
+
+	output := captureOutput(func() {
+		if err := rootCmd.Execute(); err != nil {
+			t.Fatalf("Execute failed: %v", err)
+		}
+	})
+
+	// It should print "Analyzing image: fake-image:latest ..."
+	if !strings.Contains(output, "Analyzing image: fake-image:latest") {
+		t.Errorf("expected analysis log, got:\n%s", output)
+	}
+
+	// And standard table
+	if !strings.Contains(output, "| Name | Type |") {
+		t.Errorf("expected standard table, got:\n%s", output)
 	}
 }
