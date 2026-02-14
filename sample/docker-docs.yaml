@@ -3,7 +3,7 @@ output: "README.md"
 sections:
   - type: "config"
     marker: "main-config"
-    source: "sample.Dockerfile"
+    source: "Dockerfile"
 
   - type: "matrix"
     marker: "tag-matrix"
