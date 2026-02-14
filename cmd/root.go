@@ -62,7 +62,9 @@ var rootCmd = &cobra.Command{
 
 		if startIdx != -1 && endIdx != -1 && endIdx > startIdx {
 			// Markers found, inject
-			newContent := fileContent[:startIdx+len(markerBegin)] + "\n" + renderedContent + "\n" + fileContent[endIdx:]
+			// We need to keep the markers!
+			newContent := fileContent[:startIdx] + markerBegin + "\n" + renderedContent + "\n" + markerEnd + fileContent[endIdx+len(markerEnd):]
+
 			if err := os.WriteFile(outputFile, []byte(newContent), 0644); err != nil {
 				return fmt.Errorf("failed to write output file: %w", err)
 			}
