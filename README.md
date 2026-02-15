@@ -13,6 +13,37 @@ A powerful CLI tool that automatically generates comprehensive Markdown document
 - 🧩 **Matrix Support**: Scan multiple Dockerfiles in a single run (e.g., `dev.Dockerfile`, `prod.Dockerfile`).
 - 🎨 **Customizable Templates**: Uses Go templates for flexible output formatting.
 
+## Magic Comments
+
+You can enhance the generated documentation by adding special comments directly in your `Dockerfile`. These comments allow you to provide descriptions, default values, and requirement status for `ARG`, `ENV`, and `EXPOSE` instructions.
+
+Supported tags:
+- `@description:` A description of the variable or instruction.
+- `@default:` The default value (overrides the value in the instruction).
+- `@required:` (true/false) Whether the variable is mandatory.
+
+### Examples
+
+**Documenting an Environment Variable:**
+```dockerfile
+# @description: The API key for the service
+# @required: true
+ENV API_KEY=""
+```
+
+**Documenting a Build Argument:**
+```dockerfile
+# @description: The version of the base image
+# @default: latest
+ARG VERSION=latest
+```
+
+**Documenting an Exposed Port:**
+```dockerfile
+# @description: The main HTTP port
+EXPOSE 8080
+```
+
 ## Installation
 
 ### Go Install
@@ -145,6 +176,16 @@ If no `docker-docs.yaml` is found, the tool runs in **Legacy Mode**:
 
 ```markdown
 <!-- BEGIN: docker-docs -->
+
+# 🐳 Docker Image Analysis: Dockerfile
+
+## ⚙️ Configuration
+### Environment Variables
+| Name | Description | Default | Required |
+|------|-------------|---------|:--------:|
+| `DOCKER_VERSION` |  | `24.0.5` | ❌ |
+| `PATH` |  | `/usr/local/bin:${PATH}` | ❌ |
+
 <!-- END: docker-docs -->
 ```
 
