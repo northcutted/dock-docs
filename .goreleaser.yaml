@@ -74,7 +74,8 @@ sboms:
   - artifacts: archive
 
 signs:
-  - cmd: cosign
+  - id: cosign-blob
+    cmd: cosign
     args:
       - sign-blob
       - '--output-certificate=${certificate}'
@@ -83,20 +84,12 @@ signs:
       - '--yes'
     artifacts: all
     output: true
-  - artifacts: checksum
 
 docker_signs:
-  - cmd: cosign
+  - id: cosign-docker
+    cmd: cosign
     artifacts: all
     args:
       - sign
       - '${artifact}'
-      - '--yes'
-
-binary_signs:
-  - cmd: cosign
-    stdin: "{{ .Env.COSIGN_PWD }}"
-    args:
-      - "sign-blob"
-      - "${artifact}"
-      - "--yes" 
+      - '--yes' 
