@@ -138,6 +138,9 @@ func mergeStats(dest, src *ImageStats) {
 	if src.OS != "" {
 		dest.OS = src.OS
 	}
+	if src.OSDistro != "" {
+		dest.OSDistro = src.OSDistro
+	}
 	if src.SizeMB != "" {
 		dest.SizeMB = src.SizeMB
 	}

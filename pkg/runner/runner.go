@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"sort"
+	"strings"
 
 	"github.com/northcutted/docker-docs/pkg/analysis"
 )
@@ -202,6 +203,10 @@ func (r *SyftRunner) Run(image string) (*analysis.ImageStats, error) {
 	}
 
 	var syftOutput struct {
+		Distro struct {
+			Name    string `json:"name"`
+			Version string `json:"version"`
+		} `json:"distro"`
 		Artifacts []struct {
 			Name    string `json:"name"`
 			Version string `json:"version"`
@@ -216,6 +221,14 @@ func (r *SyftRunner) Run(image string) (*analysis.ImageStats, error) {
 	stats := &analysis.ImageStats{
 		TotalPackages: len(syftOutput.Artifacts),
 		Packages:      make([]analysis.PackageSummary, 0),
+	}
+
+	if syftOutput.Distro.Name != "" {
+		if syftOutput.Distro.Version != "" {
+			stats.OSDistro = fmt.Sprintf("%s %s", syftOutput.Distro.Name, syftOutput.Distro.Version)
+		} else {
+			stats.OSDistro = syftOutput.Distro.Name
+		}
 	}
 
 	seen := make(map[string]bool)
@@ -359,24 +372,31 @@ func (r *DiveRunner) Run(image string) (*analysis.ImageStats, error) {
 				// Using JSON approach for robustness
 				pCmd := exec.Command("podman", "machine", "inspect")
 				if out, err := pCmd.Output(); err == nil {
+					// Create a flexible struct to handle potential variations
 					var machines []struct {
 						ConnectionInfo struct {
-							PodmanSocket struct {
+							PodmanSocket *struct {
 								Path string `json:"Path"`
 							} `json:"PodmanSocket"`
 						} `json:"ConnectionInfo"`
 					}
 					if json.Unmarshal(out, &machines) == nil && len(machines) > 0 {
-						socketPath := machines[0].ConnectionInfo.PodmanSocket.Path
-						if socketPath != "" {
+						// Access safely with pointer check if needed, though unmarshal handles missing fields
+						if machines[0].ConnectionInfo.PodmanSocket != nil && machines[0].ConnectionInfo.PodmanSocket.Path != "" {
+							socketPath := machines[0].ConnectionInfo.PodmanSocket.Path
 							// Set env for the dive command
 							// Note: os.Environ() returns a copy, so append works safely for the cmd.Env
 							env := os.Environ()
-							env = append(env, "DOCKER_HOST=unix://"+socketPath)
+							// Ensure unix:// prefix
+							if !strings.HasPrefix(socketPath, "unix://") {
+								socketPath = "unix://" + socketPath
+							}
+							env = append(env, "DOCKER_HOST="+socketPath)
 							cmd.Env = env
 						}
 					}
 				}
+
 				// If machine inspect fails (e.g. Linux native podman, not machine),
 				// we might check `podman info` or standard paths.
 				// But let's stick to the specific request logic first.

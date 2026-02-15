@@ -4,11 +4,12 @@ sections:
     marker: "config"
     source: "Dockerfile"
     # Analyzing public node image to demonstrate capabilities
-    image: "node:18-alpine"
+    image: "node:24"
 
   - type: "matrix"
     marker: "comparison"
     images:
-      - "node:16-alpine"
-      - "node:18-alpine"
-      - "node:20-alpine"
+      - "node:22-alpine"
+      - "node:24-alpine"
+      - "node:22"
+      - "node:24"

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build the application from source
-FROM golang:1.24-alpine AS build-stage
+FROM golang:1.26-alpine AS build-stage
 
 # @description: Enable CGO for building (default false)
 ARG CGO_ENABLED=0

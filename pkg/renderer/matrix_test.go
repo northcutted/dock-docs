@@ -46,7 +46,7 @@ func TestRenderMatrix(t *testing.T) {
 		},
 	}
 
-	output, err := RenderMatrix(matrixStats)
+	output, err := RenderMatrix(matrixStats, RenderOptions{})
 	if err != nil {
 		t.Fatalf("RenderMatrix() error = %v", err)
 	}

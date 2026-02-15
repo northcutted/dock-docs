@@ -25,6 +25,7 @@ type ImageStats struct {
 	Architecture           string
 	SupportedArchitectures []string // from Manifest Inspect
 	OS                     string
+	OSDistro               string // from Syft (e.g., "Alpine Linux 3.18")
 	SizeMB                 string
 	TotalLayers            int
 	Efficiency             float64 // from Dive (0-100)

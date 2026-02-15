@@ -22,7 +22,7 @@ func TestRender(t *testing.T) {
 	}
 
 	// Test Case 1: Without Stats
-	output, err := Render(doc, nil)
+	output, err := Render(doc, nil, RenderOptions{})
 	if err != nil {
 		t.Fatalf("Render() error = %v", err)
 	}
@@ -54,7 +54,7 @@ func TestRender(t *testing.T) {
 		},
 	}
 
-	output, err = Render(doc, stats)
+	output, err = Render(doc, stats, RenderOptions{})
 	if err != nil {
 		t.Fatalf("Render(stats) error = %v", err)
 	}

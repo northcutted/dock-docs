@@ -78,9 +78,10 @@ docker-docs --config my-config.yaml --output README.md
 
 - `--config`, `-c`: Path to configuration file (default: `docker-docs.yaml`). If found, this enables **Config Mode**.
 - `--output`, `-o`: Output file path (default: `README.md`).
-- `--file`, `-f`: Path to Dockerfile (Legacy Mode only).
-- `--image`: Docker image tag to analyze (Legacy Mode only).
+- `--file`, `-f`: Path to Dockerfile (Simple Mode only).
+- `--image`: Docker image tag to analyze (Simple Mode only).
 - `--dry-run`: Print output to stdout instead of modifying files.
+- `--nomoji`: Disable emojis in the output.
 
 ## Configuration Reference (`docker-docs.yaml`)
 
@@ -166,9 +167,9 @@ jobs:
           file_pattern: README.md
 ```
 
-## Legacy Mode
+## Simple Mode
 
-If no `docker-docs.yaml` is found, the tool runs in **Legacy Mode**:
+If no `docker-docs.yaml` is found, the tool runs in **Simple Mode**. This mode is useful for quick analysis without creating a configuration file, but it offers less customization.
 
 1. Parses `./Dockerfile` (or file specified by `-f`).
 2. (Optional) Analyzes the image specified by `--image`.
@@ -176,15 +177,6 @@ If no `docker-docs.yaml` is found, the tool runs in **Legacy Mode**:
 
 ```markdown
 <!-- BEGIN: docker-docs -->
-
-# 🐳 Docker Image Analysis: Dockerfile
-
-## ⚙️ Configuration
-### Environment Variables
-| Name | Description | Default | Required |
-|------|-------------|---------|:--------:|
-| `DOCKER_VERSION` |  | `24.0.5` | ❌ |
-| `PATH` |  | `/usr/local/bin:${PATH}` | ❌ |
 
 <!-- END: docker-docs -->
 ```

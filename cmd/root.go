@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -20,11 +22,36 @@ var (
 	dryRun     bool
 	imageTag   string
 	configFile string
+	noMoji     bool
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "docker-docs",
 	Short: "Generate documentation from Dockerfile",
+	Long: `Generate comprehensive documentation from your Dockerfiles.
+
+This tool automatically parses your Dockerfile to create standard documentation
+tables for arguments, environment variables, and exposed ports.
+
+It can also perform deep analysis on built images using:
+- Syft (for SBOM and package listing)
+- Grype (for vulnerability scanning)
+- Dive (for layer efficiency analysis)
+
+Modes:
+- Config Mode: Uses 'docker-docs.yaml' for advanced configuration and multi-image matrix analysis.
+- Simple Mode: Runs on a single Dockerfile/image without configuration.`,
+	Example: `  # Config Mode (Recommended)
+  docker-docs --config docker-docs.yaml
+
+  # Simple Mode: Analyze Dockerfile only
+  docker-docs -f ./Dockerfile
+
+  # Simple Mode: Analyze Dockerfile and Image
+  docker-docs -f ./Dockerfile --image my-app:latest
+
+  # Simple Mode: Output to specific file
+  docker-docs -f ./Dockerfile -o DOCUMENTATION.md`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Detect Config Mode
 		cfgPath := configFile
@@ -38,7 +65,7 @@ var rootCmd = &cobra.Command{
 			return runConfigMode(cfgPath)
 		}
 
-		return runLegacyMode()
+		return runSimpleMode()
 	},
 }
 
@@ -68,6 +95,10 @@ func runConfigMode(path string) error {
 		&runner.DiveRunner{},
 	}
 
+	renderOpts := renderer.RenderOptions{
+		NoMoji: noMoji,
+	}
+
 	for _, section := range cfg.Sections {
 		var sectionContent string
 
@@ -94,7 +125,7 @@ func runConfigMode(path string) error {
 			}
 
 			// Render
-			sectionContent, err = renderer.Render(doc, stats)
+			sectionContent, err = renderer.Render(doc, stats, renderOpts)
 			if err != nil {
 				return fmt.Errorf("failed to render config section: %w", err)
 			}
@@ -109,7 +140,7 @@ func runConfigMode(path string) error {
 				return fmt.Errorf("matrix analysis failed: %w", err)
 			}
 
-			sectionContent, err = renderer.RenderMatrix(statsList)
+			sectionContent, err = renderer.RenderMatrix(statsList, renderOpts)
 			if err != nil {
 				return fmt.Errorf("failed to render matrix section: %w", err)
 			}
@@ -142,7 +173,7 @@ func runConfigMode(path string) error {
 	return nil
 }
 
-func runLegacyMode() error {
+func runSimpleMode() error {
 	// 1. Parse Dockerfile
 	doc, err := parser.Parse(dockerfile)
 	if err != nil {
@@ -167,7 +198,10 @@ func runLegacyMode() error {
 	}
 
 	// 3. Render
-	renderedContent, err := renderer.Render(doc, stats)
+	renderOpts := renderer.RenderOptions{
+		NoMoji: noMoji,
+	}
+	renderedContent, err := renderer.Render(doc, stats, renderOpts)
 	if err != nil {
 		return fmt.Errorf("failed to render documentation: %w", err)
 	}
@@ -192,7 +226,7 @@ func runLegacyMode() error {
 	}
 
 	fileContent := string(content)
-	// Legacy mode uses default markers (empty name)
+	// Simple mode uses default markers (empty name)
 	newContent, err := injector.Inject(fileContent, "", renderedContent)
 	if err != nil {
 		if !dryRun {
@@ -217,10 +251,39 @@ func Execute() {
 	}
 }
 
+// checkToolStatus returns a string indicating the status of required tools.
+func checkToolStatus() string {
+	tools := []string{"syft", "grype", "dive"}
+	var status strings.Builder
+	status.WriteString("\nPrerequisites:\n")
+
+	// Check for Docker or Podman
+	if _, err := exec.LookPath("docker"); err == nil {
+		status.WriteString("  [OK] docker\n")
+	} else if _, err := exec.LookPath("podman"); err == nil {
+		status.WriteString("  [OK] podman\n")
+	} else {
+		status.WriteString("  [MISSING] docker or podman (required for dynamic analysis)\n")
+	}
+
+	for _, tool := range tools {
+		if _, err := exec.LookPath(tool); err == nil {
+			status.WriteString(fmt.Sprintf("  [OK] %s\n", tool))
+		} else {
+			status.WriteString(fmt.Sprintf("  [MISSING] %s (install for full functionality)\n", tool))
+		}
+	}
+	return status.String()
+}
+
 func init() {
-	rootCmd.Flags().StringVarP(&dockerfile, "file", "f", "./Dockerfile", "Path to Dockerfile")
+	// Dynamically append tool status to the help description
+	rootCmd.Long += "\n" + checkToolStatus()
+
+	rootCmd.Flags().StringVarP(&dockerfile, "file", "f", "./Dockerfile", "Path to Dockerfile (Simple Mode only)")
 	rootCmd.Flags().StringVarP(&outputFile, "output", "o", "README.md", "Path to output file")
 	rootCmd.Flags().BoolVar(&dryRun, "dry-run", false, "Print to stdout instead of writing to file")
-	rootCmd.Flags().StringVar(&imageTag, "image", "", "Docker image tag to analyze (e.g. my-app:latest)")
+	rootCmd.Flags().StringVar(&imageTag, "image", "", "Docker image tag to analyze (e.g. my-app:latest) (Simple Mode only)")
 	rootCmd.Flags().StringVar(&configFile, "config", "", "Path to config file (default: docker-docs.yaml)")
+	rootCmd.Flags().BoolVar(&noMoji, "nomoji", false, "Disable emojis in the output")
 }

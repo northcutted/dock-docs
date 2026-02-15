@@ -9,28 +9,93 @@ import (
 	"github.com/northcutted/docker-docs/pkg/parser"
 )
 
+type RenderOptions struct {
+	NoMoji bool
+}
+
 // ReportContext holds all data passed to the template
 type ReportContext struct {
 	Doc      *parser.Documentation
 	Stats    *analysis.ImageStats
 	ImageTag string
+	Options  RenderOptions
+}
+
+func (r ReportContext) Emoji(name string) string {
+	return getEmoji(name, r.Options.NoMoji)
+}
+
+func getEmoji(name string, noMoji bool) string {
+	if noMoji {
+		switch name {
+		case "check":
+			return "[YES]"
+		case "cross":
+			return "[NO]"
+		case "critical":
+			return "[CRIT]"
+		case "high":
+			return "[HIGH]"
+		case "medium":
+			return "[MED]"
+		case "low":
+			return "[LOW]"
+		case "clean":
+			return "[OK]"
+		default:
+			return ""
+		}
+	}
+
+	switch name {
+	case "whale":
+		return "🐳 "
+	case "gear":
+		return "⚙️ "
+	case "shield":
+		return "🛡️ "
+	case "tag":
+		return "🏷️ "
+	case "search":
+		return "🔍 "
+	case "down":
+		return "👇 "
+	case "package":
+		return "📦 "
+	case "check":
+		return "✅"
+	case "cross":
+		return "❌"
+	case "critical":
+		return "🛑"
+	case "high":
+		return "🟠"
+	case "medium":
+		return "🟡"
+	case "low":
+		return "🔵"
+	case "clean":
+		return "🟢"
+	default:
+		return ""
+	}
 }
 
 const defaultTemplate = `
-# 🐳 Docker Image Analysis: {{ .ImageTag }}
+# {{ .Emoji "whale" }}Docker Image Analysis: {{ .ImageTag }}
 
 {{- if .Stats }}
 ![Size]({{ .Stats.SizeBadge }}) ![Layers]({{ .Stats.LayersBadge }}) ![Vulns]({{ .Stats.VulnBadge }}) ![Efficiency]({{ .Stats.EfficiencyBadge }})
 {{- end }}
 
-## ⚙️ Configuration
+## {{ .Emoji "gear" }}Configuration
 
 {{- if (len (.Doc.FilterByType "ENV")) }}
 ### Environment Variables
 | Name | Description | Default | Required |
 |------|-------------|---------|:--------:|
 {{- range (.Doc.FilterByType "ENV") }}
-| ` + "`{{ .Name }}`" + ` | {{ .Description }} | ` + "`{{ if .Value }}{{ .Value }}{{ else }}\"\"{{ end }}`" + ` | {{ if .Required }}✅{{ else }}❌{{ end }} |
+| ` + "`{{ .Name }}`" + ` | {{ .Description }} | ` + "`{{ if .Value }}{{ .Value }}{{ else }}\"\"{{ end }}`" + ` | {{ if .Required }}{{ $.Emoji "check" }}{{ else }}{{ $.Emoji "cross" }}{{ end }} |
 {{- end }}
 {{- end }}
 
@@ -39,7 +104,7 @@ const defaultTemplate = `
 | Name | Description | Default | Required |
 |------|-------------|---------|:--------:|
 {{- range (.Doc.FilterByType "ARG") }}
-| ` + "`{{ .Name }}`" + ` | {{ .Description }} | ` + "`{{ .Value }}`" + ` | {{ if .Required }}✅{{ else }}❌{{ end }} |
+| ` + "`{{ .Name }}`" + ` | {{ .Description }} | ` + "`{{ .Value }}`" + ` | {{ if .Required }}{{ $.Emoji "check" }}{{ else }}{{ $.Emoji "cross" }}{{ end }} |
 {{- end }}
 {{- end }}
 
@@ -64,9 +129,9 @@ const defaultTemplate = `
 {{- if .Stats }}
 ---
 
-## 🛡️ Security & Efficiency
+## {{ .Emoji "shield" }}Security & Efficiency
 
-**Base Image:** ` + "`{{ .Stats.OS }} ({{ .Stats.Architecture }})`" + `
+**Base Image:** ` + "`{{ if .Stats.OSDistro }}{{ .Stats.OSDistro }} ({{ .Stats.OS }}/{{ .Stats.Architecture }}){{ else }}{{ .Stats.OS }} ({{ .Stats.Architecture }}){{ end }}`" + `
 {{- if .Stats.SupportedArchitectures }}
 **Supported Architectures:** ` + "`{{ join .Stats.SupportedArchitectures \", \" }}`" + `
 {{- end }}
@@ -75,10 +140,10 @@ const defaultTemplate = `
 ### Vulnerabilities
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
-| {{ if gt (index .Stats.VulnSummary "Critical") 0 }}🔴 {{ else }}🟢 {{ end }}{{ index .Stats.VulnSummary "Critical" }} | {{ if gt (index .Stats.VulnSummary "High") 0 }}🟠 {{ else }}🟢 {{ end }}{{ index .Stats.VulnSummary "High" }} | {{ index .Stats.VulnSummary "Medium" }} | {{ index .Stats.VulnSummary "Low" }} |
+| {{ if gt (index .Stats.VulnSummary "Critical") 0 }}{{ .Emoji "critical" }} {{ else }}{{ .Emoji "clean" }} {{ end }}{{ index .Stats.VulnSummary "Critical" }} | {{ if gt (index .Stats.VulnSummary "High") 0 }}{{ .Emoji "high" }} {{ else }}{{ .Emoji "clean" }} {{ end }}{{ index .Stats.VulnSummary "High" }} | {{ if gt (index .Stats.VulnSummary "Medium") 0 }}{{ .Emoji "medium" }} {{ else }}{{ .Emoji "clean" }} {{ end }}{{ index .Stats.VulnSummary "Medium" }} | {{ if gt (index .Stats.VulnSummary "Low") 0 }}{{ .Emoji "low" }} {{ else }}{{ .Emoji "clean" }} {{ end }}{{ index .Stats.VulnSummary "Low" }} |
 
 <details>
-<summary><strong>👇 Expand Vulnerability Details ({{ .Stats.TotalVulns }} found)</strong></summary>
+<summary><strong>{{ .Emoji "down" }}Expand Vulnerability Details ({{ .Stats.TotalVulns }} found)</strong></summary>
 
 | ID | Severity | Package | Version |
 |----|----------|---------|---------|
@@ -88,7 +153,7 @@ const defaultTemplate = `
 </details>
 
 <details>
-<summary><strong>📦 Installed Packages ({{ .Stats.TotalPackages }} total)</strong></summary>
+<summary><strong>{{ .Emoji "package" }}Installed Packages ({{ .Stats.TotalPackages }} total)</strong></summary>
 
 | Package | Version |
 |---------|---------|
@@ -100,7 +165,7 @@ const defaultTemplate = `
 `
 
 // Render generates the Markdown table from documentation items.
-func Render(doc *parser.Documentation, stats *analysis.ImageStats) (string, error) {
+func Render(doc *parser.Documentation, stats *analysis.ImageStats, opts RenderOptions) (string, error) {
 	tmpl, err := template.New("docker-docs").Funcs(template.FuncMap{
 		"index": func(m map[string]int, k string) int {
 			if v, ok := m[k]; ok {
@@ -116,8 +181,9 @@ func Render(doc *parser.Documentation, stats *analysis.ImageStats) (string, erro
 	}
 
 	ctx := ReportContext{
-		Doc:   doc,
-		Stats: stats,
+		Doc:     doc,
+		Stats:   stats,
+		Options: opts,
 	}
 	if stats != nil {
 		ctx.ImageTag = stats.ImageTag
@@ -137,11 +203,16 @@ func Render(doc *parser.Documentation, stats *analysis.ImageStats) (string, erro
 }
 
 type MatrixContext struct {
-	Matrix []*analysis.ImageStats
+	Matrix  []*analysis.ImageStats
+	Options RenderOptions
+}
+
+func (r MatrixContext) Emoji(name string) string {
+	return getEmoji(name, r.Options.NoMoji)
 }
 
 const matrixTemplate = `
-### 🏷️ Supported Tags
+### {{ .Emoji "tag" }}Supported Tags
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
@@ -152,11 +223,11 @@ const matrixTemplate = `
 {{- range .Matrix }}
 
 <details>
-<summary><strong>🔍 Full Report: {{ .ImageTag }}</strong></summary>
+<summary><strong>{{ $.Emoji "search" }}Full Report: {{ .ImageTag }}</strong></summary>
 
-## 🛡️ Security & Efficiency
+## {{ $.Emoji "shield" }}Security & Efficiency
 
-**Base Image:** ` + "`{{ .OS }} ({{ .Architecture }})`" + `
+**Base Image:** ` + "`{{ if .OSDistro }}{{ .OSDistro }} ({{ .OS }}/{{ .Architecture }}){{ else }}{{ .OS }} ({{ .Architecture }}){{ end }}`" + `
 {{- if .SupportedArchitectures }}
 **Supported Architectures:** ` + "`{{ join .SupportedArchitectures \", \" }}`" + `
 {{- end }}
@@ -165,10 +236,10 @@ const matrixTemplate = `
 ### Vulnerabilities
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
-| {{ if gt (index .VulnSummary "Critical") 0 }}🔴 {{ else }}🟢 {{ end }}{{ index .VulnSummary "Critical" }} | {{ if gt (index .VulnSummary "High") 0 }}🟠 {{ else }}🟢 {{ end }}{{ index .VulnSummary "High" }} | {{ index .VulnSummary "Medium" }} | {{ index .VulnSummary "Low" }} |
+| {{ if gt (index .VulnSummary "Critical") 0 }}{{ $.Emoji "critical" }} {{ else }}{{ $.Emoji "clean" }} {{ end }}{{ index .VulnSummary "Critical" }} | {{ if gt (index .VulnSummary "High") 0 }}{{ $.Emoji "high" }} {{ else }}{{ $.Emoji "clean" }} {{ end }}{{ index .VulnSummary "High" }} | {{ if gt (index .VulnSummary "Medium") 0 }}{{ $.Emoji "medium" }} {{ else }}{{ $.Emoji "clean" }} {{ end }}{{ index .VulnSummary "Medium" }} | {{ if gt (index .VulnSummary "Low") 0 }}{{ $.Emoji "low" }} {{ else }}{{ $.Emoji "clean" }} {{ end }}{{ index .VulnSummary "Low" }} |
 
 <details>
-<summary><strong>👇 Expand Vulnerability Details ({{ .TotalVulns }} found)</strong></summary>
+<summary><strong>{{ $.Emoji "down" }}Expand Vulnerability Details ({{ .TotalVulns }} found)</strong></summary>
 
 | ID | Severity | Package | Version |
 |----|----------|---------|---------|
@@ -178,7 +249,7 @@ const matrixTemplate = `
 </details>
 
 <details>
-<summary><strong>📦 Installed Packages ({{ .TotalPackages }} total)</strong></summary>
+<summary><strong>{{ $.Emoji "package" }}Installed Packages ({{ .TotalPackages }} total)</strong></summary>
 
 | Package | Version |
 |---------|---------|
@@ -192,7 +263,7 @@ const matrixTemplate = `
 `
 
 // RenderMatrix generates the comparison table for multiple images.
-func RenderMatrix(stats []*analysis.ImageStats) (string, error) {
+func RenderMatrix(stats []*analysis.ImageStats, opts RenderOptions) (string, error) {
 	tmpl, err := template.New("docker-docs-matrix").Funcs(template.FuncMap{
 		"index": func(m map[string]int, k string) int {
 			if v, ok := m[k]; ok {
@@ -207,7 +278,8 @@ func RenderMatrix(stats []*analysis.ImageStats) (string, error) {
 	}
 
 	ctx := MatrixContext{
-		Matrix: stats,
+		Matrix:  stats,
+		Options: opts,
 	}
 
 	var buf bytes.Buffer
