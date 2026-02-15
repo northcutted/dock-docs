@@ -53,7 +53,6 @@ changelog:
 
 dockers_v2:
   - images:
-    - "northcutted/docker-docs"
     - "ghcr.io/northcutted/docker-docs"
     tags:
       - "v{{ .Version }}"
