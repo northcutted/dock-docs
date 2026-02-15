@@ -87,6 +87,3 @@ docker_signs:
       - sign
       - '${artifact}'
       - '--yes'
-
-slsa_provenance:
-  enabled: true
