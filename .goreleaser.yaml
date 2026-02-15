@@ -24,7 +24,7 @@ builds:
     binary: docker-docs
 
 archives:
-  - format: tar.gz
+  - formats: ["tar.gz"]
     # this name template makes the OS and Arch compatible with the results of uname.
     name_template: >-
       {{ .ProjectName }}_
@@ -36,7 +36,7 @@ archives:
     # use zip for windows archives
     format_overrides:
     - goos: windows
-      format: zip
+      formats: [ "zip" ]
 
 checksum:
   name_template: 'checksums.txt'
@@ -51,19 +51,24 @@ changelog:
       - '^docs:'
       - '^test:'
 
-dockers:
-  - image_templates:
-    - "ghcr.io/northcutted/docker-docs:{{ .Tag }}"
-    - "ghcr.io/northcutted/docker-docs:latest"
+dockers_v2:
+  - images:
+    - "ghcr.io/northcutted/docker-docs"
     dockerfile: Dockerfile.release
-    use: buildx
-    build_flag_templates:
-    - "--platform=linux/amd64,linux/arm64"
-    - "--label=org.opencontainers.image.created={{.Date}}"
-    - "--label=org.opencontainers.image.name={{.ProjectName}}"
-    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-    - "--label=org.opencontainers.image.version={{.Version}}"
-    - "--label=org.opencontainers.image.source={{.GitURL}}"
+    tags:
+      - "v{{ .Version }}"
+      - "{{ if .IsNightly }}nightly{{ end }}"
+      - "{{ if not .IsNightly }}latest{{ end }}"
+    labels:
+      "org.opencontainers.image.description": "Docker Docs is a tool to generate documentation for Docker images."
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.name": "{{.ProjectName}}"
+      "org.opencontainers.image.revision": "{{.FullCommit}}"
+      "org.opencontainers.image.version": "{{.Version}}"
+      "org.opencontainers.image.source": "{{.GitURL}}"
+
+docker_digest:
+  name_template: "{{.ProjectName}}_digest.txt"
 
 sboms:
   - artifacts: archive
@@ -78,6 +83,7 @@ signs:
       - '--yes'
     artifacts: all
     output: true
+  - artifacts: checksum
 
 docker_signs:
   - cmd: cosign
@@ -86,3 +92,11 @@ docker_signs:
       - sign
       - '${artifact}'
       - '--yes'
+
+binary_signs:
+  - cmd: cosign
+    stdin: "{{ .Env.COSIGN_PWD }}"
+    args:
+      - "sign-blob"
+      - "${artifact}"
+      - "--yes" 
