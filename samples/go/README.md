@@ -3,7 +3,7 @@
 <!-- BEGIN: dock-docs:config -->
 
 # 🐳 Docker Image Analysis: golang:1.26-alpine
-![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=5&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.9%&color=green)
+![Size]() ![Layers]() ![Vulns](https://img.shields.io/static/v1?label=Security&message=0+Vulns+%280+Crit%29&color=green) ![Efficiency]()
 
 ## ⚙️ Configuration
 ### Build Arguments
@@ -18,23 +18,20 @@
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (/)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 99.9%
+**Efficiency Score:** 0.0%
 
 ### Vulnerabilities
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
-| 🟢 0 | 🟢 0 | 🟡 3 | 🟢 0 |
+| 🟢 0 | 🟢 0 | 🟢 0 | 🟢 0 |
 
 <details>
-<summary><strong>👇 Expand Vulnerability Details (3 found)</strong></summary>
+<summary><strong>👇 Expand Vulnerability Details (0 found)</strong></summary>
 
 | ID | Severity | Package | Version |
 |----|----------|---------|---------|
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox-binsh` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `ssl_client` | `1.37.0-r30` |
 </details>
 
 <details>
@@ -83,32 +80,29 @@
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `golang:1.24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=258.71+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `golang:1.25-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=213.88+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `golang:1.26-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.24-alpine` | ![Size]() | ![Vulns](https://img.shields.io/static/v1?label=Security&message=0+Vulns+%280+Crit%29&color=green) | 0.0% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.25-alpine` | ![Size]() | ![Vulns](https://img.shields.io/static/v1?label=Security&message=0+Vulns+%280+Crit%29&color=green) | 0.0% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.26-alpine` | ![Size]() | ![Vulns](https://img.shields.io/static/v1?label=Security&message=0+Vulns+%280+Crit%29&color=green) | 0.0% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
 
 <details>
 <summary><strong>🔍 Full Report: golang:1.24-alpine</strong></summary>
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (/)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 99.9%
+**Efficiency Score:** 0.0%
 
 ### Vulnerabilities
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
-| 🟢 0 | 🟢 0 | 🟡 3 | 🟢 0 |
+| 🟢 0 | 🟢 0 | 🟢 0 | 🟢 0 |
 
 <details>
-<summary><strong>👇 Expand Vulnerability Details (3 found)</strong></summary>
+<summary><strong>👇 Expand Vulnerability Details (0 found)</strong></summary>
 
 | ID | Severity | Package | Version |
 |----|----------|---------|---------|
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox-binsh` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `ssl_client` | `1.37.0-r30` |
 </details>
 
 <details>
@@ -164,23 +158,20 @@
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (/)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 99.9%
+**Efficiency Score:** 0.0%
 
 ### Vulnerabilities
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
-| 🟢 0 | 🟢 0 | 🟡 3 | 🟢 0 |
+| 🟢 0 | 🟢 0 | 🟢 0 | 🟢 0 |
 
 <details>
-<summary><strong>👇 Expand Vulnerability Details (3 found)</strong></summary>
+<summary><strong>👇 Expand Vulnerability Details (0 found)</strong></summary>
 
 | ID | Severity | Package | Version |
 |----|----------|---------|---------|
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox-binsh` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `ssl_client` | `1.37.0-r30` |
 </details>
 
 <details>
@@ -225,23 +216,20 @@
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (/)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 99.9%
+**Efficiency Score:** 0.0%
 
 ### Vulnerabilities
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
-| 🟢 0 | 🟢 0 | 🟡 3 | 🟢 0 |
+| 🟢 0 | 🟢 0 | 🟢 0 | 🟢 0 |
 
 <details>
-<summary><strong>👇 Expand Vulnerability Details (3 found)</strong></summary>
+<summary><strong>👇 Expand Vulnerability Details (0 found)</strong></summary>
 
 | ID | Severity | Package | Version |
 |----|----------|---------|---------|
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `busybox-binsh` | `1.37.0-r30` |
-| [CVE-2025-60876](https://nvd.nist.gov/vuln/detail/CVE-2025-60876) | Medium | `ssl_client` | `1.37.0-r30` |
 </details>
 
 <details>
