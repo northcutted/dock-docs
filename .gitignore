@@ -74,3 +74,4 @@ TEST_*.md
 samples/*/README.md
 samples/*/DOCUMENTATION.md
 
+demo/

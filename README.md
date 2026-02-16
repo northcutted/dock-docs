@@ -1,5 +1,3 @@
-# Dock-Docs - A powerful automated documentation generator for Docker images
-
 <p align="center">
   <img src="./assets/dock-docs-logo.png" alt="Dock-Docs Logo" width="400">
 </p>
@@ -13,7 +11,35 @@
   <a href="https://github.com/northcutted/dock-docs/stargazers"><img src="https://img.shields.io/github/stars/northcutted/dock-docs?style=social" alt="GitHub Stars"></a>
 </p>
 
+# Dock-Docs
+
 A powerful CLI tool that automatically generates comprehensive Markdown documentation from your Dockerfiles. It goes beyond static analysis by building your image and running deep inspections using industry-standard tools like `syft`, `grype`, and `dive`.
+
+
+- [Dock-Docs](#dock-docs)
+  - [Features](#features)
+  - [Magic Comments](#magic-comments)
+    - [Examples](#examples)
+  - [Installation](#installation)
+    - [Go Install](#go-install)
+    - [Docker](#docker)
+  - [Usage](#usage)
+    - [Basic Usage](#basic-usage)
+      - [Simple Mode](#simple-mode)
+    - [CLI Arguments](#cli-arguments)
+  - [Configuration Reference (`dock-docs.yaml`)](#configuration-reference-dock-docsyaml)
+    - [Structure](#structure)
+    - [Markers](#markers)
+    - [Section Types](#section-types)
+      - [1. `config`](#1-config)
+      - [2. `matrix`](#2-matrix)
+  - [GitHub Action](#github-action)
+  - [Samples](#samples)
+  - [Demo](#demo)
+  - [Credits](#credits)
+  - [License](#license)
+  - [AI Generated Content Disclaimer](#ai-generated-content-disclaimer)
+
 
 ## Features
 
@@ -225,6 +251,10 @@ Check out the sample projects to see `dock-docs` in action:
 - [Node.js Sample](samples/node)
 - [Python Sample](samples/python)
 
+## Demo
+
+![dock-docs demo](./assets/dock-docs-demo.gif)
+
 ## Credits
 
 This tool relies on the following amazing open-source projects for deep analysis:
@@ -239,4 +269,6 @@ MIT
 
 ## AI Generated Content Disclaimer
 
-Much of the code in this repository was generated using OpenCode `1.2.1` using the Github Copilot provider using `gemini-3-pro-preview` as a way to experiment with these tools and to attempt to solve a problem that I had. While the use of this tool requires no AI services to function, it was built using them so if tools heavily developed by AI agents is something you would like to avoid, then this tool is not for you.
+Much of the code in this repository was generated using OpenCode `1.2.1` using the Github Copilot provider using `gemini-3-pro-preview` and `claude-sonnet-4.5` as a way to experiment with these tools and to attempt to solve a problem that I had. 
+
+While the use of this tool requires no AI services to function, it was built using them so if tools heavily developed by AI agents is something you would like to avoid, then this tool is not for you.
