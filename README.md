@@ -113,6 +113,8 @@ dock-docs --config my-config.yaml --output README.md
 - `--output`, `-o`: Output file path (default: `README.md`).
 - `--dry-run`: Print output to stdout instead of modifying files.
 - `--nomoji`: Disable emojis in the output.
+- `--ignore-errors`: Ignore analysis errors and continue generation.
+- `--verbose`: Enable verbose logging for debugging.
 - `--file`, `-f`: Path to Dockerfile (Simple Mode only).
 - `--image`: Docker image tag to analyze (Simple Mode only).
 
