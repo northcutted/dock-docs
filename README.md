@@ -49,13 +49,13 @@ EXPOSE 8080
 ### Go Install
 
 ```bash
-go install github.com/northcutted/docker-docs@latest
+go install github.com/northcutted/dock-docs@latest
 ```
 
 ### Docker
 
 ```bash
-docker run --rm -v $(pwd):/app -w /app ghcr.io/northcutted/docker-docs:latest
+docker run --rm -v $(pwd):/app -w /app ghcr.io/northcutted/dock-docs:latest
 ```
 
 ## Usage
@@ -65,42 +65,42 @@ docker run --rm -v $(pwd):/app -w /app ghcr.io/northcutted/docker-docs:latest
 Run the tool in your project directory:
 
 ```bash
-docker-docs
+dock-docs
 ```
 
-This will look for a `docker-docs.yaml` configuration file by default. If no `docker-docs.yaml` is found, the tool runs in **Simple Mode**.
+This will look for a `dock-docs.yaml` configuration file by default. If no `dock-docs.yaml` is found, the tool runs in **Simple Mode**.
 
 
 #### Simple Mode
 
-If no `docker-docs.yaml` is found, the tool runs in **Simple Mode**. This mode is useful for documentation generation without creating a configuration file, but it offers less customization.
+If no `dock-docs.yaml` is found, the tool runs in **Simple Mode**. This mode is useful for documentation generation without creating a configuration file, but it offers less customization.
 
 1. Parses `./Dockerfile` (or file specified by `-f`).
 2. (Optional) Analyzes the image specified by `--image`.
 3. Injects the output into `README.md` using the **default markers**:
 
 ```markdown
-<!-- BEGIN: docker-docs -->
+<!-- BEGIN: dock-docs -->
 
-<!-- END: docker-docs -->
+<!-- END: dock-docs -->
 ```
 
 ### CLI Arguments
 
 ```bash
-docker-docs --config my-config.yaml --output README.md
+dock-docs --config my-config.yaml --output README.md
 ```
 
-- `--config`, `-c`: Path to configuration file (default: `docker-docs.yaml`). If found, this enables **Config Mode**.
+- `--config`, `-c`: Path to configuration file (default: `dock-docs.yaml`). If found, this enables **Config Mode**.
 - `--output`, `-o`: Output file path (default: `README.md`).
 - `--dry-run`: Print output to stdout instead of modifying files.
 - `--nomoji`: Disable emojis in the output.
 - `--file`, `-f`: Path to Dockerfile (Simple Mode only).
 - `--image`: Docker image tag to analyze (Simple Mode only).
 
-## Configuration Reference (`docker-docs.yaml`)
+## Configuration Reference (`dock-docs.yaml`)
 
-The `docker-docs.yaml` file is the heart of the tool. It allows you to define multiple sections of documentation that will be injected into your output file (e.g., `README.md`).
+The `dock-docs.yaml` file is the heart of the tool. It allows you to define multiple sections of documentation that will be injected into your output file (e.g., `README.md`).
 
 ### Structure
 
@@ -111,12 +111,12 @@ output: "README.md"
 # A list of documentation sections to generate
 sections:
   - type: "config"      # Generates docs for a single Dockerfile
-    marker: "main"      # Maps to <!-- BEGIN: docker-docs:main -->
+    marker: "main"      # Maps to <!-- BEGIN: dock-docs:main -->
     source: "Dockerfile" # Path to the Dockerfile
     image: "myapp:latest" # (Optional) Image to analyze for deep inspection
 
   - type: "matrix"      # Generates a comparison table for multiple images
-    marker: "comparison" # Maps to <!-- BEGIN: docker-docs:comparison -->
+    marker: "comparison" # Maps to <!-- BEGIN: dock-docs:comparison -->
     images:             # List of images to compare
       - "myapp:dev"
       - "myapp:prod"
@@ -125,13 +125,13 @@ sections:
 
 ### Markers
 
-To tell `docker-docs` where to insert the generated content, you must add **HTML comments** (markers) to your target file (e.g., `README.md`).
+To tell `dock-docs` where to insert the generated content, you must add **HTML comments** (markers) to your target file (e.g., `README.md`).
 
 For a section with `marker: "main"`, add this to your `README`:
 
 ```markdown
-<!-- BEGIN: docker-docs:main -->
-<!-- END: docker-docs:main -->
+<!-- BEGIN: dock-docs:main -->
+<!-- END: dock-docs:main -->
 ```
 
 Everything between these two lines will be overwritten by the tool.
@@ -161,7 +161,7 @@ on:
   push:
     paths:
       - 'Dockerfile'
-      - 'docker-docs.yaml'
+      - 'dock-docs.yaml'
 
 jobs:
   docs:
@@ -170,9 +170,9 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Generate Documentation
-        uses: northcutted/docker-docs@main
+        uses: northcutted/dock-docs@main
         with:
-          config: 'docker-docs.yaml'
+          config: 'dock-docs.yaml'
           output: 'README.md'
       
       - name: Commit changes
@@ -184,7 +184,7 @@ jobs:
 
 ## Samples
 
-Check out the sample projects to see `docker-docs` in action:
+Check out the sample projects to see `dock-docs` in action:
 
 - [Go Sample](samples/go)
 - [Node.js Sample](samples/node)

@@ -1,6 +1,6 @@
 # Python Docker Analysis
 
-<!-- BEGIN: docker-docs:config -->
+<!-- BEGIN: dock-docs:config -->
 
 # 🐳 Docker Image Analysis: python:3.14-slim
 ![Size](https://img.shields.io/static/v1?label=Size&message=141.49+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=4&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=97.3%&color=green)
@@ -202,11 +202,11 @@
 | zlib1g | 1:1.3.dfsg+really1.3.1-1+b1 |
 </details>
 
-<!-- END: docker-docs:config -->
+<!-- END: dock-docs:config -->
 
 ## Version Comparison
 
-<!-- BEGIN: docker-docs:comparison -->
+<!-- BEGIN: dock-docs:comparison -->
 
 ### 🏷️ Supported Tags
 
@@ -794,4 +794,4 @@
 
 </details>
 
-<!-- END: docker-docs:comparison -->
+<!-- END: dock-docs:comparison -->

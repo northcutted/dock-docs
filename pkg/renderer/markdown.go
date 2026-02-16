@@ -5,8 +5,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/northcutted/docker-docs/pkg/analysis"
-	"github.com/northcutted/docker-docs/pkg/parser"
+	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/parser"
 )
 
 type RenderOptions struct {

@@ -21,7 +21,7 @@ builds:
       - goos: windows
         goarch: arm64
     main: .
-    binary: docker-docs
+    binary: dock-docs
 
 archives:
   - formats: ["tar.gz"]
@@ -53,14 +53,14 @@ changelog:
 
 dockers_v2:
   - images:
-    - "ghcr.io/northcutted/docker-docs"
+    - "ghcr.io/northcutted/dock-docs"
     dockerfile: Dockerfile
     tags:
       - "v{{ .Version }}"
       - "{{ if .IsNightly }}nightly{{ end }}"
       - "{{ if not .IsNightly }}latest{{ end }}"
     labels:
-      "org.opencontainers.image.description": "Docker Docs is a tool to generate documentation for Docker images."
+      "org.opencontainers.image.description": "Dock Docs is a tool to generate documentation for Docker images."
       "org.opencontainers.image.created": "{{.Date}}"
       "org.opencontainers.image.name": "{{.ProjectName}}"
       "org.opencontainers.image.revision": "{{.FullCommit}}"

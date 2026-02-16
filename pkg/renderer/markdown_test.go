@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/northcutted/docker-docs/pkg/analysis"
-	"github.com/northcutted/docker-docs/pkg/parser"
+	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/parser"
 )
 
 func TestRender(t *testing.T) {

@@ -18,19 +18,19 @@ jobs:
       - name: Generate Go Sample Docs
         uses: ./
         with:
-          config: samples/go/docker-docs.yaml
+          config: samples/go/dock-docs.yaml
           output: samples/go/README.md
 
       - name: Generate Node Sample Docs
         uses: ./
         with:
-          config: samples/node/docker-docs.yaml
+          config: samples/node/dock-docs.yaml
           output: samples/node/README.md
 
       - name: Generate Python Sample Docs
         uses: ./
         with:
-          config: samples/python/docker-docs.yaml
+          config: samples/python/dock-docs.yaml
           output: samples/python/README.md
 
       - name: Check for changes

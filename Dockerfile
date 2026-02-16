@@ -43,7 +43,7 @@ WORKDIR /
 # Copy our Go binary
 # GoReleaser v2 with buildx places artifacts in platform-specific folders
 ARG TARGETPLATFORM
-COPY $TARGETPLATFORM/docker-docs /usr/local/bin/docker-docs
+COPY $TARGETPLATFORM/dock-docs /usr/local/bin/dock-docs
 
 # Copy external tools
 COPY --from=builder /tmp/tools/syft /usr/local/bin/syft
@@ -54,4 +54,4 @@ COPY --from=builder /tmp/tools/docker /usr/local/bin/docker
 # Add /usr/local/bin to PATH
 ENV PATH="/usr/local/bin:${PATH}"
 
-ENTRYPOINT ["docker-docs"]
+ENTRYPOINT ["dock-docs"]

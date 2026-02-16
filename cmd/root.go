@@ -9,12 +9,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/northcutted/docker-docs/pkg/analysis"
-	"github.com/northcutted/docker-docs/pkg/config"
-	"github.com/northcutted/docker-docs/pkg/injector"
-	"github.com/northcutted/docker-docs/pkg/parser"
-	"github.com/northcutted/docker-docs/pkg/renderer"
-	"github.com/northcutted/docker-docs/pkg/runner"
+	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/config"
+	"github.com/northcutted/dock-docs/pkg/injector"
+	"github.com/northcutted/dock-docs/pkg/parser"
+	"github.com/northcutted/dock-docs/pkg/renderer"
+	"github.com/northcutted/dock-docs/pkg/runner"
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "docker-docs",
+	Use:   "dock-docs",
 	Short: "Generate documentation from Dockerfile",
 	Long: `Generate comprehensive documentation from your Dockerfiles.
 
@@ -40,25 +40,25 @@ It can also perform deep analysis on built images using:
 - Dive (for layer efficiency analysis)
 
 Modes:
-- Config Mode: Uses 'docker-docs.yaml' for advanced configuration and multi-image matrix analysis.
+- Config Mode: Uses 'dock-docs.yaml' for advanced configuration and multi-image matrix analysis.
 - Simple Mode: Runs on a single Dockerfile/image without configuration.`,
 	Example: `  # Config Mode (Recommended)
-  docker-docs --config docker-docs.yaml
+  dock-docs --config dock-docs.yaml
 
   # Simple Mode: Analyze Dockerfile only
-  docker-docs -f ./Dockerfile
+  dock-docs -f ./Dockerfile
 
   # Simple Mode: Analyze Dockerfile and Image
-  docker-docs -f ./Dockerfile --image my-app:latest
+  dock-docs -f ./Dockerfile --image my-app:latest
 
   # Simple Mode: Output to specific file
-  docker-docs -f ./Dockerfile -o DOCUMENTATION.md`,
+  dock-docs -f ./Dockerfile -o DOCUMENTATION.md`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Detect Config Mode
 		cfgPath := configFile
 		if cfgPath == "" {
-			if _, err := os.Stat("docker-docs.yaml"); err == nil {
-				cfgPath = "docker-docs.yaml"
+			if _, err := os.Stat("dock-docs.yaml"); err == nil {
+				cfgPath = "dock-docs.yaml"
 			}
 		}
 
@@ -295,6 +295,6 @@ func init() {
 	rootCmd.Flags().StringVarP(&outputFile, "output", "o", "README.md", "Path to output file")
 	rootCmd.Flags().BoolVar(&dryRun, "dry-run", false, "Print to stdout instead of writing to file")
 	rootCmd.Flags().StringVar(&imageTag, "image", "", "Docker image tag to analyze (e.g. my-app:latest) (Simple Mode only)")
-	rootCmd.Flags().StringVar(&configFile, "config", "", "Path to config file (default: docker-docs.yaml)")
+	rootCmd.Flags().StringVar(&configFile, "config", "", "Path to config file (default: dock-docs.yaml)")
 	rootCmd.Flags().BoolVar(&noMoji, "nomoji", false, "Disable emojis in the output")
 }

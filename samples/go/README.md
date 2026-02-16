@@ -1,6 +1,6 @@
 # Go Docker Analysis
 
-<!-- BEGIN: docker-docs:config -->
+<!-- BEGIN: dock-docs:config -->
 
 # 🐳 Docker Image Analysis: golang:1.26-alpine
 ![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=5&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.9%&color=green)
@@ -73,11 +73,11 @@
 | zlib | 1.3.1-r2 |
 </details>
 
-<!-- END: docker-docs:config -->
+<!-- END: dock-docs:config -->
 
 ## Version Comparison
 
-<!-- BEGIN: docker-docs:comparison -->
+<!-- BEGIN: dock-docs:comparison -->
 
 ### 🏷️ Supported Tags
 
@@ -282,4 +282,4 @@
 
 </details>
 
-<!-- END: docker-docs:comparison -->
+<!-- END: dock-docs:comparison -->

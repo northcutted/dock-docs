@@ -1,0 +1,14 @@
+output: "README.md"
+sections:
+  - type: "config"
+    marker: "config"
+    source: "Dockerfile"
+    # Analyzing public golang image for demonstration
+    image: "golang:1.26-alpine"
+
+  - type: "matrix"
+    marker: "comparison"
+    images:
+      - "golang:1.24-alpine"
+      - "golang:1.25-alpine"
+      - "golang:1.26-alpine"

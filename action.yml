@@ -4,7 +4,7 @@ author: 'northcutted'
 inputs:
   config:
     description: 'Path to configuration file'
-    default: 'docker-docs.yaml'
+    default: 'dock-docs.yaml'
   output:
     description: 'Output file path'
     default: 'README.md'

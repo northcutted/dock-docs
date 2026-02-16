@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/northcutted/docker-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/analysis"
 )
 
 // ToolRunner defines the interface for external tool integration

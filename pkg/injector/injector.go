@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	defaultMarkerBegin = "<!-- BEGIN: docker-docs -->"
-	defaultMarkerEnd   = "<!-- END: docker-docs -->"
+	defaultMarkerBegin = "<!-- BEGIN: dock-docs -->"
+	defaultMarkerEnd   = "<!-- END: dock-docs -->"
 )
 
 // Inject replaces content between markers in the given file content.
@@ -18,8 +18,8 @@ func Inject(fileContent, markerName, newContent string) (string, error) {
 	markerEnd := defaultMarkerEnd
 
 	if markerName != "" {
-		markerBegin = fmt.Sprintf("<!-- BEGIN: docker-docs:%s -->", markerName)
-		markerEnd = fmt.Sprintf("<!-- END: docker-docs:%s -->", markerName)
+		markerBegin = fmt.Sprintf("<!-- BEGIN: dock-docs:%s -->", markerName)
+		markerEnd = fmt.Sprintf("<!-- END: dock-docs:%s -->", markerName)
 	}
 
 	startIdx := strings.Index(fileContent, markerBegin)

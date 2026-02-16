@@ -1,4 +1,4 @@
-module github.com/northcutted/docker-docs
+module github.com/northcutted/dock-docs
 
 go 1.25.0
 

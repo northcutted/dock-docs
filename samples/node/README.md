@@ -1,6 +1,6 @@
 # Node.js Docker Analysis
 
-<!-- BEGIN: docker-docs:config -->
+<!-- BEGIN: dock-docs:config -->
 
 # 🐳 Docker Image Analysis: node:24
 ![Size](https://img.shields.io/static/v1?label=Size&message=1098.28+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=8&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=290+Vulns+%286+Crit%29&color=red) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.4%&color=green)
@@ -1637,11 +1637,11 @@
 | zlib1g-dev | 1:1.2.13.dfsg-1 |
 </details>
 
-<!-- END: docker-docs:config -->
+<!-- END: dock-docs:config -->
 
 ## Version Comparison
 
-<!-- BEGIN: docker-docs:comparison -->
+<!-- BEGIN: dock-docs:comparison -->
 
 ### 🏷️ Supported Tags
 
@@ -5422,4 +5422,4 @@
 
 </details>
 
-<!-- END: docker-docs:comparison -->
+<!-- END: dock-docs:comparison -->
