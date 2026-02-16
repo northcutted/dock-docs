@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/northcutted/dock-docs/actions/workflows/test.yml"><img src="https://github.com/northcutted/dock-docs/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
+  <a href="https://github.com/northcutted/dock-docs"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/northcutted/dock-docs/main/.github/badges/coverage.json" alt="Coverage"></a>
   <a href="https://github.com/northcutted/dock-docs/releases/latest"><img src="https://img.shields.io/github/v/release/northcutted/dock-docs?sort=semver" alt="Latest Release"></a>
   <a href="https://github.com/northcutted/dock-docs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/northcutted/dock-docs" alt="License"></a>
   <a href="https://goreportcard.com/report/github.com/northcutted/dock-docs"><img src="https://goreportcard.com/badge/github.com/northcutted/dock-docs" alt="Go Report Card"></a>
