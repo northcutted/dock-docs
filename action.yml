@@ -1,29 +1,61 @@
-name: 'Dock-Docker: Docker Documentation Generator'
-description: 'Automatically generate README documentation from Dockerfiles'
+name: 'Docker Documentation Generator'
+description: 'Automatically generate README documentation from Dockerfiles using dock-docs'
 author: 'northcutted'
+branding:
+  icon: 'file-text'
+  color: 'blue'
+
 inputs:
   version:
     description: 'Version of dock-docs to use (e.g., v1.0.0). Defaults to latest.'
     default: 'latest'
+    required: false
+  
+  # --- Configuration Inputs ---
   config:
-    description: 'Path to configuration file'
+    description: 'Path to configuration file. Enables Config Mode if present.'
     default: 'dock-docs.yaml'
+    required: false
   output:
-    description: 'Output file path'
+    description: 'Output file path.'
     default: 'README.md'
+    required: false
+  
+  # --- Boolean Flags ---
+  dry-run:
+    description: 'Print output to stdout instead of modifying files.'
+    default: 'false'
+    required: false
+  nomoji:
+    description: 'Disable emojis in the output.'
+    default: 'false'
+    required: false
+  ignore-errors:
+    description: 'Ignore analysis errors and continue generation.'
+    default: 'false'
+    required: false
+  verbose:
+    description: 'Enable verbose logging for debugging.'
+    default: 'false'
+    required: false
+
+  # --- Simple Mode Inputs (Mutually exclusive with config usually) ---
+  file:
+    description: 'Path to Dockerfile (Simple Mode only).'
+    required: false
+  image:
+    description: 'Docker image tag to analyze (Simple Mode only).'
+    required: false
 
 runs:
   using: "composite"
   steps:
-    # 1. Setup Environment
+    # 1. Setup Tool Cache
     - name: Setup Tool Cache
       shell: bash
       run: |
-        # Create a specific directory for our tools
         TOOL_DIR="$HOME/.dock-docs/bin"
         mkdir -p "$TOOL_DIR"
-        
-        # Add to PATH for this step and all future steps in the job
         echo "$TOOL_DIR" >> $GITHUB_PATH
 
     # 2. Install Dependencies (Syft, Grype, Dive)
@@ -32,14 +64,12 @@ runs:
       run: |
         TOOL_DIR="$HOME/.dock-docs/bin"
         
-        echo "::group::Installing Syft & Grype"
+        # Install Syft & Grype
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b "$TOOL_DIR"
         curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b "$TOOL_DIR"
-        echo "::endgroup::"
 
-        echo "::group::Installing Dive"
-        # Dive manual install (detecting arch for runner)
-        DIVE_VERSION="0.12.0"
+        # Install Dive (Architecture Detection)
+        DIVE_VERSION="0.13.1"
         if [ "${{ runner.arch }}" = "ARM64" ]; then
            DIVE_ARCH="linux_arm64"
         else
@@ -48,52 +78,75 @@ runs:
         
         curl -sL "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_${DIVE_ARCH}.tar.gz" \
           | tar xz -C "$TOOL_DIR" dive
-        echo "::endgroup::"
 
-    # 3. Install Your Tool (dock-docs)
+    # 3. Install dock-docs
     - name: Install dock-docs
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
         TOOL_DIR="$HOME/.dock-docs/bin"
-        echo "::group::Installing dock-docs"
         
-        # 1. Map GitHub Runner OS to GoReleaser OS (title case)
-        # Linux -> Linux, Darwin -> Darwin
-        OS_NAME=$(uname -s)
-
-        # 2. Map GitHub Runner Arch to GoReleaser Arch
-        # X64 -> x86_64, ARM64 -> arm64
+        # Map GitHub Runner OS/Arch to GoReleaser naming convention
+        OS_NAME=$(uname -s) # Linux, Darwin
         if [ "${{ runner.arch }}" = "ARM64" ]; then
           ARCH_NAME="arm64"
         else
           ARCH_NAME="x86_64"
         fi
 
-        # 3. Construct the asset pattern based on your goreleaser.yaml
-        # Pattern: dock-docs_Linux_x86_64.tar.gz
+        # Construct asset pattern (e.g., *_Linux_x86_64.tar.gz)
         ASSET_PATTERN="*_${OS_NAME}_${ARCH_NAME}.tar.gz"
         
-        echo "Downloading asset matching: $ASSET_PATTERN"
-
-        # 4. Use GH CLI to download
-        # If version is 'latest', we omit the tag arg to fetch latest
+        # Download via GH CLI
         if [ "${{ inputs.version }}" = "latest" ]; then
            gh release download --repo northcutted/dock-docs --pattern "$ASSET_PATTERN" --output "$TOOL_DIR/dock-docs.tar.gz" --clobber
         else
            gh release download ${{ inputs.version }} --repo northcutted/dock-docs --pattern "$ASSET_PATTERN" --output "$TOOL_DIR/dock-docs.tar.gz" --clobber
         fi
 
-        # 5. Extract and Cleanup
+        # Extract
         tar -xzf "$TOOL_DIR/dock-docs.tar.gz" -C "$TOOL_DIR" dock-docs
         rm "$TOOL_DIR/dock-docs.tar.gz"
         chmod +x "$TOOL_DIR/dock-docs"
-        
-        echo "::endgroup::"
 
-    # 4. Run the Tool
+    # 4. Run dock-docs with all flags
     - name: Run dock-docs
       shell: bash
       run: |
-        dock-docs --config "${{ inputs.config }}" --output "${{ inputs.output }}"
+        # Build arguments array dynamically
+        CMD_ARGS=()
+
+        # Always add output
+        CMD_ARGS+=("--output" "${{ inputs.output }}")
+
+        # Config Mode: Only add if input is not empty
+        if [ -n "${{ inputs.config }}" ]; then
+          CMD_ARGS+=("--config" "${{ inputs.config }}")
+        fi
+
+        # Simple Mode: File and Image (only if provided)
+        if [ -n "${{ inputs.file }}" ]; then
+          CMD_ARGS+=("--file" "${{ inputs.file }}")
+        fi
+        if [ -n "${{ inputs.image }}" ]; then
+          CMD_ARGS+=("--image" "${{ inputs.image }}")
+        fi
+
+        # Boolean Flags
+        if [ "${{ inputs.dry-run }}" == "true" ]; then
+          CMD_ARGS+=("--dry-run")
+        fi
+        if [ "${{ inputs.nomoji }}" == "true" ]; then
+          CMD_ARGS+=("--nomoji")
+        fi
+        if [ "${{ inputs.ignore-errors }}" == "true" ]; then
+          CMD_ARGS+=("--ignore-errors")
+        fi
+        if [ "${{ inputs.verbose }}" == "true" ]; then
+          CMD_ARGS+=("--verbose")
+        fi
+
+        # Execute
+        echo "Running: dock-docs ${CMD_ARGS[*]}"
+        dock-docs "${CMD_ARGS[@]}"
