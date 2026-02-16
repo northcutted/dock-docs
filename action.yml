@@ -10,7 +10,7 @@ inputs:
     default: 'README.md'
 runs:
   using: 'docker'
-  image: 'Dockerfile' # Uses the tool's own Dockerfile to run itself
+  image: 'docker://ghcr.io/northcutted/dock-docs:latest'
   args:
     - "--config"
     - ${{ inputs.config }}
