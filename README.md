@@ -1,4 +1,7 @@
-# Docker Documentation Generator
+# Dock-Docks - A powerful automated documentaion generator for docker images.
+<p align="center">
+  <img src="./assets/dock-docs-logo.png" alt="Logo Alt Text" >
+</p>
 
 A powerful CLI tool that automatically generates comprehensive Markdown documentation from your Dockerfiles. It goes beyond static analysis by building your image and running deep inspections using industry-standard tools like `syft`, `grype`, and `dive`.
 
