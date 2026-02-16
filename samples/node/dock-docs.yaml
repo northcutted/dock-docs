@@ -11,5 +11,3 @@ sections:
     images:
       - "node:22-alpine"
       - "node:24-alpine"
-      - "node:22"
-      - "node:24"
