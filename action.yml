@@ -15,6 +15,7 @@ runs:
       shell: bash
       run: |
         docker run --rm \
+          --user $(id -u):$(id -g) \
           -v /var/run/docker.sock:/var/run/docker.sock \
           -v ${{ github.workspace }}:/github/workspace \
           -w /github/workspace \
