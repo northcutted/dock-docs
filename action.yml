@@ -14,8 +14,12 @@ runs:
     - name: Run dock-docs
       shell: bash
       run: |
+        # Get the group ID of the docker socket to allow access
+        DOCKER_GID=$(stat -c '%g' /var/run/docker.sock 2>/dev/null || echo "0")
+        
         docker run --rm \
           --user $(id -u):$(id -g) \
+          --group-add $DOCKER_GID \
           -v /var/run/docker.sock:/var/run/docker.sock \
           -v ${{ github.workspace }}:/github/workspace \
           -w /github/workspace \
