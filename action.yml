@@ -9,10 +9,15 @@ inputs:
     description: 'Output file path'
     default: 'README.md'
 runs:
-  using: 'docker'
-  image: 'docker://ghcr.io/northcutted/dock-docs:latest'
-  args:
-    - "--config"
-    - ${{ inputs.config }}
-    - "--output"
-    - ${{ inputs.output }}
+  using: 'composite'
+  steps:
+    - name: Run dock-docs
+      shell: bash
+      run: |
+        docker run --rm \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v ${{ github.workspace }}:/github/workspace \
+          -w /github/workspace \
+          ghcr.io/northcutted/dock-docs:latest \
+          --config ${{ inputs.config }} \
+          --output ${{ inputs.output }}
