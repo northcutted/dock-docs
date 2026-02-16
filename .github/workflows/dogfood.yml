@@ -1,4 +1,4 @@
-name: Dogfooding
+name: Dogfooding - Use dock-docs to generate sample documentation
 
 on:
   workflow_dispatch:
@@ -22,18 +22,21 @@ jobs:
         with:
           config: samples/go/dock-docs.yaml
           output: samples/go/README.md
+          verbose: true
 
       - name: Generate Node Sample Docs
         uses: ./
         with:
           config: samples/node/dock-docs.yaml
           output: samples/node/README.md
+          verbose: true
 
       - name: Generate Python Sample Docs
         uses: ./
         with:
           config: samples/python/dock-docs.yaml
           output: samples/python/README.md
+          verbose: true
 
       - name: Check for changes
         run: |
