@@ -37,7 +37,10 @@ func AnalyzeMatrix(images []string, runners []Runner) ([]*ImageStats, error) {
 				// For the whole image?
 				// Let's return a partial stat object with error info if possible, or just log and return nil stats.
 				fmt.Printf("Matrix Analysis Failed for %s: %v\n", img, err)
-				return nil // Don't fail the group
+				if stats != nil {
+					results[i] = stats
+				}
+				return nil // Don't fail the group, partial success allowed in matrix unless strictly enforced elsewhere
 			}
 			results[i] = stats
 			return nil
@@ -103,8 +106,10 @@ func AnalyzeImage(image string, runners []Runner) (*ImageStats, error) {
 
 	// Collect errors if any (logging or returning partial success?)
 	// Spec implies "log a warning but do not fail".
+	var errs []error
 	for err := range errChan {
 		fmt.Printf("Analysis Warning: %v\n", err)
+		errs = append(errs, err)
 	}
 
 	// Final sort of vulnerabilities after merge
@@ -123,6 +128,10 @@ func AnalyzeImage(image string, runners []Runner) (*ImageStats, error) {
 		}
 		return finalStats.Vulnerabilities[i].ID < finalStats.Vulnerabilities[j].ID
 	})
+
+	if len(errs) > 0 {
+		return finalStats, fmt.Errorf("%d runners failed", len(errs))
+	}
 
 	return finalStats, nil
 }

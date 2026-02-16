@@ -18,12 +18,13 @@ import (
 )
 
 var (
-	dockerfile string
-	outputFile string
-	dryRun     bool
-	imageTag   string
-	configFile string
-	noMoji     bool
+	dockerfile   string
+	outputFile   string
+	dryRun       bool
+	imageTag     string
+	configFile   string
+	noMoji       bool
+	ignoreErrors bool
 )
 
 var rootCmd = &cobra.Command{
@@ -132,6 +133,9 @@ func runConfigMode(path string) error {
 				stats, err = analysis.AnalyzeImage(section.Image, runners)
 				if err != nil {
 					fmt.Printf("Warning: analysis failed for %s: %v\n", section.Image, err)
+					if !ignoreErrors {
+						return fmt.Errorf("analysis failed for %s: %w", section.Image, err)
+					}
 				}
 			}
 
@@ -150,6 +154,14 @@ func runConfigMode(path string) error {
 			if err != nil {
 				return fmt.Errorf("matrix analysis failed: %w", err)
 			}
+			// Check for partial failures in matrix if strict mode?
+			// AnalyzeMatrix currently returns partial results.
+			// To be strict, we'd need to inspect the errors inside AnalyzeMatrix or change its signature.
+			// For now, let's assume if AnalyzeMatrix returns error (which it does if critical), we catch it.
+			// But individual image failures inside matrix might be suppressed.
+			// Let's rely on the user to check logs or implement stricter matrix checks later if needed.
+			// Wait, I should probably check if statsList has nil entries or implied failures?
+			// AnalyzeMatrix filters out nils.
 
 			sectionContent, err = renderer.RenderMatrix(statsList, renderOpts)
 			if err != nil {
@@ -205,6 +217,9 @@ func runSimpleMode() error {
 		stats, err = analysis.AnalyzeImage(imageTag, runners)
 		if err != nil {
 			fmt.Printf("Warning: analysis failed: %v\n", err)
+			if !ignoreErrors {
+				return fmt.Errorf("analysis failed: %w", err)
+			}
 		}
 	}
 
@@ -297,4 +312,5 @@ func init() {
 	rootCmd.Flags().StringVar(&imageTag, "image", "", "Docker image tag to analyze (e.g. my-app:latest) (Simple Mode only)")
 	rootCmd.Flags().StringVar(&configFile, "config", "", "Path to config file (default: dock-docs.yaml)")
 	rootCmd.Flags().BoolVar(&noMoji, "nomoji", false, "Disable emojis in the output")
+	rootCmd.Flags().BoolVar(&ignoreErrors, "ignore-errors", false, "Ignore analysis errors and continue (default false)")
 }

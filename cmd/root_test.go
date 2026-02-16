@@ -143,15 +143,13 @@ func TestExecute_NoMarkers_Stdout(t *testing.T) {
 	}
 }
 
-func TestExecute_WithImageFlag(t *testing.T) {
-	// Smoke test for --image flag
-	// Since we can't guarantee 'docker' or other tools are present/mocked easily here,
-	// we just ensure it runs and doesn't crash.
-
+func TestExecute_WithImageFlag_FailsWithoutIgnore(t *testing.T) {
+	// Smoke test for --image flag failing without ignore-errors
 	dockerfile = ""
 	outputFile = ""
 	dryRun = false
 	imageTag = ""
+	ignoreErrors = false
 
 	tmpDir := t.TempDir()
 	dockerfile := filepath.Join(tmpDir, "Dockerfile")
@@ -162,8 +160,37 @@ func TestExecute_WithImageFlag(t *testing.T) {
 	rootCmd.SetArgs([]string{"--file", dockerfile, "--image", "fake-image:latest", "--dry-run"})
 
 	output := captureOutput(func() {
+		if err := rootCmd.Execute(); err == nil {
+			t.Fatal("Execute expected to fail, but it succeeded")
+		}
+	})
+
+	// It should print warning about analysis failure
+	if !strings.Contains(output, "Warning: analysis failed") {
+		t.Errorf("expected analysis warning, got:\n%s", output)
+	}
+}
+
+func TestExecute_WithImageFlag_IgnoresErrors(t *testing.T) {
+	// Smoke test for --image flag with --ignore-errors
+	dockerfile = ""
+	outputFile = ""
+	dryRun = false
+	imageTag = ""
+	ignoreErrors = false
+
+	tmpDir := t.TempDir()
+	dockerfile := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(dockerfile, []byte("FROM alpine"), 0644); err != nil {
+		t.Fatalf("failed to write Dockerfile: %v", err)
+	}
+
+	// Add --ignore-errors flag
+	rootCmd.SetArgs([]string{"--file", dockerfile, "--image", "fake-image:latest", "--dry-run", "--ignore-errors"})
+
+	output := captureOutput(func() {
 		if err := rootCmd.Execute(); err != nil {
-			t.Fatalf("Execute failed: %v", err)
+			t.Fatalf("Execute failed despite ignore-errors: %v", err)
 		}
 	})
 
@@ -172,7 +199,7 @@ func TestExecute_WithImageFlag(t *testing.T) {
 		t.Errorf("expected analysis log, got:\n%s", output)
 	}
 
-	// And standard table
+	// And standard table (because it proceeds to render even if analysis fails)
 	if !strings.Contains(output, "Configuration") {
 		t.Errorf("expected standard table, got:\n%s", output)
 	}

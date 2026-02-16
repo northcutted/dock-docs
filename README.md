@@ -85,6 +85,21 @@ If no `dock-docs.yaml` is found, the tool runs in **Simple Mode**. This mode is 
 ```markdown
 <!-- BEGIN: dock-docs -->
 
+# 🐳 Docker Image Analysis: Dockerfile
+
+## ⚙️ Configuration
+### Environment Variables
+| Name | Description | Default | Required |
+|------|-------------|---------|:--------:|
+| `PATH` |  | `/usr/local/bin:${PATH}` | ❌ |
+### Build Arguments
+| Name | Description | Default | Required |
+|------|-------------|---------|:--------:|
+| `TARGETARCH` |  | `` | ❌ |
+| `DIVE_VERSION=0.13.1` |  | `` | ❌ |
+| `DOCKER_VERSION=29.2.1` |  | `` | ❌ |
+| `TARGETPLATFORM` |  | `` | ❌ |
+
 <!-- END: dock-docs -->
 ```
 
