@@ -54,7 +54,7 @@ changelog:
 dockers_v2:
   - images:
     - "ghcr.io/northcutted/docker-docs"
-    dockerfile: Dockerfile.release
+    dockerfile: Dockerfile
     tags:
       - "v{{ .Version }}"
       - "{{ if .IsNightly }}nightly{{ end }}"
