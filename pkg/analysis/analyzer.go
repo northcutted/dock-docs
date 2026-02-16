@@ -6,21 +6,23 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/northcutted/dock-docs/pkg/runner"
+	"github.com/northcutted/dock-docs/pkg/types"
 	"golang.org/x/sync/errgroup"
 )
 
 type Runner interface {
 	Name() string
 	IsAvailable() bool
-	Run(image string, verbose bool) (*ImageStats, error)
+	Run(image string, verbose bool) (*types.ImageStats, error)
 }
 
 // AnalyzeMatrix runs analysis on multiple images in parallel.
-func AnalyzeMatrix(images []string, runners []Runner, verbose bool) ([]*ImageStats, error) {
+func AnalyzeMatrix(images []string, runners []Runner, verbose bool) ([]*types.ImageStats, error) {
 	var g errgroup.Group
 
 	// Create a slice to hold results
-	results := make([]*ImageStats, len(images))
+	results := make([]*types.ImageStats, len(images))
 
 	for i, img := range images {
 		// Capture loop variables
@@ -45,7 +47,7 @@ func AnalyzeMatrix(images []string, runners []Runner, verbose bool) ([]*ImageSta
 	}
 
 	// Filter out nils if any failed
-	var validResults []*ImageStats
+	var validResults []*types.ImageStats
 	for _, res := range results {
 		if res != nil {
 			validResults = append(validResults, res)
@@ -57,16 +59,23 @@ func AnalyzeMatrix(images []string, runners []Runner, verbose bool) ([]*ImageSta
 
 // AnalyzeImage runs all available runners and merges results.
 // Runners are injected to allow easy testing/mocking or registration.
-func AnalyzeImage(image string, runners []Runner, verbose bool) (*ImageStats, error) {
+var ensureImage = runner.EnsureImage
+
+func AnalyzeImage(image string, runners []Runner, verbose bool) (*types.ImageStats, error) {
 	if image == "" {
 		return nil, fmt.Errorf("image tag is required")
 	}
 
-	finalStats := &ImageStats{
+	// Ensure the image exists locally before analysis
+	if err := ensureImage(image, verbose); err != nil {
+		return nil, fmt.Errorf("failed to ensure image %s: %w", image, err)
+	}
+
+	finalStats := &types.ImageStats{
 		ImageTag:        image,
 		VulnSummary:     make(map[string]int),
-		Packages:        make([]PackageSummary, 0),
-		Vulnerabilities: make([]Vulnerability, 0),
+		Packages:        make([]types.PackageSummary, 0),
+		Vulnerabilities: make([]types.Vulnerability, 0),
 	}
 
 	var wg sync.WaitGroup
@@ -135,7 +144,7 @@ func AnalyzeImage(image string, runners []Runner, verbose bool) (*ImageStats, er
 	return finalStats, nil
 }
 
-func mergeStats(dest, src *ImageStats) {
+func mergeStats(dest, src *types.ImageStats) {
 	if src == nil {
 		return
 	}

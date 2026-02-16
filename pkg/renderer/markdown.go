@@ -5,7 +5,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/types"
 	"github.com/northcutted/dock-docs/pkg/parser"
 )
 
@@ -16,7 +16,7 @@ type RenderOptions struct {
 // ReportContext holds all data passed to the template
 type ReportContext struct {
 	Doc      *parser.Documentation
-	Stats    *analysis.ImageStats
+	Stats    *types.ImageStats
 	ImageTag string
 	Options  RenderOptions
 }
@@ -165,7 +165,7 @@ const defaultTemplate = `
 `
 
 // Render generates the Markdown table from documentation items.
-func Render(doc *parser.Documentation, stats *analysis.ImageStats, opts RenderOptions) (string, error) {
+func Render(doc *parser.Documentation, stats *types.ImageStats, opts RenderOptions) (string, error) {
 	tmpl, err := template.New("dock-docs").Funcs(template.FuncMap{
 		"index": func(m map[string]int, k string) int {
 			if v, ok := m[k]; ok {
@@ -203,7 +203,7 @@ func Render(doc *parser.Documentation, stats *analysis.ImageStats, opts RenderOp
 }
 
 type MatrixContext struct {
-	Matrix  []*analysis.ImageStats
+	Matrix  []*types.ImageStats
 	Options RenderOptions
 }
 
@@ -263,7 +263,7 @@ const matrixTemplate = `
 `
 
 // RenderMatrix generates the comparison table for multiple images.
-func RenderMatrix(stats []*analysis.ImageStats, opts RenderOptions) (string, error) {
+func RenderMatrix(stats []*types.ImageStats, opts RenderOptions) (string, error) {
 	tmpl, err := template.New("dock-docs-matrix").Funcs(template.FuncMap{
 		"index": func(m map[string]int, k string) int {
 			if v, ok := m[k]; ok {

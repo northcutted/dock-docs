@@ -8,14 +8,14 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/types"
 )
 
 // ToolRunner defines the interface for external tool integration
 type ToolRunner interface {
 	Name() string
 	IsAvailable() bool
-	Run(image string, verbose bool) (*analysis.ImageStats, error)
+	Run(image string, verbose bool) (*types.ImageStats, error)
 }
 
 // runCommand executes a command and handles verbose logging and error reporting
@@ -46,6 +46,26 @@ func runCommand(cmd *exec.Cmd, verbose bool) ([]byte, error) {
 	return output, nil
 }
 
+// EnsureImage checks if an image exists locally, and pulls it if not.
+func EnsureImage(image string, verbose bool) error {
+	// Check if image exists
+	checkCmd := exec.Command("docker", "inspect", "--type=image", image)
+	if err := checkCmd.Run(); err == nil {
+		if verbose {
+			fmt.Printf("[DEBUG] Image %s found locally\n", image)
+		}
+		return nil
+	}
+
+	// Image not found, pull it
+	fmt.Printf("Pulling image: %s ...\n", image)
+	pullCmd := exec.Command("docker", "pull", image)
+	if _, err := runCommand(pullCmd, verbose); err != nil {
+		return fmt.Errorf("failed to pull image %s: %w", image, err)
+	}
+	return nil
+}
+
 // RuntimeRunner runs 'docker inspect' or 'podman inspect'
 type RuntimeRunner struct {
 	binary string
@@ -72,7 +92,7 @@ func (r *RuntimeRunner) IsAvailable() bool {
 	return false
 }
 
-func (r *RuntimeRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
+func (r *RuntimeRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	// Ensure binary is set if IsAvailable wasn't called (though it should be)
 	if r.binary == "" {
 		if !r.IsAvailable() {
@@ -104,7 +124,7 @@ func (r *RuntimeRunner) Run(image string, verbose bool) (*analysis.ImageStats, e
 	}
 
 	data := inspect[0]
-	stats := &analysis.ImageStats{
+	stats := &types.ImageStats{
 		ImageTag:     image,
 		Architecture: data.Architecture,
 		OS:           data.Os,
@@ -136,7 +156,7 @@ func (r *ManifestRunner) IsAvailable() bool {
 	return false
 }
 
-func (r *ManifestRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
+func (r *ManifestRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	if r.binary == "" {
 		if !r.IsAvailable() {
 			return nil, fmt.Errorf("no container runtime found")
@@ -184,7 +204,7 @@ func (r *ManifestRunner) Run(image string, verbose bool) (*analysis.ImageStats, 
 			}
 		}
 		sort.Strings(archs)
-		return &analysis.ImageStats{
+		return &types.ImageStats{
 			ImageTag:               image,
 			SupportedArchitectures: archs,
 		}, nil
@@ -199,7 +219,7 @@ func (r *ManifestRunner) Run(image string, verbose bool) (*analysis.ImageStats, 
 	// or it's a single image. We return empty stats (not error) to avoid noise.
 	// Wait, if we return nil, analyzer might log warning.
 	// Let's return empty valid stats so it merges safely.
-	return &analysis.ImageStats{ImageTag: image}, nil
+	return &types.ImageStats{ImageTag: image}, nil
 }
 
 // SyftRunner runs 'syft <image> -o json'
@@ -212,7 +232,7 @@ func (r *SyftRunner) IsAvailable() bool {
 	return err == nil
 }
 
-func (r *SyftRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
+func (r *SyftRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	cmd := exec.Command("syft", image, "-o", "json")
 	output, err := runCommand(cmd, verbose)
 	if err != nil {
@@ -235,9 +255,9 @@ func (r *SyftRunner) Run(image string, verbose bool) (*analysis.ImageStats, erro
 		return nil, fmt.Errorf("failed to unmarshal syft output: %w", err)
 	}
 
-	stats := &analysis.ImageStats{
+	stats := &types.ImageStats{
 		TotalPackages: len(syftOutput.Artifacts),
-		Packages:      make([]analysis.PackageSummary, 0),
+		Packages:      make([]types.PackageSummary, 0),
 	}
 
 	if syftOutput.Distro.Name != "" {
@@ -255,7 +275,7 @@ func (r *SyftRunner) Run(image string, verbose bool) (*analysis.ImageStats, erro
 			continue
 		}
 		seen[key] = true
-		stats.Packages = append(stats.Packages, analysis.PackageSummary{
+		stats.Packages = append(stats.Packages, types.PackageSummary{
 			Name:    artifact.Name,
 			Version: artifact.Version,
 		})
@@ -285,7 +305,7 @@ func (r *GrypeRunner) IsAvailable() bool {
 	return err == nil
 }
 
-func (r *GrypeRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
+func (r *GrypeRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	cmd := exec.Command("grype", image, "-o", "json")
 	output, err := runCommand(cmd, verbose)
 	if err != nil {
@@ -309,16 +329,16 @@ func (r *GrypeRunner) Run(image string, verbose bool) (*analysis.ImageStats, err
 		return nil, fmt.Errorf("failed to unmarshal grype output: %w", err)
 	}
 
-	stats := &analysis.ImageStats{
+	stats := &types.ImageStats{
 		VulnSummary:     make(map[string]int),
-		Vulnerabilities: make([]analysis.Vulnerability, 0),
+		Vulnerabilities: make([]types.Vulnerability, 0),
 	}
 
 	for _, match := range grypeOutput.Matches {
 		sev := match.Vulnerability.Severity
 		stats.VulnSummary[sev]++
 
-		stats.Vulnerabilities = append(stats.Vulnerabilities, analysis.Vulnerability{
+		stats.Vulnerabilities = append(stats.Vulnerabilities, types.Vulnerability{
 			ID:       match.Vulnerability.ID,
 			Severity: sev,
 			Package:  match.Artifact.Name,
@@ -359,7 +379,7 @@ func (r *DiveRunner) IsAvailable() bool {
 	return err == nil
 }
 
-func (r *DiveRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
+func (r *DiveRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	// Create a temp file for output
 	tmpFile, err := os.CreateTemp("", "dive-output-*.json")
 	if err != nil {
@@ -458,7 +478,7 @@ func (r *DiveRunner) Run(image string, verbose bool) (*analysis.ImageStats, erro
 		return nil, fmt.Errorf("failed to unmarshal dive output: %w", err)
 	}
 
-	stats := &analysis.ImageStats{
+	stats := &types.ImageStats{
 		Efficiency: diveOutput.Image.EfficiencyScore * 100, // Convert to percentage if needed? Spec says 0-100. Dive usually gives 0.95 etc? Let's check or assume 0-1.
 		// Wait, spec example says "98%". If Dive gives 0.98, verify.
 		// Assuming Dive gives fractional 0.0-1.0 or percentage.

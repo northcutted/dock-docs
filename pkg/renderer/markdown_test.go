@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/types"
 	"github.com/northcutted/dock-docs/pkg/parser"
 )
 
@@ -35,7 +35,7 @@ func TestRender(t *testing.T) {
 	}
 
 	// Test Case 2: With Stats
-	stats := &analysis.ImageStats{
+	stats := &types.ImageStats{
 		ImageTag:     "test:latest",
 		SizeMB:       "50 MB",
 		Architecture: "amd64",
@@ -44,12 +44,12 @@ func TestRender(t *testing.T) {
 		WastedBytes:  "2 MB",
 		TotalLayers:  10,
 		VulnSummary:  map[string]int{"Critical": 1, "High": 2},
-		Vulnerabilities: []analysis.Vulnerability{
+		Vulnerabilities: []types.Vulnerability{
 			{ID: "CVE-2023-1234", Severity: "Critical", Package: "openssl", Version: "1.1.1"},
 			{ID: "CVE-2023-5678", Severity: "High", Package: "curl", Version: "7.68"},
 		},
 		TotalPackages: 5,
-		Packages: []analysis.PackageSummary{
+		Packages: []types.PackageSummary{
 			{Name: "python", Version: "3.9"},
 		},
 	}

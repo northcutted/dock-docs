@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"github.com/northcutted/dock-docs/pkg/types"
 	"errors"
 	"testing"
 )
@@ -10,7 +11,7 @@ type MockRunner struct {
 	name        string
 	available   bool
 	shouldFail  bool
-	returnStats *ImageStats
+	returnStats *types.ImageStats
 }
 
 func (m *MockRunner) Name() string {
@@ -21,13 +22,13 @@ func (m *MockRunner) IsAvailable() bool {
 	return m.available
 }
 
-func (m *MockRunner) Run(image string, verbose bool) (*ImageStats, error) {
+func (m *MockRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	if m.shouldFail {
 		return nil, errors.New("mock runner failed")
 	}
 	// Return a copy to avoid race conditions if needed, though mostly read-only here
 	if m.returnStats == nil {
-		return &ImageStats{ImageTag: image}, nil
+		return &types.ImageStats{ImageTag: image}, nil
 	}
 	stats := *m.returnStats
 	stats.ImageTag = image // Ensure tag matches input
@@ -35,7 +36,10 @@ func (m *MockRunner) Run(image string, verbose bool) (*ImageStats, error) {
 }
 
 func TestAnalyzeMatrix(t *testing.T) {
-	mockStats := &ImageStats{
+	oldEnsureImage := ensureImage
+	defer func() { ensureImage = oldEnsureImage }()
+	ensureImage = func(image string, verbose bool) error { return nil }
+	mockStats := &types.ImageStats{
 		SizeMB:     "100MB",
 		Efficiency: 95.0,
 	}
@@ -68,6 +72,9 @@ func TestAnalyzeMatrix(t *testing.T) {
 }
 
 func TestAnalyzeMatrix_PartialFailure(t *testing.T) {
+	oldEnsureImage := ensureImage
+	defer func() { ensureImage = oldEnsureImage }()
+	ensureImage = func(image string, verbose bool) error { return nil }
 	// Test that if one image analysis fails, others still return (or at least function doesn't crash)
 	// The current implementation of AnalyzeMatrix prints error and returns nil for that slot,
 	// then filters out nils.
@@ -112,9 +119,9 @@ type SmartMockRunner struct {
 
 func (m *SmartMockRunner) Name() string      { return "SmartMock" }
 func (m *SmartMockRunner) IsAvailable() bool { return true }
-func (m *SmartMockRunner) Run(image string, verbose bool) (*ImageStats, error) {
+func (m *SmartMockRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	if image == m.failOnImage {
 		return nil, errors.New("simulated failure")
 	}
-	return &ImageStats{ImageTag: image, SizeMB: "10MB"}, nil
+	return &types.ImageStats{ImageTag: image, SizeMB: "10MB"}, nil
 }

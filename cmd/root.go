@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/types"
 	"github.com/northcutted/dock-docs/pkg/config"
 	"github.com/northcutted/dock-docs/pkg/injector"
 	"github.com/northcutted/dock-docs/pkg/parser"
@@ -128,7 +129,7 @@ func runConfigMode(path string) error {
 			}
 
 			// Analyze Image (optional)
-			var stats *analysis.ImageStats
+			var stats *types.ImageStats
 			if section.Image != "" {
 				fmt.Printf("Analyzing image (config): %s ...\n", section.Image)
 				stats, err = analysis.AnalyzeImage(section.Image, runners, verbose)
@@ -205,7 +206,7 @@ func runSimpleMode() error {
 	}
 
 	// 2. Dynamic Analysis (if requested)
-	var stats *analysis.ImageStats
+	var stats *types.ImageStats
 	if imageTag != "" {
 		fmt.Printf("Analyzing image: %s ...\n", imageTag)
 		runners := []analysis.Runner{

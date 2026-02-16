@@ -4,11 +4,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/northcutted/dock-docs/pkg/analysis"
+	"github.com/northcutted/dock-docs/pkg/types"
 )
 
 func TestRenderMatrix(t *testing.T) {
-	matrixStats := []*analysis.ImageStats{
+	matrixStats := []*types.ImageStats{
 		{
 			ImageTag:     "app:v1",
 			SizeMB:       "100 MB",
@@ -18,11 +18,11 @@ func TestRenderMatrix(t *testing.T) {
 			WastedBytes:  "10 MB",
 			TotalLayers:  5,
 			VulnSummary:  map[string]int{"Critical": 1, "High": 0},
-			Vulnerabilities: []analysis.Vulnerability{
+			Vulnerabilities: []types.Vulnerability{
 				{ID: "CVE-2023-1111", Severity: "Critical", Package: "libssl", Version: "1.0"},
 			},
 			TotalPackages: 2,
-			Packages: []analysis.PackageSummary{
+			Packages: []types.PackageSummary{
 				{Name: "bash", Version: "5.0"},
 			},
 		},
@@ -35,11 +35,11 @@ func TestRenderMatrix(t *testing.T) {
 			WastedBytes:  "2 MB",
 			TotalLayers:  4,
 			VulnSummary:  map[string]int{"Critical": 0, "High": 1},
-			Vulnerabilities: []analysis.Vulnerability{
+			Vulnerabilities: []types.Vulnerability{
 				{ID: "CVE-2023-2222", Severity: "High", Package: "curl", Version: "7.88"},
 			},
 			TotalPackages: 3,
-			Packages: []analysis.PackageSummary{
+			Packages: []types.PackageSummary{
 				{Name: "bash", Version: "5.2"},
 			},
 			SupportedArchitectures: []string{"linux/amd64", "linux/arm64"},
