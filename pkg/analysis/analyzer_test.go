@@ -21,11 +21,14 @@ func (m *MockRunner) IsAvailable() bool {
 	return m.available
 }
 
-func (m *MockRunner) Run(image string) (*ImageStats, error) {
+func (m *MockRunner) Run(image string, verbose bool) (*ImageStats, error) {
 	if m.shouldFail {
 		return nil, errors.New("mock runner failed")
 	}
 	// Return a copy to avoid race conditions if needed, though mostly read-only here
+	if m.returnStats == nil {
+		return &ImageStats{ImageTag: image}, nil
+	}
 	stats := *m.returnStats
 	stats.ImageTag = image // Ensure tag matches input
 	return &stats, nil
@@ -46,7 +49,7 @@ func TestAnalyzeMatrix(t *testing.T) {
 	images := []string{"img1:latest", "img2:latest"}
 	runners := []Runner{runner}
 
-	results, err := AnalyzeMatrix(images, runners)
+	results, err := AnalyzeMatrix(images, runners, false)
 	if err != nil {
 		t.Fatalf("AnalyzeMatrix failed: %v", err)
 	}
@@ -76,12 +79,18 @@ func TestAnalyzeMatrix_PartialFailure(t *testing.T) {
 	images := []string{"good:image", "bad:image", "good:image2"}
 	runners := []Runner{smartRunner}
 
-	results, err := AnalyzeMatrix(images, runners)
+	results, err := AnalyzeMatrix(images, runners, false)
 	if err != nil {
 		t.Fatalf("AnalyzeMatrix failed: %v", err)
 	}
 
 	// Should have 3 results, even if one failed (it returns partial/empty stats)
+	// Wait, check implementation: if AnalyzeImage fails, it returns nil stats but we capture error.
+	// In AnalyzeMatrix, if err != nil, we check if stats != nil.
+	// But AnalyzeImage returns partial stats even on failure IF it collected partial results?
+	// Actually, AnalyzeImage returns "finalStats" even if errs > 0.
+	// So results should be 3 valid stats objects.
+
 	if len(results) != 3 {
 		t.Errorf("Expected 3 results, got %d", len(results))
 	}
@@ -103,7 +112,7 @@ type SmartMockRunner struct {
 
 func (m *SmartMockRunner) Name() string      { return "SmartMock" }
 func (m *SmartMockRunner) IsAvailable() bool { return true }
-func (m *SmartMockRunner) Run(image string) (*ImageStats, error) {
+func (m *SmartMockRunner) Run(image string, verbose bool) (*ImageStats, error) {
 	if image == m.failOnImage {
 		return nil, errors.New("simulated failure")
 	}

@@ -11,11 +11,11 @@ import (
 type Runner interface {
 	Name() string
 	IsAvailable() bool
-	Run(image string) (*ImageStats, error)
+	Run(image string, verbose bool) (*ImageStats, error)
 }
 
 // AnalyzeMatrix runs analysis on multiple images in parallel.
-func AnalyzeMatrix(images []string, runners []Runner) ([]*ImageStats, error) {
+func AnalyzeMatrix(images []string, runners []Runner, verbose bool) ([]*ImageStats, error) {
 	var g errgroup.Group
 
 	// Create a slice to hold results, mutex for safe append?
@@ -29,7 +29,7 @@ func AnalyzeMatrix(images []string, runners []Runner) ([]*ImageStats, error) {
 		g.Go(func() error {
 			// Run analysis for this image
 			// Note: AnalyzeImage uses the runners. Since runners are stateless (mostly), this is fine.
-			stats, err := AnalyzeImage(img, runners)
+			stats, err := AnalyzeImage(img, runners, verbose)
 			if err != nil {
 				// If one fails, we probably shouldn't fail the whole batch, just log error?
 				// But errgroup cancels on first error.
@@ -64,7 +64,7 @@ func AnalyzeMatrix(images []string, runners []Runner) ([]*ImageStats, error) {
 
 // AnalyzeImage runs all available runners and merges results.
 // Runners are injected to allow easy testing/mocking or registration.
-func AnalyzeImage(image string, runners []Runner) (*ImageStats, error) {
+func AnalyzeImage(image string, runners []Runner, verbose bool) (*ImageStats, error) {
 	if image == "" {
 		return nil, fmt.Errorf("image tag is required")
 	}
@@ -82,14 +82,16 @@ func AnalyzeImage(image string, runners []Runner) (*ImageStats, error) {
 
 	for _, r := range runners {
 		if !r.IsAvailable() {
-			fmt.Printf("Warning: %s is not installed or not in PATH. Skipping.\n", r.Name())
+			if verbose {
+				fmt.Printf("Warning: %s is not installed or not in PATH. Skipping.\n", r.Name())
+			}
 			continue
 		}
 
 		wg.Add(1)
 		go func(runner Runner) {
 			defer wg.Done()
-			stats, err := runner.Run(image)
+			stats, err := runner.Run(image, verbose)
 			if err != nil {
 				errChan <- fmt.Errorf("%s failed: %w", runner.Name(), err)
 				return

@@ -25,6 +25,7 @@ var (
 	configFile   string
 	noMoji       bool
 	ignoreErrors bool
+	verbose      bool
 )
 
 var rootCmd = &cobra.Command{
@@ -130,7 +131,7 @@ func runConfigMode(path string) error {
 			var stats *analysis.ImageStats
 			if section.Image != "" {
 				fmt.Printf("Analyzing image (config): %s ...\n", section.Image)
-				stats, err = analysis.AnalyzeImage(section.Image, runners)
+				stats, err = analysis.AnalyzeImage(section.Image, runners, verbose)
 				if err != nil {
 					fmt.Printf("Warning: analysis failed for %s: %v\n", section.Image, err)
 					if !ignoreErrors {
@@ -150,7 +151,7 @@ func runConfigMode(path string) error {
 				continue
 			}
 			fmt.Printf("Analyzing matrix: %v ...\n", section.Images)
-			statsList, err := analysis.AnalyzeMatrix(section.Images, runners)
+			statsList, err := analysis.AnalyzeMatrix(section.Images, runners, verbose)
 			if err != nil {
 				return fmt.Errorf("matrix analysis failed: %w", err)
 			}
@@ -214,7 +215,7 @@ func runSimpleMode() error {
 			&runner.GrypeRunner{},
 			&runner.DiveRunner{},
 		}
-		stats, err = analysis.AnalyzeImage(imageTag, runners)
+		stats, err = analysis.AnalyzeImage(imageTag, runners, verbose)
 		if err != nil {
 			fmt.Printf("Warning: analysis failed: %v\n", err)
 			if !ignoreErrors {
@@ -313,4 +314,5 @@ func init() {
 	rootCmd.Flags().StringVar(&configFile, "config", "", "Path to config file (default: dock-docs.yaml)")
 	rootCmd.Flags().BoolVar(&noMoji, "nomoji", false, "Disable emojis in the output")
 	rootCmd.Flags().BoolVar(&ignoreErrors, "ignore-errors", false, "Ignore analysis errors and continue (default false)")
+	rootCmd.Flags().BoolVar(&verbose, "verbose", false, "Enable verbose logging")
 }

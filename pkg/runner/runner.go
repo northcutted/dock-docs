@@ -15,7 +15,35 @@ import (
 type ToolRunner interface {
 	Name() string
 	IsAvailable() bool
-	Run(image string) (*analysis.ImageStats, error)
+	Run(image string, verbose bool) (*analysis.ImageStats, error)
+}
+
+// runCommand executes a command and handles verbose logging and error reporting
+func runCommand(cmd *exec.Cmd, verbose bool) ([]byte, error) {
+	if verbose {
+		fmt.Fprintf(os.Stderr, "[DEBUG] Running: %s\n", cmd.String())
+	}
+
+	// Capture stdout and stderr separately if possible, or combined?
+	// exec.Command.Output() captures stdout. Stderr is in ExitError.
+	// But sometimes tools write useful info to stderr even on success.
+	// Let's capture both if we can, but Output() is easiest for data.
+
+	output, err := cmd.Output()
+	if err != nil {
+		var stderr []byte
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			stderr = exitErr.Stderr
+		}
+		return nil, fmt.Errorf("command failed: %s\nStderr: %s", err, string(stderr))
+	}
+
+	if verbose {
+		// Print a snippet or full output? Full is safer for debug.
+		fmt.Fprintf(os.Stderr, "[DEBUG] Output (%d bytes):\n%s\n", len(output), string(output))
+	}
+
+	return output, nil
 }
 
 // RuntimeRunner runs 'docker inspect' or 'podman inspect'
@@ -44,7 +72,7 @@ func (r *RuntimeRunner) IsAvailable() bool {
 	return false
 }
 
-func (r *RuntimeRunner) Run(image string) (*analysis.ImageStats, error) {
+func (r *RuntimeRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
 	// Ensure binary is set if IsAvailable wasn't called (though it should be)
 	if r.binary == "" {
 		if !r.IsAvailable() {
@@ -53,7 +81,7 @@ func (r *RuntimeRunner) Run(image string) (*analysis.ImageStats, error) {
 	}
 
 	cmd := exec.Command(r.binary, "inspect", image)
-	output, err := cmd.Output()
+	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +136,7 @@ func (r *ManifestRunner) IsAvailable() bool {
 	return false
 }
 
-func (r *ManifestRunner) Run(image string) (*analysis.ImageStats, error) {
+func (r *ManifestRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
 	if r.binary == "" {
 		if !r.IsAvailable() {
 			return nil, fmt.Errorf("no container runtime found")
@@ -120,7 +148,7 @@ func (r *ManifestRunner) Run(image string) (*analysis.ImageStats, error) {
 	cmd := exec.Command(r.binary, "manifest", "inspect", image)
 	cmd.Env = append(os.Environ(), "DOCKER_CLI_EXPERIMENTAL=enabled")
 
-	output, err := cmd.Output()
+	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		// Fallback or just return empty stats (optional feature)
 		// We'll return error so analyzer can log warning
@@ -184,9 +212,9 @@ func (r *SyftRunner) IsAvailable() bool {
 	return err == nil
 }
 
-func (r *SyftRunner) Run(image string) (*analysis.ImageStats, error) {
+func (r *SyftRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
 	cmd := exec.Command("syft", image, "-o", "json")
-	output, err := cmd.Output()
+	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		return nil, err
 	}
@@ -257,9 +285,9 @@ func (r *GrypeRunner) IsAvailable() bool {
 	return err == nil
 }
 
-func (r *GrypeRunner) Run(image string) (*analysis.ImageStats, error) {
+func (r *GrypeRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
 	cmd := exec.Command("grype", image, "-o", "json")
-	output, err := cmd.Output()
+	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		return nil, err
 	}
@@ -331,7 +359,7 @@ func (r *DiveRunner) IsAvailable() bool {
 	return err == nil
 }
 
-func (r *DiveRunner) Run(image string) (*analysis.ImageStats, error) {
+func (r *DiveRunner) Run(image string, verbose bool) (*analysis.ImageStats, error) {
 	// Create a temp file for output
 	tmpFile, err := os.CreateTemp("", "dive-output-*.json")
 	if err != nil {
@@ -395,8 +423,23 @@ func (r *DiveRunner) Run(image string) (*analysis.ImageStats, error) {
 
 	// Dive writes to file, but might output logs to stdout/stderr. capture or ignore?
 	// cmd.CombinedOutput() might be useful for debugging if it fails.
-	if output, err := cmd.CombinedOutput(); err != nil {
+
+	// Dive uses CombinedOutput because it writes analysis logs to stdout/stderr even with --json
+	// But our runCommand assumes Output().
+	// We can use runCommand here if we want consistent logging, but dive output (logs) is not the JSON.
+	// The JSON is in the file.
+
+	if verbose {
+		fmt.Fprintf(os.Stderr, "[DEBUG] Running: %s\n", cmd.String())
+	}
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
 		return nil, fmt.Errorf("dive failed: %s, output: %s", err, string(output))
+	}
+
+	if verbose {
+		fmt.Fprintf(os.Stderr, "[DEBUG] Output (%d bytes):\n%s\n", len(output), string(output))
 	}
 
 	content, err := os.ReadFile(tmpFile.Name())
