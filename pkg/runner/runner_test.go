@@ -2,11 +2,501 @@ package runner
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 )
+
+// fakeExecHelper is a test helper function used by TestHelperProcess.
+// When invoked as a subprocess by exec.Command, it reads the
+// GO_TEST_HELPER_CMD env var to decide what to output, simulating
+// external tools like docker, syft, grype, dive, etc.
+func TestHelperProcess(t *testing.T) {
+	if os.Getenv("GO_WANT_HELPER_PROCESS") != "1" {
+		return
+	}
+	cmd := os.Getenv("GO_TEST_HELPER_CMD")
+	switch cmd {
+	case "inspect-ok":
+		fmt.Print(`[{"Architecture":"amd64","Os":"linux","Size":10485760,"RootFS":{"Layers":["a","b"]}}]`)
+	case "inspect-fail":
+		os.Exit(1)
+	case "manifest-ok":
+		fmt.Print(`{"manifests":[{"platform":{"architecture":"amd64","os":"linux"}}]}`)
+	case "syft-ok":
+		fmt.Print(`{"distro":{"name":"alpine","version":"3.18"},"artifacts":[{"name":"musl","version":"1.2","type":"apk"}]}`)
+	case "grype-ok":
+		fmt.Print(`{"descriptor":{"timestamp":"2024-01-01T00:00:00Z"},"matches":[{"vulnerability":{"id":"CVE-1","severity":"High"},"artifact":{"name":"pkg","version":"1.0"}}]}`)
+	case "dive-ok":
+		// Write JSON to the file path specified in args
+		args := os.Args
+		// Find --json flag and get next arg
+		for i, a := range args {
+			if a == "--json" && i+1 < len(args) {
+				data := `{"image":{"inefficientBytes":1024,"efficiencyScore":0.98}}`
+				if err := os.WriteFile(args[i+1], []byte(data), 0644); err != nil {
+					fmt.Fprintf(os.Stderr, "failed to write: %v", err)
+					os.Exit(1)
+				}
+				break
+			}
+		}
+	case "pull-ok":
+		fmt.Print("pulled successfully")
+	case "echo":
+		fmt.Print("ok")
+	case "error":
+		fmt.Fprint(os.Stderr, "something went wrong")
+		os.Exit(1)
+	default:
+		fmt.Fprintf(os.Stderr, "unknown helper cmd: %s\n", cmd)
+		os.Exit(2)
+	}
+	os.Exit(0)
+}
+
+// helperCmd builds an exec.Cmd that re-invokes the test binary as a
+// subprocess, setting GO_WANT_HELPER_PROCESS=1 so TestHelperProcess
+// runs the scenario identified by helperCmd.
+func helperCmd(helperType string) *exec.Cmd {
+	cs := []string{"-test.run=TestHelperProcess", "--"}
+	cmd := exec.Command(os.Args[0], cs...)
+	cmd.Env = append(os.Environ(),
+		"GO_WANT_HELPER_PROCESS=1",
+		"GO_TEST_HELPER_CMD="+helperType,
+	)
+	return cmd
+}
+
+// createFakeBinary creates a shell script in dir that re-execs the
+// test binary as a helper process. Returns the path to the script.
+func createFakeBinary(t *testing.T, dir, name, helperType string) string {
+	t.Helper()
+	path := filepath.Join(dir, name)
+	script := fmt.Sprintf("#!/bin/sh\nexec %q -test.run=TestHelperProcess -- \"$@\"\n", os.Args[0])
+	if err := os.WriteFile(path, []byte(script), 0755); err != nil {
+		t.Fatalf("failed to create fake binary %s: %v", name, err)
+	}
+	// Set env vars so the subprocess knows what to do
+	t.Setenv("GO_WANT_HELPER_PROCESS", "1")
+	t.Setenv("GO_TEST_HELPER_CMD", helperType)
+	return path
+}
+
+// TestRunCommand_Success tests runCommand with a successful command.
+func TestRunCommand_Success(t *testing.T) {
+	cmd := helperCmd("echo")
+	output, err := runCommand(cmd, false)
+	if err != nil {
+		t.Fatalf("runCommand() unexpected error: %v", err)
+	}
+	if string(output) != "ok" {
+		t.Errorf("runCommand() output = %q, want %q", string(output), "ok")
+	}
+}
+
+// TestRunCommand_Verbose tests runCommand with verbose output.
+func TestRunCommand_Verbose(t *testing.T) {
+	cmd := helperCmd("echo")
+	output, err := runCommand(cmd, true)
+	if err != nil {
+		t.Fatalf("runCommand() unexpected error: %v", err)
+	}
+	if string(output) != "ok" {
+		t.Errorf("runCommand() output = %q, want %q", string(output), "ok")
+	}
+}
+
+// TestRunCommand_Failure tests runCommand with a failing command.
+func TestRunCommand_Failure(t *testing.T) {
+	cmd := helperCmd("error")
+	_, err := runCommand(cmd, false)
+	if err == nil {
+		t.Fatal("runCommand() expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "command failed") {
+		t.Errorf("error should contain 'command failed', got: %v", err)
+	}
+	if !strings.Contains(err.Error(), "something went wrong") {
+		t.Errorf("error should contain stderr output, got: %v", err)
+	}
+}
+
+// TestRunCommand_FailureVerbose tests runCommand error path with verbose.
+func TestRunCommand_FailureVerbose(t *testing.T) {
+	cmd := helperCmd("error")
+	_, err := runCommand(cmd, true)
+	if err == nil {
+		t.Fatal("runCommand() expected error, got nil")
+	}
+}
+
+// TestRuntimeRunner_IsAvailable tests IsAvailable with system docker/podman.
+func TestRuntimeRunner_IsAvailable(t *testing.T) {
+	r := &RuntimeRunner{}
+	result := r.IsAvailable()
+	// On any dev machine with docker or podman, this should be true.
+	// We just verify it doesn't panic and sets binary appropriately.
+	if result {
+		if r.binary != "docker" && r.binary != "podman" {
+			t.Errorf("IsAvailable() set binary to %q, expected docker or podman", r.binary)
+		}
+	}
+	// If neither is installed, result is false - that's fine too.
+}
+
+// TestRuntimeRunner_Run tests RuntimeRunner.Run with a mock binary.
+func TestRuntimeRunner_Run(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := createFakeBinary(t, dir, "docker", "inspect-ok")
+
+	r := &RuntimeRunner{binary: fakeBin}
+	stats, err := r.Run("test:latest", false)
+	if err != nil {
+		t.Fatalf("RuntimeRunner.Run() error: %v", err)
+	}
+	if stats.Architecture != "amd64" {
+		t.Errorf("Architecture = %q, want %q", stats.Architecture, "amd64")
+	}
+	if stats.OS != "linux" {
+		t.Errorf("OS = %q, want %q", stats.OS, "linux")
+	}
+	if stats.TotalLayers != 2 {
+		t.Errorf("TotalLayers = %d, want %d", stats.TotalLayers, 2)
+	}
+}
+
+// TestRuntimeRunner_Run_NoBinary tests RuntimeRunner.Run when binary is empty and IsAvailable fails.
+func TestRuntimeRunner_Run_NoBinary(t *testing.T) {
+	// Override PATH to ensure neither docker nor podman is found
+	t.Setenv("PATH", t.TempDir())
+	r := &RuntimeRunner{}
+	_, err := r.Run("test:latest", false)
+	if err == nil {
+		t.Fatal("RuntimeRunner.Run() expected error when no binary, got nil")
+	}
+	if !strings.Contains(err.Error(), "no container runtime found") {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+// TestManifestRunner_IsAvailable tests ManifestRunner.IsAvailable.
+func TestManifestRunner_IsAvailable(t *testing.T) {
+	r := &ManifestRunner{}
+	result := r.IsAvailable()
+	if result {
+		if r.binary != "docker" && r.binary != "podman" {
+			t.Errorf("IsAvailable() set binary to %q, expected docker or podman", r.binary)
+		}
+	}
+}
+
+// TestManifestRunner_Run tests ManifestRunner.Run with a mock binary.
+func TestManifestRunner_Run(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := createFakeBinary(t, dir, "docker", "manifest-ok")
+
+	r := &ManifestRunner{binary: fakeBin}
+	stats, err := r.Run("test:latest", false)
+	if err != nil {
+		t.Fatalf("ManifestRunner.Run() error: %v", err)
+	}
+	if len(stats.SupportedArchitectures) != 1 {
+		t.Errorf("SupportedArchitectures count = %d, want 1", len(stats.SupportedArchitectures))
+	}
+}
+
+// TestManifestRunner_Run_NoBinary tests ManifestRunner.Run without binary.
+func TestManifestRunner_Run_NoBinary(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
+	r := &ManifestRunner{}
+	_, err := r.Run("test:latest", false)
+	if err == nil {
+		t.Fatal("ManifestRunner.Run() expected error when no binary, got nil")
+	}
+}
+
+// TestSyftRunner_IsAvailable tests SyftRunner.IsAvailable.
+func TestSyftRunner_IsAvailable(t *testing.T) {
+	r := &SyftRunner{}
+	// Save and restore original
+	origLookup := lookupTool
+	defer func() { lookupTool = origLookup }()
+
+	// Mock: tool found
+	lookupTool = func(name string) (string, error) {
+		if name == "syft" {
+			return "/usr/local/bin/syft", nil
+		}
+		return "", fmt.Errorf("not found")
+	}
+	if !r.IsAvailable() {
+		t.Error("SyftRunner.IsAvailable() = false, want true")
+	}
+	if r.binary != "/usr/local/bin/syft" {
+		t.Errorf("binary = %q, want /usr/local/bin/syft", r.binary)
+	}
+
+	// Mock: tool not found
+	r2 := &SyftRunner{}
+	lookupTool = func(name string) (string, error) {
+		return "", fmt.Errorf("not found")
+	}
+	if r2.IsAvailable() {
+		t.Error("SyftRunner.IsAvailable() = true, want false")
+	}
+}
+
+// TestSyftRunner_Run tests SyftRunner.Run with a mock binary.
+func TestSyftRunner_Run(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := createFakeBinary(t, dir, "syft", "syft-ok")
+
+	r := &SyftRunner{binary: fakeBin}
+	stats, err := r.Run("test:latest", false)
+	if err != nil {
+		t.Fatalf("SyftRunner.Run() error: %v", err)
+	}
+	if stats.OSDistro != "alpine 3.18" {
+		t.Errorf("OSDistro = %q, want %q", stats.OSDistro, "alpine 3.18")
+	}
+	if stats.TotalPackages != 1 {
+		t.Errorf("TotalPackages = %d, want 1", stats.TotalPackages)
+	}
+}
+
+// TestSyftRunner_Run_NoBinary tests SyftRunner.Run without binary.
+func TestSyftRunner_Run_NoBinary(t *testing.T) {
+	origLookup := lookupTool
+	defer func() { lookupTool = origLookup }()
+	lookupTool = func(name string) (string, error) {
+		return "", fmt.Errorf("not found")
+	}
+	r := &SyftRunner{}
+	_, err := r.Run("test:latest", false)
+	if err == nil {
+		t.Fatal("SyftRunner.Run() expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "syft not found") {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+// TestGrypeRunner_IsAvailable tests GrypeRunner.IsAvailable.
+func TestGrypeRunner_IsAvailable(t *testing.T) {
+	origLookup := lookupTool
+	defer func() { lookupTool = origLookup }()
+
+	lookupTool = func(name string) (string, error) {
+		if name == "grype" {
+			return "/usr/local/bin/grype", nil
+		}
+		return "", fmt.Errorf("not found")
+	}
+	r := &GrypeRunner{}
+	if !r.IsAvailable() {
+		t.Error("GrypeRunner.IsAvailable() = false, want true")
+	}
+
+	lookupTool = func(name string) (string, error) {
+		return "", fmt.Errorf("not found")
+	}
+	r2 := &GrypeRunner{}
+	if r2.IsAvailable() {
+		t.Error("GrypeRunner.IsAvailable() = true, want false")
+	}
+}
+
+// TestGrypeRunner_Run tests GrypeRunner.Run with a mock binary.
+func TestGrypeRunner_Run(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := createFakeBinary(t, dir, "grype", "grype-ok")
+
+	r := &GrypeRunner{binary: fakeBin}
+	stats, err := r.Run("test:latest", false)
+	if err != nil {
+		t.Fatalf("GrypeRunner.Run() error: %v", err)
+	}
+	if stats.VulnSummary["High"] != 1 {
+		t.Errorf("VulnSummary[High] = %d, want 1", stats.VulnSummary["High"])
+	}
+	if len(stats.Vulnerabilities) != 1 {
+		t.Errorf("Vulnerabilities count = %d, want 1", len(stats.Vulnerabilities))
+	}
+}
+
+// TestGrypeRunner_Run_NoBinary tests GrypeRunner.Run without binary.
+func TestGrypeRunner_Run_NoBinary(t *testing.T) {
+	origLookup := lookupTool
+	defer func() { lookupTool = origLookup }()
+	lookupTool = func(name string) (string, error) {
+		return "", fmt.Errorf("not found")
+	}
+	r := &GrypeRunner{}
+	_, err := r.Run("test:latest", false)
+	if err == nil {
+		t.Fatal("GrypeRunner.Run() expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "grype not found") {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+// TestDiveRunner_IsAvailable tests DiveRunner.IsAvailable.
+func TestDiveRunner_IsAvailable(t *testing.T) {
+	origLookup := lookupTool
+	defer func() { lookupTool = origLookup }()
+
+	lookupTool = func(name string) (string, error) {
+		if name == "dive" {
+			return "/usr/local/bin/dive", nil
+		}
+		return "", fmt.Errorf("not found")
+	}
+	r := &DiveRunner{}
+	if !r.IsAvailable() {
+		t.Error("DiveRunner.IsAvailable() = false, want true")
+	}
+
+	lookupTool = func(name string) (string, error) {
+		return "", fmt.Errorf("not found")
+	}
+	r2 := &DiveRunner{}
+	if r2.IsAvailable() {
+		t.Error("DiveRunner.IsAvailable() = true, want false")
+	}
+}
+
+// TestDiveRunner_Run tests DiveRunner.Run with a mock binary.
+func TestDiveRunner_Run(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := createFakeBinary(t, dir, "dive", "dive-ok")
+
+	r := &DiveRunner{binary: fakeBin}
+	stats, err := r.Run("test:latest", false)
+	if err != nil {
+		t.Fatalf("DiveRunner.Run() error: %v", err)
+	}
+	if stats.Efficiency != 98.0 {
+		t.Errorf("Efficiency = %v, want 98.0", stats.Efficiency)
+	}
+	if stats.WastedBytes != "0.00 MB" {
+		t.Errorf("WastedBytes = %q, want %q", stats.WastedBytes, "0.00 MB")
+	}
+}
+
+// TestDiveRunner_Run_Verbose tests DiveRunner.Run in verbose mode.
+func TestDiveRunner_Run_Verbose(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := createFakeBinary(t, dir, "dive", "dive-ok")
+
+	r := &DiveRunner{binary: fakeBin}
+	stats, err := r.Run("test:latest", true)
+	if err != nil {
+		t.Fatalf("DiveRunner.Run() error: %v", err)
+	}
+	if stats.Efficiency != 98.0 {
+		t.Errorf("Efficiency = %v, want 98.0", stats.Efficiency)
+	}
+}
+
+// TestDiveRunner_Run_NoBinary tests DiveRunner.Run without binary.
+func TestDiveRunner_Run_NoBinary(t *testing.T) {
+	origLookup := lookupTool
+	defer func() { lookupTool = origLookup }()
+	lookupTool = func(name string) (string, error) {
+		return "", fmt.Errorf("not found")
+	}
+	r := &DiveRunner{}
+	_, err := r.Run("test:latest", false)
+	if err == nil {
+		t.Fatal("DiveRunner.Run() expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "dive not found") {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+// TestEnsureImage_AlreadyExists tests EnsureImage when image is already local.
+func TestEnsureImage_AlreadyExists(t *testing.T) {
+	// Create a fake docker/podman that succeeds on inspect
+	dir := t.TempDir()
+	fakeBin := filepath.Join(dir, "docker")
+	script := fmt.Sprintf("#!/bin/sh\nexec %q -test.run=TestHelperProcess -- \"$@\"\n", os.Args[0])
+	if err := os.WriteFile(fakeBin, []byte(script), 0755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("GO_WANT_HELPER_PROCESS", "1")
+	t.Setenv("GO_TEST_HELPER_CMD", "echo")
+	t.Setenv("PATH", dir+":"+os.Getenv("PATH"))
+
+	err := EnsureImage("test:latest", false)
+	if err != nil {
+		t.Fatalf("EnsureImage() unexpected error: %v", err)
+	}
+}
+
+// TestEnsureImage_Verbose tests EnsureImage with verbose flag when image exists.
+func TestEnsureImage_Verbose(t *testing.T) {
+	dir := t.TempDir()
+	fakeBin := filepath.Join(dir, "docker")
+	script := fmt.Sprintf("#!/bin/sh\nexec %q -test.run=TestHelperProcess -- \"$@\"\n", os.Args[0])
+	if err := os.WriteFile(fakeBin, []byte(script), 0755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("GO_WANT_HELPER_PROCESS", "1")
+	t.Setenv("GO_TEST_HELPER_CMD", "echo")
+	t.Setenv("PATH", dir+":"+os.Getenv("PATH"))
+
+	err := EnsureImage("test:latest", true)
+	if err != nil {
+		t.Fatalf("EnsureImage() unexpected error: %v", err)
+	}
+}
+
+// TestEnsureImage_NoRuntime tests EnsureImage when no docker/podman is available.
+func TestEnsureImage_NoRuntime(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
+	err := EnsureImage("test:latest", false)
+	if err == nil {
+		t.Fatal("EnsureImage() expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "no container runtime found") {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+// TestDetectPodmanSocket tests the detectPodmanSocket helper function.
+func TestDetectPodmanSocket(t *testing.T) {
+	// When podman is not in PATH, should return empty string.
+	t.Setenv("PATH", t.TempDir())
+	result := detectPodmanSocket()
+	if result != "" {
+		t.Errorf("detectPodmanSocket() = %q, want empty string", result)
+	}
+}
+
+// TestLookupTool_Swappable verifies that lookupTool is a swappable function variable.
+func TestLookupTool_Swappable(t *testing.T) {
+	orig := lookupTool
+	defer func() { lookupTool = orig }()
+
+	lookupTool = func(name string) (string, error) {
+		return "/mock/path/" + name, nil
+	}
+
+	path, err := lookupTool("test-tool")
+	if err != nil {
+		t.Fatalf("lookupTool() unexpected error: %v", err)
+	}
+	if path != "/mock/path/test-tool" {
+		t.Errorf("lookupTool() = %q, want /mock/path/test-tool", path)
+	}
+}
 
 func TestRuntimeRunner_Name(t *testing.T) {
 	tests := []struct {

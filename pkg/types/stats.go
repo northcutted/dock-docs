@@ -40,6 +40,7 @@ type ImageStats struct {
 
 // Badge Helpers
 
+// SizeBadge returns a shields.io badge URL for the image size.
 func (s *ImageStats) SizeBadge(baseURL string) string {
 	if s.SizeMB == "" {
 		return ""
@@ -48,6 +49,7 @@ func (s *ImageStats) SizeBadge(baseURL string) string {
 	return fmt.Sprintf("%s?label=Size&message=%s&color=blue", baseURL, url.QueryEscape(s.SizeMB))
 }
 
+// LayersBadge returns a shields.io badge URL for the layer count.
 func (s *ImageStats) LayersBadge(baseURL string) string {
 	if s.TotalLayers == 0 {
 		return ""
@@ -55,6 +57,7 @@ func (s *ImageStats) LayersBadge(baseURL string) string {
 	return fmt.Sprintf("%s?label=Layers&message=%d&color=blue", baseURL, s.TotalLayers)
 }
 
+// EfficiencyBadge returns a shields.io badge URL for the image efficiency score.
 func (s *ImageStats) EfficiencyBadge(baseURL string) string {
 	if s.Efficiency == 0 {
 		return ""
@@ -69,6 +72,7 @@ func (s *ImageStats) EfficiencyBadge(baseURL string) string {
 	return fmt.Sprintf("%s?label=Efficiency&message=%.1f%%&color=%s", baseURL, s.Efficiency, color)
 }
 
+// VulnBadge returns a shields.io badge URL summarizing vulnerability findings.
 func (s *ImageStats) VulnBadge(baseURL string) string {
 	critical := s.VulnSummary["Critical"]
 	high := s.VulnSummary["High"]
@@ -85,6 +89,7 @@ func (s *ImageStats) VulnBadge(baseURL string) string {
 	return fmt.Sprintf("%s?label=Security&message=%s&color=%s", baseURL, url.QueryEscape(msg), color)
 }
 
+// TotalVulns returns the total number of vulnerabilities found.
 func (s *ImageStats) TotalVulns() int {
 	return len(s.Vulnerabilities)
 }

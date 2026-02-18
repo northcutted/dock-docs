@@ -61,60 +61,38 @@ func (r ComparisonContext) Emoji(name string) string {
 	return getEmoji(name, r.Options.NoMoji)
 }
 
+var emojiMap = map[string]string{
+	"whale":    "🐳 ",
+	"gear":     "⚙️ ",
+	"shield":   "🛡️ ",
+	"tag":      "🏷️ ",
+	"search":   "🔍 ",
+	"down":     "👇 ",
+	"package":  "📦 ",
+	"check":    "✅",
+	"cross":    "❌",
+	"critical": "🛑",
+	"high":     "🟠",
+	"medium":   "🟡",
+	"low":      "🔵",
+	"clean":    "🟢",
+}
+
+var noMojiMap = map[string]string{
+	"check":    "[YES]",
+	"cross":    "[NO]",
+	"critical": "[CRIT]",
+	"high":     "[HIGH]",
+	"medium":   "[MED]",
+	"low":      "[LOW]",
+	"clean":    "[OK]",
+}
+
 func getEmoji(name string, noMoji bool) string {
 	if noMoji {
-		switch name {
-		case "check":
-			return "[YES]"
-		case "cross":
-			return "[NO]"
-		case "critical":
-			return "[CRIT]"
-		case "high":
-			return "[HIGH]"
-		case "medium":
-			return "[MED]"
-		case "low":
-			return "[LOW]"
-		case "clean":
-			return "[OK]"
-		default:
-			return ""
-		}
+		return noMojiMap[name]
 	}
-
-	switch name {
-	case "whale":
-		return "🐳 "
-	case "gear":
-		return "⚙️ "
-	case "shield":
-		return "🛡️ "
-	case "tag":
-		return "🏷️ "
-	case "search":
-		return "🔍 "
-	case "down":
-		return "👇 "
-	case "package":
-		return "📦 "
-	case "check":
-		return "✅"
-	case "cross":
-		return "❌"
-	case "critical":
-		return "🛑"
-	case "high":
-		return "🟠"
-	case "medium":
-		return "🟡"
-	case "low":
-		return "🔵"
-	case "clean":
-		return "🟢"
-	default:
-		return ""
-	}
+	return emojiMap[name]
 }
 
 // Render generates documentation using the default built-in template.

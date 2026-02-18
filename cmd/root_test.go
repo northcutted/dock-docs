@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -467,5 +468,645 @@ func TestExecute_DryRunWithHTMLTemplate(t *testing.T) {
 	// HTML output should contain HTML tags
 	if !strings.Contains(output, "<") {
 		t.Error("expected HTML content in dry-run output")
+	}
+}
+
+func TestRunYAMLMode_ImageSection_DryRun(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	// Create Dockerfile
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV MY_VAR=hello\nEXPOSE 3000"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Create output file with markers
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("# Heading\n\n<!-- BEGIN: dock-docs -->\nold\n<!-- END: dock-docs -->\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Create YAML config
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    marker: ""
+    source: %s
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Save and restore globals
+	oldDryRun := dryRun
+	oldNoMoji := noMoji
+	oldIgnoreErrors := ignoreErrors
+	oldVerbose := verbose
+	oldTemplateName := templateName
+	oldDebugTemplate := debugTemplate
+	defer func() {
+		dryRun = oldDryRun
+		noMoji = oldNoMoji
+		ignoreErrors = oldIgnoreErrors
+		verbose = oldVerbose
+		templateName = oldTemplateName
+		debugTemplate = oldDebugTemplate
+	}()
+
+	dryRun = true
+	noMoji = false
+	ignoreErrors = false
+	verbose = false
+	templateName = ""
+	debugTemplate = false
+
+	output := captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "MY_VAR") {
+		t.Errorf("expected MY_VAR in dry-run output, got:\n%s", output)
+	}
+}
+
+func TestRunYAMLMode_ImageSection_WriteFile(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV WRITE_TEST=yes"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("# Doc\n\n<!-- BEGIN: dock-docs -->\nplaceholder\n<!-- END: dock-docs -->\n\nFooter"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    marker: ""
+    source: %s
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldNoMoji := noMoji
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		noMoji = oldNoMoji
+		templateName = oldTemplateName
+	}()
+	dryRun = false
+	noMoji = false
+	templateName = ""
+
+	captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	content, err := os.ReadFile(readme)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(content), "WRITE_TEST") {
+		t.Error("expected WRITE_TEST in updated README")
+	}
+	if strings.Contains(string(content), "placeholder") {
+		t.Error("expected old placeholder to be replaced")
+	}
+	if !strings.Contains(string(content), "Footer") {
+		t.Error("expected Footer to be preserved")
+	}
+}
+
+func TestRunYAMLMode_HTMLSection_DryRun(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV HTML_VAR=test"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("# Doc"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    marker: main
+    source: %s
+    template:
+      name: html
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		templateName = oldTemplateName
+	}()
+	dryRun = true
+	templateName = ""
+
+	output := captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "<") {
+		t.Error("expected HTML content in dry-run output")
+	}
+}
+
+func TestRunYAMLMode_HTMLSection_WriteFile(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV DIRECT_WRITE=yes"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("# Doc"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    marker: main
+    source: %s
+    template:
+      name: html
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		templateName = oldTemplateName
+	}()
+	dryRun = false
+	templateName = ""
+
+	captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	// The HTML section should write to README-main.html
+	htmlPath := filepath.Join(tmpDir, "README-main.html")
+	content, err := os.ReadFile(htmlPath)
+	if err != nil {
+		t.Fatalf("expected HTML output file to be created: %v", err)
+	}
+	if !strings.Contains(string(content), "<") {
+		t.Error("expected HTML content in written file")
+	}
+}
+
+func TestRunYAMLMode_DebugTemplate(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("<!-- BEGIN: dock-docs -->\n<!-- END: dock-docs -->"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    source: %s
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldDebugTemplate := debugTemplate
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		debugTemplate = oldDebugTemplate
+		templateName = oldTemplateName
+	}()
+	dryRun = true
+	debugTemplate = true
+	templateName = ""
+
+	output := captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Template:") {
+		t.Error("expected debug template info in output")
+	}
+}
+
+func TestRunYAMLMode_UnknownSectionType(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("# Doc"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: bogus
+    marker: test
+`, readme)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		templateName = oldTemplateName
+	}()
+	dryRun = true
+	templateName = ""
+
+	output := captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Warning: unknown section type") {
+		t.Errorf("expected unknown section type warning, got:\n%s", output)
+	}
+}
+
+func TestRunYAMLMode_BadConfigPath(t *testing.T) {
+	err := runYAMLMode("/nonexistent/config.yaml")
+	if err == nil {
+		t.Fatal("expected error for nonexistent config")
+	}
+}
+
+func TestRunCLIMode_HTMLTemplate_WriteFile(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV CLI_HTML=yes"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDockerfile := dockerfile
+	oldOutputFile := outputFile
+	oldDryRun := dryRun
+	oldImageTag := imageTag
+	oldTemplateName := templateName
+	defer func() {
+		dockerfile = oldDockerfile
+		outputFile = oldOutputFile
+		dryRun = oldDryRun
+		imageTag = oldImageTag
+		templateName = oldTemplateName
+	}()
+
+	dockerfile = df
+	outputFile = filepath.Join(tmpDir, "output.html")
+	dryRun = false
+	imageTag = ""
+	templateName = "html"
+
+	captureOutput(func() {
+		if err := runCLIMode(); err != nil {
+			t.Fatalf("runCLIMode() error: %v", err)
+		}
+	})
+
+	content, err := os.ReadFile(filepath.Join(tmpDir, "output.html"))
+	if err != nil {
+		t.Fatalf("expected output file to be created: %v", err)
+	}
+	if !strings.Contains(string(content), "<") {
+		t.Error("expected HTML content in output file")
+	}
+}
+
+func TestRunCLIMode_NonexistentOutputFile(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV NOFILE=test"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDockerfile := dockerfile
+	oldOutputFile := outputFile
+	oldDryRun := dryRun
+	oldImageTag := imageTag
+	oldTemplateName := templateName
+	defer func() {
+		dockerfile = oldDockerfile
+		outputFile = oldOutputFile
+		dryRun = oldDryRun
+		imageTag = oldImageTag
+		templateName = oldTemplateName
+	}()
+
+	dockerfile = df
+	outputFile = filepath.Join(tmpDir, "nonexistent.md")
+	dryRun = false
+	imageTag = ""
+	templateName = ""
+
+	// Capture both stdout and stderr since the warning goes to stderr
+	oldStdout := os.Stdout
+	oldStderr := os.Stderr
+	rOut, wOut, _ := os.Pipe()
+	rErr, wErr, _ := os.Pipe()
+	os.Stdout = wOut
+	os.Stderr = wErr
+
+	var runErr error
+	func() {
+		runErr = runCLIMode()
+	}()
+
+	_ = wOut.Close()
+	_ = wErr.Close()
+	os.Stdout = oldStdout
+	os.Stderr = oldStderr
+
+	var bufOut, bufErr bytes.Buffer
+	_, _ = io.Copy(&bufOut, rOut)
+	_, _ = io.Copy(&bufErr, rErr)
+
+	if runErr != nil {
+		t.Fatalf("runCLIMode() error: %v", runErr)
+	}
+
+	combined := bufOut.String() + bufErr.String()
+	// Should print warning about nonexistent file (to stderr)
+	if !strings.Contains(combined, "does not exist") {
+		t.Errorf("expected 'does not exist' warning, got stdout:\n%s\nstderr:\n%s", bufOut.String(), bufErr.String())
+	}
+	// Content should be printed to stdout
+	if !strings.Contains(bufOut.String(), "NOFILE") {
+		t.Errorf("expected NOFILE in stdout output, got:\n%s", bufOut.String())
+	}
+}
+
+func TestRunCLIMode_DebugTemplate(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDockerfile := dockerfile
+	oldDryRun := dryRun
+	oldImageTag := imageTag
+	oldTemplateName := templateName
+	oldDebugTemplate := debugTemplate
+	defer func() {
+		dockerfile = oldDockerfile
+		dryRun = oldDryRun
+		imageTag = oldImageTag
+		templateName = oldTemplateName
+		debugTemplate = oldDebugTemplate
+	}()
+
+	dockerfile = df
+	dryRun = true
+	imageTag = ""
+	templateName = ""
+	debugTemplate = true
+
+	output := captureOutput(func() {
+		if err := runCLIMode(); err != nil {
+			t.Fatalf("runCLIMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Template:") {
+		t.Error("expected debug template info in output")
+	}
+}
+
+func TestRunCLIMode_BadDockerfile(t *testing.T) {
+	oldDockerfile := dockerfile
+	defer func() { dockerfile = oldDockerfile }()
+
+	dockerfile = "/nonexistent/Dockerfile"
+	err := runCLIMode()
+	if err == nil {
+		t.Fatal("expected error for nonexistent Dockerfile")
+	}
+	if !strings.Contains(err.Error(), "failed to parse Dockerfile") {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+func TestPrintToolStatus(t *testing.T) {
+	output := captureOutput(func() {
+		if err := printToolStatus(t.TempDir()); err != nil {
+			t.Fatalf("printToolStatus() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Tool Status:") {
+		t.Error("expected 'Tool Status:' header in output")
+	}
+	// Should mention all three tools
+	for _, tool := range []string{"syft", "grype", "dive"} {
+		if !strings.Contains(output, tool) {
+			t.Errorf("expected %q in tool status output", tool)
+		}
+	}
+}
+
+func TestRunSetup_CheckOnly(t *testing.T) {
+	oldSetupCheck := setupCheck
+	oldSetupDir := setupDir
+	oldSetupForce := setupForce
+	defer func() {
+		setupCheck = oldSetupCheck
+		setupDir = oldSetupDir
+		setupForce = oldSetupForce
+	}()
+
+	setupCheck = true
+	setupDir = t.TempDir()
+	setupForce = false
+
+	output := captureOutput(func() {
+		if err := runSetup(setupCmd, nil); err != nil {
+			t.Fatalf("runSetup(--check) error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Tool Status:") {
+		t.Error("expected tool status output from --check")
+	}
+}
+
+func TestRunYAMLMode_ImageWithAnalysis_IgnoreErrors(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV ANALYZED=true"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("<!-- BEGIN: dock-docs -->\nold\n<!-- END: dock-docs -->"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    source: %s
+    tag: "fake-nonexistent-image:latest"
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldIgnoreErrors := ignoreErrors
+	oldTemplateName := templateName
+	oldVerbose := verbose
+	defer func() {
+		dryRun = oldDryRun
+		ignoreErrors = oldIgnoreErrors
+		templateName = oldTemplateName
+		verbose = oldVerbose
+	}()
+	dryRun = true
+	ignoreErrors = true
+	templateName = ""
+	verbose = false
+
+	output := captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Analyzing image") {
+		t.Errorf("expected analysis log, got:\n%s", output)
+	}
+}
+
+func TestRunYAMLMode_ComparisonSection_EmptyImages(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	readme := filepath.Join(tmpDir, "README.md")
+	if err := os.WriteFile(readme, []byte("<!-- BEGIN: comp -->\n<!-- END: comp -->"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: comparison
+    marker: comp
+    images: []
+`, readme)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		templateName = oldTemplateName
+	}()
+	dryRun = true
+	templateName = ""
+
+	// Should skip the empty comparison section without error
+	captureOutput(func() {
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+}
+
+func TestRunYAMLMode_NoMarkersInOutput(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	df := filepath.Join(tmpDir, "Dockerfile")
+	if err := os.WriteFile(df, []byte("FROM alpine\nENV NO_MARKERS=yes"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	readme := filepath.Join(tmpDir, "README.md")
+	// File without markers
+	if err := os.WriteFile(readme, []byte("# Just a readme"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	yamlContent := fmt.Sprintf(`output: %s
+sections:
+  - type: image
+    marker: missing
+    source: %s
+`, readme, df)
+	cfgPath := filepath.Join(tmpDir, "dock-docs.yaml")
+	if err := os.WriteFile(cfgPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldDryRun := dryRun
+	oldTemplateName := templateName
+	defer func() {
+		dryRun = oldDryRun
+		templateName = oldTemplateName
+	}()
+	dryRun = false
+	templateName = ""
+
+	output := captureOutput(func() {
+		// Should not error - just warn
+		if err := runYAMLMode(cfgPath); err != nil {
+			t.Fatalf("runYAMLMode() error: %v", err)
+		}
+	})
+
+	if !strings.Contains(output, "Warning") {
+		t.Errorf("expected warning about missing markers, got:\n%s", output)
 	}
 }

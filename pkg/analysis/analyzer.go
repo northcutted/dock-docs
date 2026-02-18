@@ -11,6 +11,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+// Runner defines the interface for external tool integration used during image analysis.
 type Runner interface {
 	Name() string
 	IsAvailable() bool
@@ -61,6 +62,7 @@ func AnalyzeComparison(images []string, runners []Runner, verbose bool) ([]*type
 // Runners are injected to allow easy testing/mocking or registration.
 var ensureImage = runner.EnsureImage
 
+// AnalyzeImage runs all available runners against the given image and merges their results.
 func AnalyzeImage(image string, runners []Runner, verbose bool) (*types.ImageStats, error) {
 	if image == "" {
 		return nil, fmt.Errorf("image tag is required")

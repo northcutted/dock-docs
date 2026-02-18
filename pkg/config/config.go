@@ -7,8 +7,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// SectionType identifies the kind of section in a dock-docs configuration file.
 type SectionType string
 
+// Supported section types for dock-docs configuration.
 const (
 	SectionTypeImage      SectionType = "image"
 	SectionTypeComparison SectionType = "comparison"
@@ -30,6 +32,7 @@ type ImageEntry struct {
 	Tag string `yaml:"tag"`
 }
 
+// Section describes a single output section in a dock-docs configuration file.
 type Section struct {
 	Type   SectionType `yaml:"type"`
 	Marker string      `yaml:"marker"`
@@ -56,6 +59,7 @@ func (s Section) ResolvedImages() []ImageEntry {
 	return resolved
 }
 
+// Config is the top-level structure for a dock-docs YAML configuration file.
 type Config struct {
 	Output       string    `yaml:"output"`
 	BadgeBaseURL string    `yaml:"badgeBaseURL,omitempty"`
@@ -64,6 +68,7 @@ type Config struct {
 	Template *TemplateConfig `yaml:"template,omitempty"`
 }
 
+// Load reads and parses a dock-docs YAML configuration file from the given path.
 func Load(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {

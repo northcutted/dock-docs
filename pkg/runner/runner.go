@@ -1,7 +1,9 @@
 package runner
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -16,7 +18,7 @@ import (
 // lookupTool resolves the path to an external tool binary. It checks
 // the system PATH first and falls back to the dock-docs install
 // directory (~/.dock-docs/bin/).
-func lookupTool(name string) (string, error) {
+var lookupTool = func(name string) (string, error) {
 	path, _, err := installer.FindTool(name)
 	return path, err
 }
@@ -42,10 +44,11 @@ func runCommand(cmd *exec.Cmd, verbose bool) ([]byte, error) {
 	output, err := cmd.Output()
 	if err != nil {
 		var stderr []byte
-		if exitErr, ok := err.(*exec.ExitError); ok {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
 			stderr = exitErr.Stderr
 		}
-		return nil, fmt.Errorf("command failed: %s\nStderr: %s", err, string(stderr))
+		return nil, fmt.Errorf("command failed: %w\nStderr: %s", err, string(stderr))
 	}
 
 	if verbose {
@@ -69,7 +72,7 @@ func EnsureImage(image string, verbose bool) error {
 	}
 
 	// Check if image exists
-	checkCmd := exec.Command(binary, "inspect", "--type=image", image)
+	checkCmd := exec.CommandContext(context.Background(), binary, "inspect", "--type=image", image)
 	if err := checkCmd.Run(); err == nil {
 		if verbose {
 			fmt.Printf("[DEBUG] Image %s found locally\n", image)
@@ -79,7 +82,7 @@ func EnsureImage(image string, verbose bool) error {
 
 	// Image not found, pull it
 	fmt.Printf("Pulling image: %s ...\n", image)
-	pullCmd := exec.Command(binary, "pull", image)
+	pullCmd := exec.CommandContext(context.Background(), binary, "pull", image)
 	if _, err := runCommand(pullCmd, verbose); err != nil {
 		return fmt.Errorf("failed to pull image %s: %w", image, err)
 	}
@@ -91,6 +94,7 @@ type RuntimeRunner struct {
 	binary string
 }
 
+// Name returns the display name for this runner.
 func (r *RuntimeRunner) Name() string {
 	if r.binary != "" {
 		return r.binary
@@ -98,6 +102,7 @@ func (r *RuntimeRunner) Name() string {
 	return "runtime"
 }
 
+// IsAvailable checks whether a container runtime (docker or podman) is installed.
 func (r *RuntimeRunner) IsAvailable() bool {
 	// Check docker first
 	if _, err := exec.LookPath("docker"); err == nil {
@@ -112,6 +117,7 @@ func (r *RuntimeRunner) IsAvailable() bool {
 	return false
 }
 
+// Run executes 'docker inspect' or 'podman inspect' and parses the result.
 func (r *RuntimeRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	// Ensure binary is set if IsAvailable wasn't called (though it should be)
 	if r.binary == "" {
@@ -120,7 +126,7 @@ func (r *RuntimeRunner) Run(image string, verbose bool) (*types.ImageStats, erro
 		}
 	}
 
-	cmd := exec.Command(r.binary, "inspect", image)
+	cmd := exec.CommandContext(context.Background(), r.binary, "inspect", image)
 	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		return nil, err
@@ -134,8 +140,10 @@ type ManifestRunner struct {
 	binary string
 }
 
+// Name returns the display name for this runner.
 func (r *ManifestRunner) Name() string { return "manifest" }
 
+// IsAvailable checks whether a container runtime is installed for manifest inspection.
 func (r *ManifestRunner) IsAvailable() bool {
 	// Check docker
 	if _, err := exec.LookPath("docker"); err == nil {
@@ -150,6 +158,7 @@ func (r *ManifestRunner) IsAvailable() bool {
 	return false
 }
 
+// Run executes 'docker manifest inspect' or 'podman manifest inspect' and parses the result.
 func (r *ManifestRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	if r.binary == "" {
 		if !r.IsAvailable() {
@@ -159,7 +168,7 @@ func (r *ManifestRunner) Run(image string, verbose bool) (*types.ImageStats, err
 
 	// Try standard manifest inspect
 	// Need DOCKER_CLI_EXPERIMENTAL=enabled for older docker to be safe
-	cmd := exec.Command(r.binary, "manifest", "inspect", image)
+	cmd := exec.CommandContext(context.Background(), r.binary, "manifest", "inspect", image)
 	cmd.Env = append(os.Environ(), "DOCKER_CLI_EXPERIMENTAL=enabled")
 
 	output, err := runCommand(cmd, verbose)
@@ -177,8 +186,10 @@ type SyftRunner struct {
 	binary string
 }
 
+// Name returns the display name for this runner.
 func (r *SyftRunner) Name() string { return "syft" }
 
+// IsAvailable checks whether the syft binary is installed.
 func (r *SyftRunner) IsAvailable() bool {
 	if path, err := lookupTool("syft"); err == nil {
 		r.binary = path
@@ -187,13 +198,14 @@ func (r *SyftRunner) IsAvailable() bool {
 	return false
 }
 
+// Run executes 'syft <image> -o json' and parses the result.
 func (r *SyftRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	if r.binary == "" {
 		if !r.IsAvailable() {
 			return nil, fmt.Errorf("syft not found")
 		}
 	}
-	cmd := exec.Command(r.binary, image, "-o", "json")
+	cmd := exec.CommandContext(context.Background(), r.binary, image, "-o", "json")
 	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		return nil, err
@@ -207,8 +219,10 @@ type GrypeRunner struct {
 	binary string
 }
 
+// Name returns the display name for this runner.
 func (r *GrypeRunner) Name() string { return "grype" }
 
+// IsAvailable checks whether the grype binary is installed.
 func (r *GrypeRunner) IsAvailable() bool {
 	if path, err := lookupTool("grype"); err == nil {
 		r.binary = path
@@ -217,13 +231,14 @@ func (r *GrypeRunner) IsAvailable() bool {
 	return false
 }
 
+// Run executes 'grype <image> -o json' and parses the result.
 func (r *GrypeRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	if r.binary == "" {
 		if !r.IsAvailable() {
 			return nil, fmt.Errorf("grype not found")
 		}
 	}
-	cmd := exec.Command(r.binary, image, "-o", "json")
+	cmd := exec.CommandContext(context.Background(), r.binary, image, "-o", "json")
 	output, err := runCommand(cmd, verbose)
 	if err != nil {
 		return nil, err
@@ -237,8 +252,10 @@ type DiveRunner struct {
 	binary string
 }
 
+// Name returns the display name for this runner.
 func (r *DiveRunner) Name() string { return "dive" }
 
+// IsAvailable checks whether the dive binary is installed.
 func (r *DiveRunner) IsAvailable() bool {
 	if path, err := lookupTool("dive"); err == nil {
 		r.binary = path
@@ -247,6 +264,39 @@ func (r *DiveRunner) IsAvailable() bool {
 	return false
 }
 
+// detectPodmanSocket attempts to detect the Podman machine socket path.
+// It returns a DOCKER_HOST value (e.g. "unix:///path/to/socket") if found,
+// or an empty string if detection fails.
+func detectPodmanSocket() string {
+	pCmd := exec.CommandContext(context.Background(), "podman", "machine", "inspect")
+	out, err := pCmd.Output()
+	if err != nil {
+		return ""
+	}
+
+	var machines []struct {
+		ConnectionInfo struct {
+			PodmanSocket *struct {
+				Path string `json:"Path"`
+			} `json:"PodmanSocket"`
+		} `json:"ConnectionInfo"`
+	}
+	if json.Unmarshal(out, &machines) != nil || len(machines) == 0 {
+		return ""
+	}
+
+	if machines[0].ConnectionInfo.PodmanSocket == nil || machines[0].ConnectionInfo.PodmanSocket.Path == "" {
+		return ""
+	}
+
+	socketPath := machines[0].ConnectionInfo.PodmanSocket.Path
+	if !strings.HasPrefix(socketPath, "unix://") {
+		socketPath = "unix://" + socketPath
+	}
+	return socketPath
+}
+
+// Run executes dive against the given image and parses the efficiency results.
 func (r *DiveRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
 	// Create a temp file for output
 	tmpFile, err := os.CreateTemp("", "dive-output-*.json")
@@ -266,51 +316,16 @@ func (r *DiveRunner) Run(image string, verbose bool) (*types.ImageStats, error) 
 		}
 	}
 
-	// Note: CI=true suppresses interactive UI which might be default for dive?
-	// The --json flag should suffice.
-	cmd := exec.Command(r.binary, image, "--json", tmpFile.Name())
+	cmd := exec.CommandContext(context.Background(), r.binary, image, "--json", tmpFile.Name())
 
-	// Podman Support: Check if running via Podman and if DOCKER_HOST is missing
-	// If 'docker' command is missing but 'podman' is present, we likely need to help dive connect.
+	// Podman Support: If docker is missing but podman is present and DOCKER_HOST
+	// is not set, try to detect the Podman machine socket automatically.
 	if _, err := exec.LookPath("docker"); err != nil {
-		if _, err := exec.LookPath("podman"); err == nil {
-			// Podman detected. Check DOCKER_HOST
-			if os.Getenv("DOCKER_HOST") == "" {
-				// Try to detect Podman socket via 'podman machine inspect' (macOS/Windows)
-				// Note: On Linux, the socket is usually at a standard path, but 'machine' command might fail.
-				// We'll wrap this in a helper or just try.
-
-				// Using JSON approach for robustness
-				pCmd := exec.Command("podman", "machine", "inspect")
-				if out, err := pCmd.Output(); err == nil {
-					// Create a flexible struct to handle potential variations
-					var machines []struct {
-						ConnectionInfo struct {
-							PodmanSocket *struct {
-								Path string `json:"Path"`
-							} `json:"PodmanSocket"`
-						} `json:"ConnectionInfo"`
-					}
-					if json.Unmarshal(out, &machines) == nil && len(machines) > 0 {
-						// Access safely with pointer check if needed, though unmarshal handles missing fields
-						if machines[0].ConnectionInfo.PodmanSocket != nil && machines[0].ConnectionInfo.PodmanSocket.Path != "" {
-							socketPath := machines[0].ConnectionInfo.PodmanSocket.Path
-							// Set env for the dive command
-							// Note: os.Environ() returns a copy, so append works safely for the cmd.Env
-							env := os.Environ()
-							// Ensure unix:// prefix
-							if !strings.HasPrefix(socketPath, "unix://") {
-								socketPath = "unix://" + socketPath
-							}
-							env = append(env, "DOCKER_HOST="+socketPath)
-							cmd.Env = env
-						}
-					}
-				}
-
-				// If machine inspect fails (e.g. Linux native podman, not machine),
-				// we might check `podman info` or standard paths.
-				// But let's stick to the specific request logic first.
+		if _, err := exec.LookPath("podman"); err == nil && os.Getenv("DOCKER_HOST") == "" {
+			if socketPath := detectPodmanSocket(); socketPath != "" {
+				env := os.Environ()
+				env = append(env, "DOCKER_HOST="+socketPath)
+				cmd.Env = env
 			}
 		}
 	}
@@ -329,7 +344,7 @@ func (r *DiveRunner) Run(image string, verbose bool) (*types.ImageStats, error) 
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return nil, fmt.Errorf("dive failed: %s, output: %s", err, string(output))
+		return nil, fmt.Errorf("dive failed: %w, output: %s", err, string(output))
 	}
 
 	if verbose {

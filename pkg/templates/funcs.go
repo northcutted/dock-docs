@@ -57,59 +57,37 @@ func jsonEscape(s string) string {
 	return s
 }
 
+var emojiMap = map[string]string{
+	"whale":    "\U0001F433 ",
+	"gear":     "\u2699\uFE0F ",
+	"shield":   "\U0001F6E1\uFE0F ",
+	"tag":      "\U0001F3F7\uFE0F ",
+	"search":   "\U0001F50D ",
+	"down":     "\U0001F447 ",
+	"package":  "\U0001F4E6 ",
+	"check":    "\u2705",
+	"cross":    "\u274C",
+	"critical": "\U0001F6D1",
+	"high":     "\U0001F7E0",
+	"medium":   "\U0001F7E1",
+	"low":      "\U0001F535",
+	"clean":    "\U0001F7E2",
+}
+
+var noMojiMap = map[string]string{
+	"check":    "[YES]",
+	"cross":    "[NO]",
+	"critical": "[CRIT]",
+	"high":     "[HIGH]",
+	"medium":   "[MED]",
+	"low":      "[LOW]",
+	"clean":    "[OK]",
+}
+
 // getEmoji returns an emoji or text alternative based on the noMoji flag.
 func getEmoji(name string, noMoji bool) string {
 	if noMoji {
-		switch name {
-		case "check":
-			return "[YES]"
-		case "cross":
-			return "[NO]"
-		case "critical":
-			return "[CRIT]"
-		case "high":
-			return "[HIGH]"
-		case "medium":
-			return "[MED]"
-		case "low":
-			return "[LOW]"
-		case "clean":
-			return "[OK]"
-		default:
-			return ""
-		}
+		return noMojiMap[name]
 	}
-
-	switch name {
-	case "whale":
-		return "\U0001F433 "
-	case "gear":
-		return "\u2699\uFE0F "
-	case "shield":
-		return "\U0001F6E1\uFE0F "
-	case "tag":
-		return "\U0001F3F7\uFE0F "
-	case "search":
-		return "\U0001F50D "
-	case "down":
-		return "\U0001F447 "
-	case "package":
-		return "\U0001F4E6 "
-	case "check":
-		return "\u2705"
-	case "cross":
-		return "\u274C"
-	case "critical":
-		return "\U0001F6D1"
-	case "high":
-		return "\U0001F7E0"
-	case "medium":
-		return "\U0001F7E1"
-	case "low":
-		return "\U0001F535"
-	case "clean":
-		return "\U0001F7E2"
-	default:
-		return ""
-	}
+	return emojiMap[name]
 }

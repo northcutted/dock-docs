@@ -8,6 +8,7 @@ import (
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
 )
 
+// DocItem represents a single documented instruction extracted from a Dockerfile.
 type DocItem struct {
 	Name        string // e.g., "PORT"
 	Value       string // inferred default from the instruction
@@ -16,6 +17,7 @@ type DocItem struct {
 	Required    bool   // from @required
 }
 
+// Documentation holds all extracted documentation items from a Dockerfile.
 type Documentation struct {
 	Items []DocItem
 }

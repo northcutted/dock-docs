@@ -5,6 +5,7 @@ package installer
 import (
 	"archive/tar"
 	"compress/gzip"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -136,7 +137,7 @@ func Install(tool Tool, installDir string) error {
 	}
 
 	// Quick verification: run "<tool> version" to check the binary works
-	cmd := exec.Command(destPath, "version")
+	cmd := exec.CommandContext(context.Background(), destPath, "version")
 	if err := cmd.Run(); err != nil {
 		// Non-fatal: binary was written but version check failed
 		fmt.Printf("  Warning: %s installed but version check failed: %v\n", tool.Name, err)
@@ -181,7 +182,7 @@ func InstallAll(installDir string, force bool) error {
 func latestReleaseTag(repo string) (string, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", repo)
 
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
 	if err != nil {
 		return "", err
 	}
@@ -217,7 +218,7 @@ func latestReleaseTag(repo string) (string, error) {
 // httpGet performs a GET request and returns the response body.
 // The caller must close the returned ReadCloser.
 func httpGet(url string) (io.ReadCloser, error) {
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
