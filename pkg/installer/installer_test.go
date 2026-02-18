@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -571,6 +572,246 @@ func TestLatestReleaseTag_Success(t *testing.T) {
 	}
 	if tag != "v3.1.0" {
 		t.Errorf("tag = %q, want %q", tag, "v3.1.0")
+	}
+}
+
+func TestLatestReleaseTag_WithGitHubToken(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/repos/test/authtool/releases/latest", func(w http.ResponseWriter, r *http.Request) {
+		// Verify that Authorization header is set when GITHUB_TOKEN is present
+		auth := r.Header.Get("Authorization")
+		if auth != "Bearer test-token-123" {
+			t.Errorf("Authorization header = %q, want %q", auth, "Bearer test-token-123")
+		}
+		resp := map[string]string{"tag_name": "v4.0.0"}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(resp)
+	})
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	origClient := httpClient
+	httpClient = &http.Client{
+		Transport: &urlRewriteTransport{
+			base:      http.DefaultTransport,
+			serverURL: server.URL,
+		},
+	}
+	defer func() { httpClient = origClient }()
+
+	// Set GITHUB_TOKEN
+	origToken := os.Getenv("GITHUB_TOKEN")
+	if err := os.Setenv("GITHUB_TOKEN", "test-token-123"); err != nil {
+		t.Fatalf("failed to set GITHUB_TOKEN: %v", err)
+	}
+	defer func() {
+		if origToken == "" {
+			_ = os.Unsetenv("GITHUB_TOKEN")
+		} else {
+			_ = os.Setenv("GITHUB_TOKEN", origToken)
+		}
+	}()
+
+	tag, err := latestReleaseTag("test/authtool")
+	if err != nil {
+		t.Fatalf("latestReleaseTag() unexpected error: %v", err)
+	}
+	if tag != "v4.0.0" {
+		t.Errorf("tag = %q, want %q", tag, "v4.0.0")
+	}
+}
+
+func TestHttpGet_WithGitHubToken(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/asset", func(w http.ResponseWriter, r *http.Request) {
+		auth := r.Header.Get("Authorization")
+		if auth != "Bearer download-token-456" {
+			t.Errorf("Authorization header = %q, want %q", auth, "Bearer download-token-456")
+		}
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("asset-data"))
+	})
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	origClient := httpClient
+	httpClient = server.Client()
+	defer func() { httpClient = origClient }()
+
+	origToken := os.Getenv("GITHUB_TOKEN")
+	if err := os.Setenv("GITHUB_TOKEN", "download-token-456"); err != nil {
+		t.Fatalf("failed to set GITHUB_TOKEN: %v", err)
+	}
+	defer func() {
+		if origToken == "" {
+			_ = os.Unsetenv("GITHUB_TOKEN")
+		} else {
+			_ = os.Setenv("GITHUB_TOKEN", origToken)
+		}
+	}()
+
+	body, err := httpGet(server.URL + "/asset")
+	if err != nil {
+		t.Fatalf("httpGet() unexpected error: %v", err)
+	}
+	defer func() { _ = body.Close() }()
+
+	data, err := io.ReadAll(body)
+	if err != nil {
+		t.Fatalf("failed to read body: %v", err)
+	}
+	if string(data) != "asset-data" {
+		t.Errorf("body = %q, want %q", string(data), "asset-data")
+	}
+}
+
+func TestExtractBinaryFromTarGz_InvalidGzip(t *testing.T) {
+	_, err := extractBinaryFromTarGz(bytes.NewReader([]byte("not gzip data")), "mytool")
+	if err == nil {
+		t.Fatal("expected error for invalid gzip data")
+	}
+}
+
+func TestExtractBinaryFromTarGz_DirectoryEntry(t *testing.T) {
+	// Archive containing a directory entry with the same name — should be skipped
+	var buf bytes.Buffer
+	gw := gzip.NewWriter(&buf)
+	tw := tar.NewWriter(gw)
+
+	// Write a directory entry named "mytool"
+	dirHdr := &tar.Header{
+		Name:     "mytool",
+		Typeflag: tar.TypeDir,
+		Mode:     0755,
+	}
+	if err := tw.WriteHeader(dirHdr); err != nil {
+		t.Fatalf("tar WriteHeader dir: %v", err)
+	}
+
+	if err := tw.Close(); err != nil {
+		t.Fatalf("tar Close: %v", err)
+	}
+	if err := gw.Close(); err != nil {
+		t.Fatalf("gzip Close: %v", err)
+	}
+
+	_, err := extractBinaryFromTarGz(bytes.NewReader(buf.Bytes()), "mytool")
+	if err == nil {
+		t.Fatal("expected error when archive only contains directory, not regular file")
+	}
+}
+
+func TestExtractBinaryFromTarGz_OversizedHeader(t *testing.T) {
+	// Verify the constant is reasonable
+	if maxBinarySize != 200*1024*1024 {
+		t.Fatalf("maxBinarySize = %d, want %d", maxBinarySize, 200*1024*1024)
+	}
+
+	// To test the header size check, we manually construct a tar.gz archive
+	// with a forged header declaring a file larger than the limit.
+	var rawTar bytes.Buffer
+	tw := tar.NewWriter(&rawTar)
+
+	hdr := &tar.Header{
+		Name:     "mytool",
+		Mode:     0755,
+		Typeflag: tar.TypeReg,
+		Size:     maxBinarySize + 1,
+	}
+	// WriteHeader will succeed; it's Close/Flush that needs data to match.
+	// We write the header and the data padding manually via tar internals.
+	if err := tw.WriteHeader(hdr); err != nil {
+		t.Fatalf("tar WriteHeader: %v", err)
+	}
+	// Don't close tw — we just need a valid header in the stream.
+	// Gzip-wrap whatever we have (the header bytes are enough for our test).
+	var buf bytes.Buffer
+	gw := gzip.NewWriter(&buf)
+	if _, err := gw.Write(rawTar.Bytes()); err != nil {
+		t.Fatalf("gzip Write: %v", err)
+	}
+	if err := gw.Close(); err != nil {
+		t.Fatalf("gzip Close: %v", err)
+	}
+
+	_, err := extractBinaryFromTarGz(bytes.NewReader(buf.Bytes()), "mytool")
+	if err == nil {
+		t.Fatal("expected error for oversized binary header")
+	}
+	if !strings.Contains(err.Error(), "exceeds limit") {
+		t.Errorf("expected 'exceeds limit' in error, got: %v", err)
+	}
+}
+
+func TestInstall_DownloadError(t *testing.T) {
+	// Mock server returns success for API but 404 for the asset download
+	mux := http.NewServeMux()
+	mux.HandleFunc("/repos/test/dltool/releases/latest", func(w http.ResponseWriter, r *http.Request) {
+		resp := map[string]string{"tag_name": "v1.0.0"}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(resp)
+	})
+	// No handler for the download URL — will 404 via default handler
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	origClient := httpClient
+	httpClient = &http.Client{
+		Transport: &urlRewriteTransport{
+			base:      http.DefaultTransport,
+			serverURL: server.URL,
+		},
+	}
+	defer func() { httpClient = origClient }()
+
+	installDir := t.TempDir()
+	tool := Tool{Name: "dltool", Repo: "test/dltool"}
+
+	err := Install(tool, installDir)
+	if err == nil {
+		t.Fatal("expected error when asset download returns 404")
+	}
+}
+
+func TestInstall_BinaryNotInArchive(t *testing.T) {
+	// Archive contains a different file name than the tool name
+	tarball := makeTarGz(t, "wrong_name", []byte("binary"))
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/repos/test/missingtool/releases/latest", func(w http.ResponseWriter, r *http.Request) {
+		resp := map[string]string{"tag_name": "v1.0.0"}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(resp)
+	})
+
+	assetName := fmt.Sprintf("missingtool_1.0.0_%s_%s.tar.gz", runtime.GOOS, runtime.GOARCH)
+	mux.HandleFunc("/repos/test/missingtool/releases/download/v1.0.0/"+assetName, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/octet-stream")
+		_, _ = w.Write(tarball)
+	})
+
+	server := httptest.NewServer(mux)
+	defer server.Close()
+
+	origClient := httpClient
+	httpClient = &http.Client{
+		Transport: &urlRewriteTransport{
+			base:      http.DefaultTransport,
+			serverURL: server.URL,
+		},
+	}
+	defer func() { httpClient = origClient }()
+
+	installDir := t.TempDir()
+	tool := Tool{Name: "missingtool", Repo: "test/missingtool"}
+
+	err := Install(tool, installDir)
+	if err == nil {
+		t.Fatal("expected error when binary not found in archive")
 	}
 }
 

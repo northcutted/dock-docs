@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v3"
 )
@@ -88,6 +89,10 @@ func Load(path string) (*Config, error) {
 		cfg.BadgeBaseURL = "https://img.shields.io/static/v1"
 	}
 
+	if err := cfg.Validate(); err != nil {
+		return nil, fmt.Errorf("invalid config: %w", err)
+	}
+
 	return &cfg, nil
 }
 
@@ -99,4 +104,53 @@ func (c *Config) ResolveTemplate(section Section) *TemplateConfig {
 		return section.Template
 	}
 	return c.Template
+}
+
+// Validate checks the config for structural errors. It returns an error
+// describing the first problem found, or nil if the config is valid.
+func (c *Config) Validate() error {
+	if len(c.Sections) == 0 {
+		return fmt.Errorf("config must have at least one section")
+	}
+
+	for i, s := range c.Sections {
+		switch s.Type {
+		case SectionTypeImage, SectionTypeComparison:
+			// valid
+		default:
+			return fmt.Errorf("section %d: invalid type %q (must be %q or %q)",
+				i, s.Type, SectionTypeImage, SectionTypeComparison)
+		}
+
+		if s.Type == SectionTypeComparison && len(s.Images) == 0 {
+			return fmt.Errorf("section %d: comparison section must have at least one image", i)
+		}
+	}
+
+	return nil
+}
+
+// ResolveRelativePaths resolves all relative file paths in the config against
+// the given base directory. This allows the caller to avoid os.Chdir and
+// instead make all paths absolute before processing.
+func (c *Config) ResolveRelativePaths(baseDir string) {
+	if baseDir == "" || baseDir == "." {
+		return
+	}
+
+	resolve := func(p string) string {
+		if p == "" || filepath.IsAbs(p) {
+			return p
+		}
+		return filepath.Join(baseDir, p)
+	}
+
+	c.Output = resolve(c.Output)
+
+	for i := range c.Sections {
+		c.Sections[i].Source = resolve(c.Sections[i].Source)
+		if c.Sections[i].Template != nil {
+			c.Sections[i].Template.Path = resolve(c.Sections[i].Template.Path)
+		}
+	}
 }

@@ -47,7 +47,7 @@ type ReportContext struct {
 
 // Emoji returns the emoji or text alternative for the given name.
 func (r ReportContext) Emoji(name string) string {
-	return getEmoji(name, r.Options.NoMoji)
+	return templates.GetEmoji(name, r.Options.NoMoji)
 }
 
 // ComparisonContext holds all data passed to the comparison template.
@@ -58,41 +58,7 @@ type ComparisonContext struct {
 
 // Emoji returns the emoji or text alternative for the given name.
 func (r ComparisonContext) Emoji(name string) string {
-	return getEmoji(name, r.Options.NoMoji)
-}
-
-var emojiMap = map[string]string{
-	"whale":    "🐳 ",
-	"gear":     "⚙️ ",
-	"shield":   "🛡️ ",
-	"tag":      "🏷️ ",
-	"search":   "🔍 ",
-	"down":     "👇 ",
-	"package":  "📦 ",
-	"check":    "✅",
-	"cross":    "❌",
-	"critical": "🛑",
-	"high":     "🟠",
-	"medium":   "🟡",
-	"low":      "🔵",
-	"clean":    "🟢",
-}
-
-var noMojiMap = map[string]string{
-	"check":    "[YES]",
-	"cross":    "[NO]",
-	"critical": "[CRIT]",
-	"high":     "[HIGH]",
-	"medium":   "[MED]",
-	"low":      "[LOW]",
-	"clean":    "[OK]",
-}
-
-func getEmoji(name string, noMoji bool) string {
-	if noMoji {
-		return noMojiMap[name]
-	}
-	return emojiMap[name]
+	return templates.GetEmoji(name, r.Options.NoMoji)
 }
 
 // Render generates documentation using the default built-in template.

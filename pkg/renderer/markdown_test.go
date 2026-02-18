@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/northcutted/dock-docs/pkg/parser"
+	"github.com/northcutted/dock-docs/pkg/templates"
 	"github.com/northcutted/dock-docs/pkg/types"
 )
 
@@ -39,7 +40,7 @@ func TestRender(t *testing.T) {
 	scanTime, _ := time.Parse(time.RFC3339, "2024-02-15T14:30:00Z")
 	stats := &types.ImageStats{
 		ImageTag:     "test:latest",
-		SizeMB:       "50 MB",
+		SizeBytes:    52428800, // 50 MB
 		Architecture: "amd64",
 		OS:           "linux",
 		Efficiency:   95.5,
@@ -154,9 +155,9 @@ func TestGetEmoji(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := getEmoji(tt.emojiName, tt.noMoji)
+			result := templates.GetEmoji(tt.emojiName, tt.noMoji)
 			if result != tt.expected {
-				t.Errorf("getEmoji(%s, %v) = %q, want %q", tt.emojiName, tt.noMoji, result, tt.expected)
+				t.Errorf("GetEmoji(%s, %v) = %q, want %q", tt.emojiName, tt.noMoji, result, tt.expected)
 			}
 		})
 	}

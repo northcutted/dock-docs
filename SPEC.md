@@ -251,7 +251,7 @@ type ImageStats struct {
     SupportedArchitectures []string        // From manifest inspect
     OS                     string
     OSDistro               string          // From Syft (e.g., "Alpine Linux 3.18")
-    SizeMB                 string
+    SizeBytes              int64           // Raw size in bytes; use SizeMB() for formatted string
     TotalLayers            int
     Efficiency             float64         // From Dive (0-100 percentage)
     WastedBytes            string

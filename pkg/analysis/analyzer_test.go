@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"context"
 	"errors"
 	"strings"
 	"testing"
@@ -24,7 +25,7 @@ func (m *MockRunner) IsAvailable() bool {
 	return m.available
 }
 
-func (m *MockRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
+func (m *MockRunner) Run(_ context.Context, image string, verbose bool) (*types.ImageStats, error) {
 	if m.shouldFail {
 		return nil, errors.New("mock runner failed")
 	}
@@ -40,9 +41,9 @@ func (m *MockRunner) Run(image string, verbose bool) (*types.ImageStats, error) 
 func TestAnalyzeComparison(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error { return nil }
+	ensureImage = func(_ context.Context, image string, verbose bool) error { return nil }
 	mockStats := &types.ImageStats{
-		SizeMB:     "100MB",
+		SizeBytes:  104857600, // 100 MB
 		Efficiency: 95.0,
 	}
 
@@ -55,7 +56,7 @@ func TestAnalyzeComparison(t *testing.T) {
 	images := []string{"img1:latest", "img2:latest"}
 	runners := []Runner{runner}
 
-	results, err := AnalyzeComparison(images, runners, false)
+	results, err := AnalyzeComparison(context.Background(), images, runners, false)
 	if err != nil {
 		t.Fatalf("AnalyzeComparison failed: %v", err)
 	}
@@ -76,7 +77,7 @@ func TestAnalyzeComparison(t *testing.T) {
 func TestAnalyzeComparison_PartialFailure(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error { return nil }
+	ensureImage = func(_ context.Context, image string, verbose bool) error { return nil }
 	// Test that if one image analysis fails, others still return (or at least function doesn't crash)
 	// The current implementation of AnalyzeComparison prints error and returns nil for that slot,
 	// then filters out nils.
@@ -88,7 +89,7 @@ func TestAnalyzeComparison_PartialFailure(t *testing.T) {
 	images := []string{"good:image", "bad:image", "good:image2"}
 	runners := []Runner{smartRunner}
 
-	results, err := AnalyzeComparison(images, runners, false)
+	results, err := AnalyzeComparison(context.Background(), images, runners, false)
 	if err != nil {
 		t.Fatalf("AnalyzeComparison failed: %v", err)
 	}
@@ -121,20 +122,20 @@ type SmartMockRunner struct {
 
 func (m *SmartMockRunner) Name() string      { return "SmartMock" }
 func (m *SmartMockRunner) IsAvailable() bool { return true }
-func (m *SmartMockRunner) Run(image string, verbose bool) (*types.ImageStats, error) {
+func (m *SmartMockRunner) Run(_ context.Context, image string, verbose bool) (*types.ImageStats, error) {
 	if image == m.failOnImage {
 		return nil, errors.New("simulated failure")
 	}
-	return &types.ImageStats{ImageTag: image, SizeMB: "10MB"}, nil
+	return &types.ImageStats{ImageTag: image, SizeBytes: 10485760}, nil // 10 MB
 }
 
 func TestAnalyzeImage_EmptyImage(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error { return nil }
+	ensureImage = func(_ context.Context, image string, verbose bool) error { return nil }
 
 	runner := &MockRunner{name: "test", available: true}
-	_, err := AnalyzeImage("", []Runner{runner}, false)
+	_, err := AnalyzeImage(context.Background(), "", []Runner{runner}, false)
 	if err == nil {
 		t.Error("Expected error for empty image tag")
 	}
@@ -146,12 +147,12 @@ func TestAnalyzeImage_EmptyImage(t *testing.T) {
 func TestAnalyzeImage_EnsureImageFailure(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error {
+	ensureImage = func(_ context.Context, image string, verbose bool) error {
 		return errors.New("pull failed")
 	}
 
 	runner := &MockRunner{name: "test", available: true}
-	_, err := AnalyzeImage("test:latest", []Runner{runner}, false)
+	_, err := AnalyzeImage(context.Background(), "test:latest", []Runner{runner}, false)
 	if err == nil {
 		t.Error("Expected error when ensureImage fails")
 	}
@@ -163,10 +164,10 @@ func TestAnalyzeImage_EnsureImageFailure(t *testing.T) {
 func TestAnalyzeImage_UnavailableRunner(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error { return nil }
+	ensureImage = func(_ context.Context, image string, verbose bool) error { return nil }
 
 	unavailableRunner := &MockRunner{name: "unavailable", available: false}
-	stats, err := AnalyzeImage("test:latest", []Runner{unavailableRunner}, false)
+	stats, err := AnalyzeImage(context.Background(), "test:latest", []Runner{unavailableRunner}, false)
 
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
@@ -182,7 +183,7 @@ func TestAnalyzeImage_UnavailableRunner(t *testing.T) {
 func TestAnalyzeImage_MultipleRunners(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error { return nil }
+	ensureImage = func(_ context.Context, image string, verbose bool) error { return nil }
 
 	runner1 := &MockRunner{
 		name:      "runner1",
@@ -190,7 +191,7 @@ func TestAnalyzeImage_MultipleRunners(t *testing.T) {
 		returnStats: &types.ImageStats{
 			Architecture: "amd64",
 			OS:           "linux",
-			SizeMB:       "100MB",
+			SizeBytes:    104857600, // 100 MB
 		},
 	}
 	runner2 := &MockRunner{
@@ -205,7 +206,7 @@ func TestAnalyzeImage_MultipleRunners(t *testing.T) {
 		},
 	}
 
-	stats, err := AnalyzeImage("test:latest", []Runner{runner1, runner2}, false)
+	stats, err := AnalyzeImage(context.Background(), "test:latest", []Runner{runner1, runner2}, false)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
@@ -217,8 +218,8 @@ func TestAnalyzeImage_MultipleRunners(t *testing.T) {
 	if stats.Architecture != "amd64" {
 		t.Errorf("Expected Architecture amd64, got %s", stats.Architecture)
 	}
-	if stats.SizeMB != "100MB" {
-		t.Errorf("Expected SizeMB 100MB, got %s", stats.SizeMB)
+	if stats.SizeBytes != 104857600 {
+		t.Errorf("Expected SizeBytes 104857600, got %d", stats.SizeBytes)
 	}
 	if stats.Efficiency != 95.0 {
 		t.Errorf("Expected Efficiency 95.0, got %f", stats.Efficiency)
@@ -245,7 +246,7 @@ func TestMergeStats_Comprehensive(t *testing.T) {
 		Architecture:           "arm64",
 		OS:                     "linux",
 		OSDistro:               "alpine",
-		SizeMB:                 "50MB",
+		SizeBytes:              52428800, // 50 MB
 		TotalLayers:            10,
 		Efficiency:             92.5,
 		WastedBytes:            "5MB",
@@ -272,8 +273,8 @@ func TestMergeStats_Comprehensive(t *testing.T) {
 	if dest.OSDistro != "alpine" {
 		t.Errorf("Expected OSDistro alpine, got %s", dest.OSDistro)
 	}
-	if dest.SizeMB != "50MB" {
-		t.Errorf("Expected SizeMB 50MB, got %s", dest.SizeMB)
+	if dest.SizeBytes != 52428800 {
+		t.Errorf("Expected SizeBytes 52428800, got %d", dest.SizeBytes)
 	}
 	if dest.TotalLayers != 10 {
 		t.Errorf("Expected TotalLayers 10, got %d", dest.TotalLayers)
@@ -322,7 +323,7 @@ func TestMergeStats_NilSource(t *testing.T) {
 func TestAnalyzeImage_VulnerabilitySorting(t *testing.T) {
 	oldEnsureImage := ensureImage
 	defer func() { ensureImage = oldEnsureImage }()
-	ensureImage = func(image string, verbose bool) error { return nil }
+	ensureImage = func(_ context.Context, image string, verbose bool) error { return nil }
 
 	runner := &MockRunner{
 		name:      "vuln-runner",
@@ -337,7 +338,7 @@ func TestAnalyzeImage_VulnerabilitySorting(t *testing.T) {
 		},
 	}
 
-	stats, err := AnalyzeImage("test:latest", []Runner{runner}, false)
+	stats, err := AnalyzeImage(context.Background(), "test:latest", []Runner{runner}, false)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

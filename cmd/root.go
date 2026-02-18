@@ -1,11 +1,24 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"io"
+	"log/slog"
 	"os"
+	"time"
 
 	"github.com/spf13/cobra"
 )
+
+// stdout is the writer used for normal program output. Tests can swap this
+// to capture output without touching os.Stdout, which makes it safe to run
+// tests that capture output without global process-state mutation.
+var stdout io.Writer = os.Stdout
+
+// logOutput is the writer used for structured log output (slog). Tests can
+// swap this to capture log messages. Defaults to os.Stderr.
+var logOutput io.Writer = os.Stderr
 
 var (
 	dockerfile       string
@@ -22,6 +35,7 @@ var (
 	exportTemplate   string
 	validateTemplate string
 	debugTemplate    bool
+	analysisTimeout  time.Duration
 )
 
 var rootCmd = &cobra.Command{
@@ -51,6 +65,9 @@ Modes:
 
   # CLI Mode: Output to specific file
   dock-docs -f ./Dockerfile -o DOCUMENTATION.md`,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		initLogger()
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Handle template developer tool flags first (these exit early)
 		if listTemplates {
@@ -63,6 +80,15 @@ Modes:
 			return handleValidateTemplate(validateTemplate)
 		}
 
+		ctx := cmd.Context()
+
+		// Apply analysis timeout if set
+		if analysisTimeout > 0 {
+			var cancel context.CancelFunc
+			ctx, cancel = context.WithTimeout(ctx, analysisTimeout)
+			defer cancel()
+		}
+
 		// Detect YAML Mode
 		cfgPath := configFile
 		if cfgPath == "" {
@@ -72,19 +98,34 @@ Modes:
 		}
 
 		if cfgPath != "" {
-			return runYAMLMode(cfgPath)
+			return runYAMLMode(ctx, cfgPath)
 		}
 
-		return runCLIMode()
+		return runCLIMode(ctx)
 	},
 }
 
 // Execute runs the root cobra command and exits on error.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+// initLogger configures the global slog logger based on the --verbose flag.
+// DEBUG level is enabled when verbose is true; otherwise INFO is the minimum.
+// Output goes to logOutput (defaults to stderr) so it doesn't interfere with
+// program content on stdout.
+func initLogger() {
+	level := slog.LevelInfo
+	if verbose {
+		level = slog.LevelDebug
+	}
+	handler := slog.NewTextHandler(logOutput, &slog.HandlerOptions{
+		Level: level,
+	})
+	slog.SetDefault(slog.New(handler))
 }
 
 func init() {
@@ -107,6 +148,7 @@ func init() {
 	rootCmd.Flags().StringVar(&exportTemplate, "export-template", "", "Export a built-in template to stdout (e.g. 'default')")
 	rootCmd.Flags().StringVar(&validateTemplate, "validate-template", "", "Validate a custom template file for syntax errors")
 	rootCmd.Flags().BoolVar(&debugTemplate, "debug-template", false, "Print template resolution info during rendering")
+	rootCmd.Flags().DurationVar(&analysisTimeout, "timeout", 10*time.Minute, "Overall timeout for all analysis operations (e.g. 5m, 30s)")
 
 	// Add version flag as shortcut for "version" command
 	rootCmd.Version = Version

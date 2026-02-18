@@ -1,0 +1,14 @@
+output: "README-OVERRIDE.md"
+template:
+  name: "default"  # Global default
+sections:
+  - type: "image"
+    marker: "config-minimal"
+    source: "Dockerfile"
+    template:
+      name: "minimal"  # Override for this section
+  - type: "image"
+    marker: "config-detailed"
+    source: "Dockerfile"
+    template:
+      name: "detailed"  # Override for this section

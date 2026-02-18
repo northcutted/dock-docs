@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/northcutted/dock-docs/pkg/analysis"
@@ -13,7 +15,7 @@ import (
 	"github.com/northcutted/dock-docs/pkg/types"
 )
 
-func runCLIMode() error {
+func runCLIMode(ctx context.Context) error {
 	// 1. Parse Dockerfile
 	doc, err := parser.Parse(dockerfile)
 	if err != nil {
@@ -23,7 +25,7 @@ func runCLIMode() error {
 	// 2. Dynamic Analysis (if requested)
 	var stats *types.ImageStats
 	if imageTag != "" {
-		fmt.Printf("Analyzing image: %s ...\n", imageTag)
+		slog.Info("analyzing image", "image", imageTag)
 		runners := []analysis.Runner{
 			&runner.RuntimeRunner{},
 			&runner.ManifestRunner{},
@@ -31,9 +33,9 @@ func runCLIMode() error {
 			&runner.GrypeRunner{},
 			&runner.DiveRunner{},
 		}
-		stats, err = analysis.AnalyzeImage(imageTag, runners, verbose)
+		stats, err = analysis.AnalyzeImage(ctx, imageTag, runners, verbose)
 		if err != nil {
-			fmt.Printf("Warning: analysis failed: %v\n", err)
+			slog.Warn("analysis failed", "error", err)
 			if !ignoreErrors {
 				return fmt.Errorf("analysis failed: %w", err)
 			}
@@ -44,7 +46,7 @@ func runCLIMode() error {
 	tmplSel := resolveTemplateSel(nil)
 
 	if debugTemplate {
-		fmt.Printf("Template: %s (type: image, format: %s)\n", describeTemplate(tmplSel), tmplSel.Format())
+		slog.Debug("template resolved", "template", describeTemplate(tmplSel), "type", "image", "format", tmplSel.Format())
 	}
 
 	// 4. Render
@@ -59,7 +61,7 @@ func runCLIMode() error {
 
 	// 5. Output Strategy
 	if dryRun {
-		fmt.Println(renderedContent)
+		fmt.Fprintln(stdout, renderedContent)
 		return nil
 	}
 
@@ -71,7 +73,7 @@ func runCLIMode() error {
 		if err := os.WriteFile(outPath, []byte(renderedContent), 0644); err != nil {
 			return fmt.Errorf("failed to write output file: %w", err)
 		}
-		fmt.Printf("Wrote %s\n", outPath)
+		slog.Info("wrote output file", "path", outPath)
 		return nil
 	}
 
@@ -79,8 +81,8 @@ func runCLIMode() error {
 	content, err := os.ReadFile(outputFile)
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Fprintf(os.Stderr, "Warning: Output file '%s' does not exist. Printing to stdout.\n", outputFile)
-			fmt.Println(renderedContent)
+			slog.Warn("output file does not exist, printing to stdout", "file", outputFile)
+			fmt.Fprintln(stdout, renderedContent)
 			return nil
 		}
 		return err
@@ -90,15 +92,15 @@ func runCLIMode() error {
 	// Simple mode uses default markers (empty name)
 	newContent, err := injector.Inject(fileContent, "", renderedContent)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Warning: %v. Printing to stdout.\n", err)
-		fmt.Println(renderedContent)
+		slog.Warn("injection failed, printing to stdout", "error", err)
+		fmt.Fprintln(stdout, renderedContent)
 		return nil
 	}
 
 	if err := os.WriteFile(outputFile, []byte(newContent), 0644); err != nil {
 		return fmt.Errorf("failed to write output file: %w", err)
 	}
-	fmt.Printf("Updated %s\n", outputFile)
+	slog.Info("updated output file", "path", outputFile)
 
 	return nil
 }

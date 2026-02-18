@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 	"net/url"
+	"sort"
 	"time"
 )
 
@@ -27,7 +28,7 @@ type ImageStats struct {
 	SupportedArchitectures []string // from Manifest Inspect
 	OS                     string
 	OSDistro               string // from Syft (e.g., "Alpine Linux 3.18")
-	SizeMB                 string
+	SizeBytes              int64
 	TotalLayers            int
 	Efficiency             float64 // from Dive (0-100)
 	WastedBytes            string  // from Dive
@@ -38,15 +39,26 @@ type ImageStats struct {
 	VulnScanTime           time.Time        // from Grype (When vulnerability scan was performed)
 }
 
+// SizeMB returns the image size formatted as a human-readable string (e.g., "7.60 MB").
+// Templates can call {{ .SizeMB }} or {{ .Stats.SizeMB }} and get the same result
+// as the old string field.
+func (s *ImageStats) SizeMB() string {
+	if s.SizeBytes == 0 {
+		return ""
+	}
+	return fmt.Sprintf("%.2f MB", float64(s.SizeBytes)/1024/1024)
+}
+
 // Badge Helpers
 
 // SizeBadge returns a shields.io badge URL for the image size.
 func (s *ImageStats) SizeBadge(baseURL string) string {
-	if s.SizeMB == "" {
+	sizeMB := s.SizeMB()
+	if sizeMB == "" {
 		return ""
 	}
 	// https://img.shields.io/static/v1?label=Size&message=7.6MB&color=blue
-	return fmt.Sprintf("%s?label=Size&message=%s&color=blue", baseURL, url.QueryEscape(s.SizeMB))
+	return fmt.Sprintf("%s?label=Size&message=%s&color=blue", baseURL, url.QueryEscape(sizeMB))
 }
 
 // LayersBadge returns a shields.io badge URL for the layer count.
@@ -73,10 +85,12 @@ func (s *ImageStats) EfficiencyBadge(baseURL string) string {
 }
 
 // VulnBadge returns a shields.io badge URL summarizing vulnerability findings.
+// The total uses TotalVulns() (which includes all severities, including Unknown)
+// for consistency with the Vulnerabilities slice.
 func (s *ImageStats) VulnBadge(baseURL string) string {
 	critical := s.VulnSummary["Critical"]
 	high := s.VulnSummary["High"]
-	total := critical + high + s.VulnSummary["Medium"] + s.VulnSummary["Low"]
+	total := s.TotalVulns()
 
 	color := "green"
 	if critical > 0 {
@@ -92,4 +106,27 @@ func (s *ImageStats) VulnBadge(baseURL string) string {
 // TotalVulns returns the total number of vulnerabilities found.
 func (s *ImageStats) TotalVulns() int {
 	return len(s.Vulnerabilities)
+}
+
+// severityRank maps vulnerability severity strings to numeric ranks for sorting.
+// Higher values indicate more severe vulnerabilities.
+var severityRank = map[string]int{
+	"Critical": 4,
+	"High":     3,
+	"Medium":   2,
+	"Low":      1,
+	"Unknown":  0,
+}
+
+// SortBySeverity sorts a slice of vulnerabilities by severity (Critical first)
+// with a secondary sort by ID for deterministic ordering.
+func SortBySeverity(vulns []Vulnerability) {
+	sort.Slice(vulns, func(i, j int) bool {
+		rankI := severityRank[vulns[i].Severity]
+		rankJ := severityRank[vulns[j].Severity]
+		if rankI != rankJ {
+			return rankI > rankJ
+		}
+		return vulns[i].ID < vulns[j].ID
+	})
 }

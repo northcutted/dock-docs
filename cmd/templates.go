@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"log/slog"
 	"strings"
 
 	"github.com/northcutted/dock-docs/pkg/config"
@@ -49,17 +49,17 @@ func describeTemplate(sel renderer.TemplateSelection) string {
 }
 
 // handleListTemplates prints all available built-in templates.
-func handleListTemplates() error {
+func handleListTemplates() error { //nolint:unparam // error return is part of RunE handler contract
 	builtins := templates.ListBuiltin()
-	fmt.Println("Available built-in templates:")
-	fmt.Println()
+	fmt.Fprintln(stdout, "Available built-in templates:")
+	fmt.Fprintln(stdout)
 	for _, b := range builtins {
-		fmt.Printf("  %-10s  [%s]  %s\n", b.Name, b.Format, b.Description)
+		fmt.Fprintf(stdout, "  %-10s  [%s]  %s\n", b.Name, b.Format, b.Description)
 	}
-	fmt.Println()
-	fmt.Println("Usage:")
-	fmt.Println("  dock-docs --template <name>")
-	fmt.Println("  dock-docs --export-template <name> > my-template.tmpl")
+	fmt.Fprintln(stdout)
+	fmt.Fprintln(stdout, "Usage:")
+	fmt.Fprintln(stdout, "  dock-docs --template <name>")
+	fmt.Fprintln(stdout, "  dock-docs --export-template <name> > my-template.tmpl")
 	return nil
 }
 
@@ -74,7 +74,9 @@ func handleExportTemplate(name string) error {
 	if err != nil {
 		return fmt.Errorf("failed to export template: %w", err)
 	}
-	fmt.Print(content)
+	if _, err = fmt.Fprint(stdout, content); err != nil {
+		return fmt.Errorf("failed to write template: %w", err)
+	}
 	return nil
 }
 
@@ -82,9 +84,9 @@ func handleExportTemplate(name string) error {
 func handleValidateTemplate(path string) error {
 	loader := templates.NewLoader(false)
 	if err := loader.Validate(path); err != nil {
-		fmt.Fprintf(os.Stderr, "Validation failed: %v\n", err)
+		slog.Error("template validation failed", "path", path, "error", err)
 		return err
 	}
-	fmt.Printf("Template %s is valid.\n", path)
+	fmt.Fprintf(stdout, "Template %s is valid.\n", path)
 	return nil
 }

@@ -17,18 +17,18 @@ func TestImageStats_SizeBadge(t *testing.T) {
 	}{
 		{
 			name:     "valid size",
-			stats:    &ImageStats{SizeMB: "64.50 MB"},
+			stats:    &ImageStats{SizeBytes: 67633152}, // 64.50 MB
 			wantURL:  true,
 			contains: []string{"label=Size", "message=64.50+MB", "color=blue"},
 		},
 		{
-			name:    "empty size",
-			stats:   &ImageStats{SizeMB: ""},
+			name:    "zero size",
+			stats:   &ImageStats{SizeBytes: 0},
 			wantURL: false,
 		},
 		{
 			name:     "large size",
-			stats:    &ImageStats{SizeMB: "1024.00 MB"},
+			stats:    &ImageStats{SizeBytes: 1073741824}, // 1024.00 MB
 			wantURL:  true,
 			contains: []string{"label=Size", "message=1024.00+MB", "color=blue"},
 		},
@@ -189,6 +189,13 @@ func TestImageStats_VulnBadge(t *testing.T) {
 		{
 			name: "critical vulnerabilities (red)",
 			stats: &ImageStats{
+				Vulnerabilities: []Vulnerability{
+					{Severity: "Critical"}, {Severity: "Critical"},
+					{Severity: "High"}, {Severity: "High"}, {Severity: "High"}, {Severity: "High"}, {Severity: "High"},
+					{Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"},
+					{Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"},
+					{Severity: "Low"}, {Severity: "Low"}, {Severity: "Low"},
+				},
 				VulnSummary: map[string]int{
 					"Critical": 2,
 					"High":     5,
@@ -202,6 +209,11 @@ func TestImageStats_VulnBadge(t *testing.T) {
 		{
 			name: "high vulnerabilities only (orange)",
 			stats: &ImageStats{
+				Vulnerabilities: []Vulnerability{
+					{Severity: "High"}, {Severity: "High"}, {Severity: "High"},
+					{Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"},
+					{Severity: "Low"}, {Severity: "Low"},
+				},
 				VulnSummary: map[string]int{
 					"Critical": 0,
 					"High":     3,
@@ -215,6 +227,10 @@ func TestImageStats_VulnBadge(t *testing.T) {
 		{
 			name: "no critical or high (green)",
 			stats: &ImageStats{
+				Vulnerabilities: []Vulnerability{
+					{Severity: "Medium"}, {Severity: "Medium"}, {Severity: "Medium"},
+					{Severity: "Low"}, {Severity: "Low"}, {Severity: "Low"}, {Severity: "Low"}, {Severity: "Low"},
+				},
 				VulnSummary: map[string]int{
 					"Critical": 0,
 					"High":     0,
@@ -347,7 +363,7 @@ func TestImageStats_URLEncoding(t *testing.T) {
 	baseURL := "https://img.shields.io/static/v1"
 
 	stats := &ImageStats{
-		SizeMB: "100.50 MB",
+		SizeBytes: 105381888, // 100.50 MB
 		VulnSummary: map[string]int{
 			"Critical": 5,
 			"High":     10,
@@ -377,7 +393,7 @@ func TestImageStats_CustomBaseURL(t *testing.T) {
 	customBaseURL := "https://custom-badges.example.com/badge"
 
 	stats := &ImageStats{
-		SizeMB:      "50.0 MB",
+		SizeBytes:   52428800, // 50.00 MB
 		TotalLayers: 10,
 		Efficiency:  95.0,
 		VulnSummary: map[string]int{"Critical": 0},
@@ -422,5 +438,31 @@ func TestImageStats_EmptyStats(t *testing.T) {
 
 	if !strings.Contains(vulnBadge, "0+Crit") {
 		t.Errorf("VulnBadge() for empty stats should show 0 Crit, got: %v", vulnBadge)
+	}
+}
+
+func TestImageStats_VulnBadge_IncludesUnknown(t *testing.T) {
+	baseURL := "https://img.shields.io/static/v1"
+
+	stats := &ImageStats{
+		Vulnerabilities: []Vulnerability{
+			{ID: "CVE-1", Severity: "Unknown"},
+			{ID: "CVE-2", Severity: "Unknown"},
+			{ID: "CVE-3", Severity: "Low"},
+		},
+		VulnSummary: map[string]int{
+			"Unknown": 2,
+			"Low":     1,
+		},
+	}
+
+	badge := stats.VulnBadge(baseURL)
+
+	// VulnBadge should count all 3 vulnerabilities (including Unknown severity)
+	if !strings.Contains(badge, "3+Vulns") {
+		t.Errorf("VulnBadge() should count Unknown severity vulns, got: %v", badge)
+	}
+	if !strings.Contains(badge, "color=green") {
+		t.Errorf("VulnBadge() should be green (no Critical/High), got: %v", badge)
 	}
 }

@@ -52,6 +52,7 @@
       {{- end }}
     ],
     "size_mb": "{{ .Stats.SizeMB }}",
+    "size_bytes": {{ .Stats.SizeBytes }},
     "total_layers": {{ .Stats.TotalLayers }},
     "efficiency": {{ printf "%.2f" .Stats.Efficiency }},
     "wasted_bytes": "{{ .Stats.WastedBytes }}",

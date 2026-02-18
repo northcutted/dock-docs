@@ -1,0 +1,18 @@
+# Custom Template Demo
+
+**Image:** {{ .ImageTag }}
+
+{{- if .Stats }}
+## Image Statistics
+- **Size:** {{ .Stats.SizeMB }}
+- **Layers:** {{ .Stats.TotalLayers }}
+- **Efficiency:** {{ printf "%.1f" .Stats.Efficiency }}%
+- **Vulnerabilities:** {{ .Stats.TotalVulns }}
+{{- end }}
+
+{{- if (len (.Doc.FilterByType "ENV")) }}
+## Environment Variables
+{{- range (.Doc.FilterByType "ENV") }}
+- **{{ .Name }}**: {{ .Description }} (default: {{ .Value }})
+{{- end }}
+{{- end }}

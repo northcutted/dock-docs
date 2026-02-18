@@ -1,8 +1,9 @@
 package analysis
 
 import (
+	"context"
 	"fmt"
-	"sort"
+	"log/slog"
 	"strings"
 	"sync"
 
@@ -15,11 +16,13 @@ import (
 type Runner interface {
 	Name() string
 	IsAvailable() bool
-	Run(image string, verbose bool) (*types.ImageStats, error)
+	Run(ctx context.Context, image string, verbose bool) (*types.ImageStats, error)
 }
 
 // AnalyzeComparison runs analysis on multiple images in parallel.
-func AnalyzeComparison(images []string, runners []Runner, verbose bool) ([]*types.ImageStats, error) {
+// The provided context controls the overall deadline for the comparison;
+// individual runner timeouts are derived from this parent context.
+func AnalyzeComparison(ctx context.Context, images []string, runners []Runner, verbose bool) ([]*types.ImageStats, error) {
 	var g errgroup.Group
 
 	// Create a slice to hold results
@@ -30,9 +33,9 @@ func AnalyzeComparison(images []string, runners []Runner, verbose bool) ([]*type
 		i, img := i, img
 		g.Go(func() error {
 			// Run analysis for this image
-			stats, err := AnalyzeImage(img, runners, verbose)
+			stats, err := AnalyzeImage(ctx, img, runners, verbose)
 			if err != nil {
-				fmt.Printf("Comparison Analysis Failed for %s: %v\n", img, err)
+				slog.Warn("comparison analysis failed", "image", img, "error", err)
 				if stats != nil {
 					results[i] = stats
 				}
@@ -63,13 +66,15 @@ func AnalyzeComparison(images []string, runners []Runner, verbose bool) ([]*type
 var ensureImage = runner.EnsureImage
 
 // AnalyzeImage runs all available runners against the given image and merges their results.
-func AnalyzeImage(image string, runners []Runner, verbose bool) (*types.ImageStats, error) {
+// The provided context controls the overall deadline; individual runner timeouts
+// are derived from this parent context.
+func AnalyzeImage(ctx context.Context, image string, runners []Runner, verbose bool) (*types.ImageStats, error) {
 	if image == "" {
 		return nil, fmt.Errorf("image tag is required")
 	}
 
 	// Ensure the image exists locally before analysis
-	if err := ensureImage(image, verbose); err != nil {
+	if err := ensureImage(ctx, image, verbose); err != nil {
 		return nil, fmt.Errorf("failed to ensure image %s: %w", image, err)
 	}
 
@@ -80,59 +85,45 @@ func AnalyzeImage(image string, runners []Runner, verbose bool) (*types.ImageSta
 		Vulnerabilities: make([]types.Vulnerability, 0),
 	}
 
-	var wg sync.WaitGroup
+	var g errgroup.Group
 	var mu sync.Mutex
-	errChan := make(chan error, len(runners))
+	var errs []error
 
 	for _, r := range runners {
 		if !r.IsAvailable() {
 			if verbose {
-				fmt.Printf("Warning: %s is not installed or not in PATH. Skipping.\n", r.Name())
+				slog.Debug("tool not available, skipping", "runner", r.Name())
 			}
 			continue
 		}
 
-		wg.Add(1)
-		go func(runner Runner) {
-			defer wg.Done()
-			stats, err := runner.Run(image, verbose)
+		r := r // capture loop variable
+		g.Go(func() error {
+			stats, err := r.Run(ctx, image, verbose)
 			if err != nil {
-				errChan <- fmt.Errorf("%s failed: %w", runner.Name(), err)
-				return
+				mu.Lock()
+				errs = append(errs, fmt.Errorf("%s failed: %w", r.Name(), err))
+				mu.Unlock()
+				return nil // Don't fail the group; partial success is allowed
 			}
 
 			mu.Lock()
-			defer mu.Unlock()
 			mergeStats(finalStats, stats)
-		}(r)
+			mu.Unlock()
+			return nil
+		})
 	}
 
-	wg.Wait()
-	close(errChan)
+	// Wait for all goroutines (always returns nil since goroutines never return errors)
+	_ = g.Wait()
 
-	// Collect errors if any (logging or returning partial success?)
-	var errs []error
-	for err := range errChan {
-		fmt.Printf("Analysis Warning: %v\n", err)
-		errs = append(errs, err)
+	// Log collected warnings
+	for _, err := range errs {
+		slog.Warn("analysis runner failed", "error", err)
 	}
 
 	// Final sort of vulnerabilities after merge
-	severityRank := map[string]int{
-		"Critical": 4,
-		"High":     3,
-		"Medium":   2,
-		"Low":      1,
-		"Unknown":  0,
-	}
-	sort.Slice(finalStats.Vulnerabilities, func(i, j int) bool {
-		rankI := severityRank[finalStats.Vulnerabilities[i].Severity]
-		rankJ := severityRank[finalStats.Vulnerabilities[j].Severity]
-		if rankI != rankJ {
-			return rankI > rankJ
-		}
-		return finalStats.Vulnerabilities[i].ID < finalStats.Vulnerabilities[j].ID
-	})
+	types.SortBySeverity(finalStats.Vulnerabilities)
 
 	if len(errs) > 0 {
 		// Build a detailed error message listing failing runners
@@ -160,8 +151,8 @@ func mergeStats(dest, src *types.ImageStats) {
 	if src.OSDistro != "" {
 		dest.OSDistro = src.OSDistro
 	}
-	if src.SizeMB != "" {
-		dest.SizeMB = src.SizeMB
+	if src.SizeBytes != 0 {
+		dest.SizeBytes = src.SizeBytes
 	}
 	if src.TotalLayers != 0 {
 		dest.TotalLayers = src.TotalLayers

@@ -1,0 +1,7 @@
+output: "README-CLI.md"
+template:
+  name: "detailed"  # Config specifies detailed
+sections:
+  - type: "image"
+    marker: "config"
+    source: "Dockerfile"

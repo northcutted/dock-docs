@@ -20,9 +20,9 @@ var versionCmd = &cobra.Command{
 	Short: "Print version information",
 	Long:  "Print the version, commit hash, and build date of dock-docs",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("dock-docs %s\n", Version)
-		fmt.Printf("  commit: %s\n", Commit)
-		fmt.Printf("  built:  %s\n", Date)
+		fmt.Fprintf(stdout, "dock-docs %s\n", Version)
+		fmt.Fprintf(stdout, "  commit: %s\n", Commit)
+		fmt.Fprintf(stdout, "  built:  %s\n", Date)
 	},
 }
 

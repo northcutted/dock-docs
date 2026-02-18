@@ -182,8 +182,8 @@ func TestLoadFile_DirectoryTraversal(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error for directory traversal, got nil")
 	}
-	if !strings.Contains(err.Error(), "directory traversal") {
-		t.Errorf("error = %q, want it to contain 'directory traversal'", err.Error())
+	if !strings.Contains(err.Error(), "escapes working directory") {
+		t.Errorf("error = %q, want it to contain 'escapes working directory'", err.Error())
 	}
 }
 
@@ -415,9 +415,9 @@ func TestGetEmoji(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := getEmoji(tt.emoji, tt.noMoji)
+			result := GetEmoji(tt.emoji, tt.noMoji)
 			if result != tt.expected {
-				t.Errorf("getEmoji(%q, %v) = %q, want %q", tt.emoji, tt.noMoji, result, tt.expected)
+				t.Errorf("GetEmoji(%q, %v) = %q, want %q", tt.emoji, tt.noMoji, result, tt.expected)
 			}
 		})
 	}

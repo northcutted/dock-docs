@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -143,18 +144,9 @@ func TestLoad_EmptyFile(t *testing.T) {
 		t.Fatalf("failed to write test config: %v", err)
 	}
 
-	cfg, err := Load(configPath)
-	if err != nil {
-		t.Fatalf("Load() error = %v", err)
-	}
-
-	// Empty file should load with defaults
-	if cfg.Output != "README.md" {
-		t.Errorf("Output = %v, want README.md", cfg.Output)
-	}
-
-	if len(cfg.Sections) != 0 {
-		t.Errorf("expected 0 sections, got %d", len(cfg.Sections))
+	_, err = Load(configPath)
+	if err == nil {
+		t.Fatal("expected error for empty config with no sections")
 	}
 }
 
@@ -169,17 +161,9 @@ func TestLoad_OnlyOutput(t *testing.T) {
 		t.Fatalf("failed to write test config: %v", err)
 	}
 
-	cfg, err := Load(configPath)
-	if err != nil {
-		t.Fatalf("Load() error = %v", err)
-	}
-
-	if cfg.Output != "CUSTOM.md" {
-		t.Errorf("Output = %v, want CUSTOM.md", cfg.Output)
-	}
-
-	if cfg.BadgeBaseURL != "https://img.shields.io/static/v1" {
-		t.Errorf("BadgeBaseURL should use default")
+	_, err = Load(configPath)
+	if err == nil {
+		t.Fatal("expected error for config with no sections")
 	}
 }
 
@@ -421,5 +405,283 @@ sections:
 	section := cfg.Sections[0]
 	if section.Details {
 		t.Error("Section.Details should default to false")
+	}
+}
+
+func TestValidate(t *testing.T) {
+	tests := []struct {
+		name    string
+		cfg     Config
+		wantErr bool
+		errMsg  string
+	}{
+		{
+			name: "valid image section",
+			cfg: Config{
+				Sections: []Section{
+					{Type: SectionTypeImage, Marker: "main"},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "valid comparison section",
+			cfg: Config{
+				Sections: []Section{
+					{Type: SectionTypeComparison, Marker: "compare", Images: []ImageEntry{{Tag: "a:1"}}},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "valid mixed sections",
+			cfg: Config{
+				Sections: []Section{
+					{Type: SectionTypeImage, Marker: "img"},
+					{Type: SectionTypeComparison, Marker: "cmp", Images: []ImageEntry{{Tag: "a:1"}, {Tag: "b:2"}}},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name:    "no sections",
+			cfg:     Config{},
+			wantErr: true,
+			errMsg:  "at least one section",
+		},
+		{
+			name: "invalid section type",
+			cfg: Config{
+				Sections: []Section{
+					{Type: "bogus", Marker: "main"},
+				},
+			},
+			wantErr: true,
+			errMsg:  "invalid type",
+		},
+		{
+			name: "empty section type",
+			cfg: Config{
+				Sections: []Section{
+					{Type: "", Marker: "main"},
+				},
+			},
+			wantErr: true,
+			errMsg:  "invalid type",
+		},
+		{
+			name: "comparison with no images",
+			cfg: Config{
+				Sections: []Section{
+					{Type: SectionTypeComparison, Marker: "compare"},
+				},
+			},
+			wantErr: true,
+			errMsg:  "at least one image",
+		},
+		{
+			name: "first section valid second invalid",
+			cfg: Config{
+				Sections: []Section{
+					{Type: SectionTypeImage, Marker: "ok"},
+					{Type: "invalid", Marker: "bad"},
+				},
+			},
+			wantErr: true,
+			errMsg:  "section 1",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.cfg.Validate()
+			if tt.wantErr {
+				if err == nil {
+					t.Fatalf("Validate() expected error containing %q, got nil", tt.errMsg)
+				}
+				if tt.errMsg != "" && !strings.Contains(err.Error(), tt.errMsg) {
+					t.Errorf("Validate() error = %q, want substring %q", err.Error(), tt.errMsg)
+				}
+			} else {
+				if err != nil {
+					t.Fatalf("Validate() unexpected error: %v", err)
+				}
+			}
+		})
+	}
+}
+
+func TestLoad_InvalidSectionType(t *testing.T) {
+	yamlContent := `output: "README.md"
+sections:
+  - type: "foobar"
+    marker: "test"
+`
+
+	tmpDir := t.TempDir()
+	configPath := filepath.Join(tmpDir, "invalid-type.yaml")
+	if err := os.WriteFile(configPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatalf("failed to write test config: %v", err)
+	}
+
+	_, err := Load(configPath)
+	if err == nil {
+		t.Fatal("expected error for invalid section type")
+	}
+}
+
+func TestLoad_ComparisonNoImages(t *testing.T) {
+	yamlContent := `output: "README.md"
+sections:
+  - type: "comparison"
+    marker: "compare"
+`
+
+	tmpDir := t.TempDir()
+	configPath := filepath.Join(tmpDir, "no-images.yaml")
+	if err := os.WriteFile(configPath, []byte(yamlContent), 0644); err != nil {
+		t.Fatalf("failed to write test config: %v", err)
+	}
+
+	_, err := Load(configPath)
+	if err == nil {
+		t.Fatal("expected error for comparison section with no images")
+	}
+}
+
+func TestResolveRelativePaths(t *testing.T) {
+	tests := []struct {
+		name           string
+		baseDir        string
+		cfg            Config
+		expectedOutput string
+		expectedSource string
+		expectedTmpl   string
+	}{
+		{
+			name:    "resolves relative output and source",
+			baseDir: "/projects/myapp",
+			cfg: Config{
+				Output: "README.md",
+				Sections: []Section{
+					{
+						Type:   SectionTypeImage,
+						Source: "Dockerfile",
+					},
+				},
+			},
+			expectedOutput: "/projects/myapp/README.md",
+			expectedSource: "/projects/myapp/Dockerfile",
+		},
+		{
+			name:    "preserves absolute paths",
+			baseDir: "/projects/myapp",
+			cfg: Config{
+				Output: "/absolute/README.md",
+				Sections: []Section{
+					{
+						Type:   SectionTypeImage,
+						Source: "/absolute/Dockerfile",
+					},
+				},
+			},
+			expectedOutput: "/absolute/README.md",
+			expectedSource: "/absolute/Dockerfile",
+		},
+		{
+			name:    "empty baseDir is no-op",
+			baseDir: "",
+			cfg: Config{
+				Output: "README.md",
+				Sections: []Section{
+					{
+						Type:   SectionTypeImage,
+						Source: "Dockerfile",
+					},
+				},
+			},
+			expectedOutput: "README.md",
+			expectedSource: "Dockerfile",
+		},
+		{
+			name:    "dot baseDir is no-op",
+			baseDir: ".",
+			cfg: Config{
+				Output: "README.md",
+				Sections: []Section{
+					{
+						Type:   SectionTypeImage,
+						Source: "Dockerfile",
+					},
+				},
+			},
+			expectedOutput: "README.md",
+			expectedSource: "Dockerfile",
+		},
+		{
+			name:    "resolves template path",
+			baseDir: "/projects/myapp",
+			cfg: Config{
+				Output: "README.md",
+				Sections: []Section{
+					{
+						Type:     SectionTypeImage,
+						Source:   "Dockerfile",
+						Template: &TemplateConfig{Path: "templates/custom.tmpl"},
+					},
+				},
+			},
+			expectedOutput: "/projects/myapp/README.md",
+			expectedSource: "/projects/myapp/Dockerfile",
+			expectedTmpl:   "/projects/myapp/templates/custom.tmpl",
+		},
+		{
+			name:    "empty source stays empty",
+			baseDir: "/projects/myapp",
+			cfg: Config{
+				Output: "out.md",
+				Sections: []Section{
+					{
+						Type: SectionTypeImage,
+					},
+				},
+			},
+			expectedOutput: "/projects/myapp/out.md",
+			expectedSource: "",
+		},
+		{
+			name:    "nested relative paths",
+			baseDir: "/projects/myapp",
+			cfg: Config{
+				Output: "docs/output/README.md",
+				Sections: []Section{
+					{
+						Type:   SectionTypeImage,
+						Source: "docker/Dockerfile.prod",
+					},
+				},
+			},
+			expectedOutput: "/projects/myapp/docs/output/README.md",
+			expectedSource: "/projects/myapp/docker/Dockerfile.prod",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := tt.cfg
+			cfg.ResolveRelativePaths(tt.baseDir)
+
+			if cfg.Output != tt.expectedOutput {
+				t.Errorf("Output = %q, want %q", cfg.Output, tt.expectedOutput)
+			}
+			if len(cfg.Sections) > 0 && cfg.Sections[0].Source != tt.expectedSource {
+				t.Errorf("Source = %q, want %q", cfg.Sections[0].Source, tt.expectedSource)
+			}
+			if tt.expectedTmpl != "" && cfg.Sections[0].Template != nil {
+				if cfg.Sections[0].Template.Path != tt.expectedTmpl {
+					t.Errorf("Template.Path = %q, want %q", cfg.Sections[0].Template.Path, tt.expectedTmpl)
+				}
+			}
+		})
 	}
 }

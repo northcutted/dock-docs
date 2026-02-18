@@ -14,6 +14,7 @@
           {{- end }}
         ],
         "size_mb": "{{ $img.SizeMB }}",
+        "size_bytes": {{ $img.SizeBytes }},
         "total_layers": {{ $img.TotalLayers }},
         "efficiency": {{ printf "%.2f" $img.Efficiency }},
         "wasted_bytes": "{{ $img.WastedBytes }}",

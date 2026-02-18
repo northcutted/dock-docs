@@ -1,0 +1,24 @@
+{
+  "image": "Dockerfile",
+  "configuration": {
+    "environment_variables": [
+      {
+        "name": "NAME",
+        "description": "The name to greet",
+        "default": "World",
+        "required": false
+      }
+    ],
+    "build_arguments": [
+    ],
+    "exposed_ports": [
+      {
+        "port": "80",
+        "description": "The port where the FastAPI application listens"
+      }
+    ],
+    "labels": [
+    ]
+  }
+}
+

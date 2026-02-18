@@ -11,7 +11,7 @@ func TestRenderComparison(t *testing.T) {
 	comparisonStats := []*types.ImageStats{
 		{
 			ImageTag:     "app:v1",
-			SizeMB:       "100 MB",
+			SizeBytes:    104857600, // 100 MB
 			Architecture: "amd64",
 			OS:           "linux",
 			Efficiency:   90.0,
@@ -28,7 +28,7 @@ func TestRenderComparison(t *testing.T) {
 		},
 		{
 			ImageTag:     "app:v2",
-			SizeMB:       "80 MB",
+			SizeBytes:    83886080, // 80 MB
 			Architecture: "amd64",
 			OS:           "linux",
 			Efficiency:   98.0,

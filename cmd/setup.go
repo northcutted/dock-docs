@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -71,7 +72,7 @@ func runSetup(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create directory %s: %w", installDir, err)
 	}
 
-	fmt.Printf("Install directory: %s\n\n", installDir)
+	slog.Info("install directory", "path", installDir)
 
 	// Install missing (or all if --force)
 	if err := installer.InstallAll(installDir, setupForce); err != nil {
@@ -79,19 +80,19 @@ func runSetup(cmd *cobra.Command, args []string) error {
 	}
 
 	// Print final status
-	fmt.Println()
+	fmt.Fprintln(stdout)
 	return printToolStatus(installDir)
 }
 
 func printToolStatus(installDir string) error {
 	statuses := installer.Status(installDir)
 
-	fmt.Println("Tool Status:")
+	fmt.Fprintln(stdout, "Tool Status:")
 	for _, s := range statuses {
 		if s.Installed {
-			fmt.Printf("  [OK]      %-6s  (%s: %s)\n", s.Name, s.Source, s.Path)
+			fmt.Fprintf(stdout, "  [OK]      %-6s  (%s: %s)\n", s.Name, s.Source, s.Path)
 		} else {
-			fmt.Printf("  [MISSING] %-6s\n", s.Name)
+			fmt.Fprintf(stdout, "  [MISSING] %-6s\n", s.Name)
 		}
 	}
 	return nil

@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/exec"
@@ -110,7 +111,7 @@ func Install(tool Tool, installDir string) error {
 	assetName := fmt.Sprintf("%s_%s_%s_%s.tar.gz", tool.Name, version, runtime.GOOS, runtime.GOARCH)
 	assetURL := fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", tool.Repo, tag, assetName)
 
-	fmt.Printf("  Downloading %s %s (%s/%s)...\n", tool.Name, tag, runtime.GOOS, runtime.GOARCH)
+	slog.Info("downloading tool", "tool", tool.Name, "tag", tag, "os", runtime.GOOS, "arch", runtime.GOARCH)
 
 	// Ensure install directory exists
 	if err := os.MkdirAll(installDir, 0755); err != nil {
@@ -140,10 +141,10 @@ func Install(tool Tool, installDir string) error {
 	cmd := exec.CommandContext(context.Background(), destPath, "version")
 	if err := cmd.Run(); err != nil {
 		// Non-fatal: binary was written but version check failed
-		fmt.Printf("  Warning: %s installed but version check failed: %v\n", tool.Name, err)
+		slog.Warn("tool installed but version check failed", "tool", tool.Name, "error", err)
 	}
 
-	fmt.Printf("  Installed %s %s -> %s\n", tool.Name, tag, destPath)
+	slog.Info("installed tool", "tool", tool.Name, "tag", tag, "path", destPath)
 	return nil
 }
 
@@ -156,12 +157,12 @@ func InstallAll(installDir string, force bool) error {
 		if force || !s.Installed {
 			toInstall = append(toInstall, Tools[i])
 		} else {
-			fmt.Printf("  %s already installed (%s: %s)\n", s.Name, s.Source, s.Path)
+			slog.Info("tool already installed", "tool", s.Name, "source", s.Source, "path", s.Path)
 		}
 	}
 
 	if len(toInstall) == 0 {
-		fmt.Println("All tools are already installed.")
+		slog.Info("all tools are already installed")
 		return nil
 	}
 
@@ -242,6 +243,10 @@ func httpGet(url string) (io.ReadCloser, error) {
 	return resp.Body, nil
 }
 
+// maxBinarySize is the maximum allowed size for an extracted binary (200 MB).
+// This prevents decompression bombs from consuming unbounded memory.
+const maxBinarySize = 200 * 1024 * 1024
+
 // extractBinaryFromTarGz reads a .tar.gz stream and extracts the named
 // binary. It returns the full file contents in memory.
 func extractBinaryFromTarGz(r io.Reader, binaryName string) ([]byte, error) {
@@ -264,9 +269,18 @@ func extractBinaryFromTarGz(r io.Reader, binaryName string) ([]byte, error) {
 		// The binary can be at the root of the archive or in a subdirectory.
 		// Match by base name.
 		if filepath.Base(hdr.Name) == binaryName && hdr.Typeflag == tar.TypeReg {
-			data, err := io.ReadAll(tr)
+			// Validate declared size before reading
+			if hdr.Size > maxBinarySize {
+				return nil, fmt.Errorf("binary %q declared size %d exceeds limit %d",
+					binaryName, hdr.Size, maxBinarySize)
+			}
+
+			data, err := io.ReadAll(io.LimitReader(tr, maxBinarySize+1))
 			if err != nil {
 				return nil, fmt.Errorf("failed to read %s from archive: %w", binaryName, err)
+			}
+			if int64(len(data)) > maxBinarySize {
+				return nil, fmt.Errorf("binary %q exceeds size limit of %d bytes", binaryName, maxBinarySize)
 			}
 			return data, nil
 		}

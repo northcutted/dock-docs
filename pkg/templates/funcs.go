@@ -26,7 +26,7 @@ func GetFuncMap(noMoji bool) template.FuncMap {
 
 		// Emoji helper
 		"emoji": func(name string) string {
-			return getEmoji(name, noMoji)
+			return GetEmoji(name, noMoji)
 		},
 	}
 }
@@ -84,8 +84,8 @@ var noMojiMap = map[string]string{
 	"clean":    "[OK]",
 }
 
-// getEmoji returns an emoji or text alternative based on the noMoji flag.
-func getEmoji(name string, noMoji bool) string {
+// GetEmoji returns an emoji or text alternative based on the noMoji flag.
+func GetEmoji(name string, noMoji bool) string {
 	if noMoji {
 		return noMojiMap[name]
 	}

@@ -167,10 +167,21 @@ func (l *Loader) LoadFile(path string) (*template.Template, error) {
 	}
 	l.mu.RUnlock()
 
-	// Security: prevent directory traversal
+	// Security: prevent directory traversal.
+	// Resolve to an absolute path and verify it stays within the working directory.
 	cleanPath := filepath.Clean(path)
-	if strings.Contains(cleanPath, "..") {
-		return nil, fmt.Errorf("directory traversal not allowed in template path: %s", path)
+	absPath, err := filepath.Abs(cleanPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to resolve template path: %w", err)
+	}
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, fmt.Errorf("failed to determine working directory: %w", err)
+	}
+	// Allow absolute paths that were explicitly given (they don't need
+	// the cwd prefix check). Only relative paths must resolve within cwd.
+	if !filepath.IsAbs(path) && !strings.HasPrefix(absPath, cwd+string(filepath.Separator)) && absPath != cwd {
+		return nil, fmt.Errorf("template path escapes working directory: %s", path)
 	}
 
 	content, err := os.ReadFile(cleanPath)

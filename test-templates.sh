@@ -188,7 +188,7 @@ cat > custom_template.tmpl << 'EOF'
 
 {{- if .Stats }}
 ## Image Statistics
-- **Size:** {{ .Stats.SizeMB }} MB
+- **Size:** {{ .Stats.SizeMB }}
 - **Layers:** {{ .Stats.TotalLayers }}
 - **Efficiency:** {{ printf "%.1f" .Stats.Efficiency }}%
 - **Vulnerabilities:** {{ .Stats.TotalVulns }}

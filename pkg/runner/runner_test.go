@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -155,7 +156,7 @@ func TestRuntimeRunner_Run(t *testing.T) {
 	fakeBin := createFakeBinary(t, dir, "docker", "inspect-ok")
 
 	r := &RuntimeRunner{binary: fakeBin}
-	stats, err := r.Run("test:latest", false)
+	stats, err := r.Run(context.Background(), "test:latest", false)
 	if err != nil {
 		t.Fatalf("RuntimeRunner.Run() error: %v", err)
 	}
@@ -175,7 +176,7 @@ func TestRuntimeRunner_Run_NoBinary(t *testing.T) {
 	// Override PATH to ensure neither docker nor podman is found
 	t.Setenv("PATH", t.TempDir())
 	r := &RuntimeRunner{}
-	_, err := r.Run("test:latest", false)
+	_, err := r.Run(context.Background(), "test:latest", false)
 	if err == nil {
 		t.Fatal("RuntimeRunner.Run() expected error when no binary, got nil")
 	}
@@ -201,7 +202,7 @@ func TestManifestRunner_Run(t *testing.T) {
 	fakeBin := createFakeBinary(t, dir, "docker", "manifest-ok")
 
 	r := &ManifestRunner{binary: fakeBin}
-	stats, err := r.Run("test:latest", false)
+	stats, err := r.Run(context.Background(), "test:latest", false)
 	if err != nil {
 		t.Fatalf("ManifestRunner.Run() error: %v", err)
 	}
@@ -214,7 +215,7 @@ func TestManifestRunner_Run(t *testing.T) {
 func TestManifestRunner_Run_NoBinary(t *testing.T) {
 	t.Setenv("PATH", t.TempDir())
 	r := &ManifestRunner{}
-	_, err := r.Run("test:latest", false)
+	_, err := r.Run(context.Background(), "test:latest", false)
 	if err == nil {
 		t.Fatal("ManifestRunner.Run() expected error when no binary, got nil")
 	}
@@ -257,7 +258,7 @@ func TestSyftRunner_Run(t *testing.T) {
 	fakeBin := createFakeBinary(t, dir, "syft", "syft-ok")
 
 	r := &SyftRunner{binary: fakeBin}
-	stats, err := r.Run("test:latest", false)
+	stats, err := r.Run(context.Background(), "test:latest", false)
 	if err != nil {
 		t.Fatalf("SyftRunner.Run() error: %v", err)
 	}
@@ -277,7 +278,7 @@ func TestSyftRunner_Run_NoBinary(t *testing.T) {
 		return "", fmt.Errorf("not found")
 	}
 	r := &SyftRunner{}
-	_, err := r.Run("test:latest", false)
+	_, err := r.Run(context.Background(), "test:latest", false)
 	if err == nil {
 		t.Fatal("SyftRunner.Run() expected error, got nil")
 	}
@@ -317,7 +318,7 @@ func TestGrypeRunner_Run(t *testing.T) {
 	fakeBin := createFakeBinary(t, dir, "grype", "grype-ok")
 
 	r := &GrypeRunner{binary: fakeBin}
-	stats, err := r.Run("test:latest", false)
+	stats, err := r.Run(context.Background(), "test:latest", false)
 	if err != nil {
 		t.Fatalf("GrypeRunner.Run() error: %v", err)
 	}
@@ -337,7 +338,7 @@ func TestGrypeRunner_Run_NoBinary(t *testing.T) {
 		return "", fmt.Errorf("not found")
 	}
 	r := &GrypeRunner{}
-	_, err := r.Run("test:latest", false)
+	_, err := r.Run(context.Background(), "test:latest", false)
 	if err == nil {
 		t.Fatal("GrypeRunner.Run() expected error, got nil")
 	}
@@ -377,7 +378,7 @@ func TestDiveRunner_Run(t *testing.T) {
 	fakeBin := createFakeBinary(t, dir, "dive", "dive-ok")
 
 	r := &DiveRunner{binary: fakeBin}
-	stats, err := r.Run("test:latest", false)
+	stats, err := r.Run(context.Background(), "test:latest", false)
 	if err != nil {
 		t.Fatalf("DiveRunner.Run() error: %v", err)
 	}
@@ -395,7 +396,7 @@ func TestDiveRunner_Run_Verbose(t *testing.T) {
 	fakeBin := createFakeBinary(t, dir, "dive", "dive-ok")
 
 	r := &DiveRunner{binary: fakeBin}
-	stats, err := r.Run("test:latest", true)
+	stats, err := r.Run(context.Background(), "test:latest", true)
 	if err != nil {
 		t.Fatalf("DiveRunner.Run() error: %v", err)
 	}
@@ -412,7 +413,7 @@ func TestDiveRunner_Run_NoBinary(t *testing.T) {
 		return "", fmt.Errorf("not found")
 	}
 	r := &DiveRunner{}
-	_, err := r.Run("test:latest", false)
+	_, err := r.Run(context.Background(), "test:latest", false)
 	if err == nil {
 		t.Fatal("DiveRunner.Run() expected error, got nil")
 	}
@@ -434,7 +435,7 @@ func TestEnsureImage_AlreadyExists(t *testing.T) {
 	t.Setenv("GO_TEST_HELPER_CMD", "echo")
 	t.Setenv("PATH", dir+":"+os.Getenv("PATH"))
 
-	err := EnsureImage("test:latest", false)
+	err := EnsureImage(context.Background(), "test:latest", false)
 	if err != nil {
 		t.Fatalf("EnsureImage() unexpected error: %v", err)
 	}
@@ -452,7 +453,7 @@ func TestEnsureImage_Verbose(t *testing.T) {
 	t.Setenv("GO_TEST_HELPER_CMD", "echo")
 	t.Setenv("PATH", dir+":"+os.Getenv("PATH"))
 
-	err := EnsureImage("test:latest", true)
+	err := EnsureImage(context.Background(), "test:latest", true)
 	if err != nil {
 		t.Fatalf("EnsureImage() unexpected error: %v", err)
 	}
@@ -461,7 +462,7 @@ func TestEnsureImage_Verbose(t *testing.T) {
 // TestEnsureImage_NoRuntime tests EnsureImage when no docker/podman is available.
 func TestEnsureImage_NoRuntime(t *testing.T) {
 	t.Setenv("PATH", t.TempDir())
-	err := EnsureImage("test:latest", false)
+	err := EnsureImage(context.Background(), "test:latest", false)
 	if err == nil {
 		t.Fatal("EnsureImage() expected error, got nil")
 	}
@@ -474,9 +475,9 @@ func TestEnsureImage_NoRuntime(t *testing.T) {
 func TestDetectPodmanSocket(t *testing.T) {
 	// When podman is not in PATH, should return empty string.
 	t.Setenv("PATH", t.TempDir())
-	result := detectPodmanSocket()
+	result := detectPodmanSocket(context.Background())
 	if result != "" {
-		t.Errorf("detectPodmanSocket() = %q, want empty string", result)
+		t.Errorf("detectPodmanSocket(context.Background()) = %q, want empty string", result)
 	}
 }
 
@@ -533,15 +534,15 @@ func TestRuntimeRunner_Name(t *testing.T) {
 
 func TestParseRuntimeInspect(t *testing.T) {
 	tests := []struct {
-		name       string
-		jsonOutput string
-		image      string
-		binary     string
-		wantErr    bool
-		wantArch   string
-		wantOS     string
-		wantLayers int
-		wantSizeMB string
+		name          string
+		jsonOutput    string
+		image         string
+		binary        string
+		wantErr       bool
+		wantArch      string
+		wantOS        string
+		wantLayers    int
+		wantSizeBytes int64
 	}{
 		{
 			name: "valid inspect output",
@@ -553,13 +554,13 @@ func TestParseRuntimeInspect(t *testing.T) {
 					"Layers": ["layer1", "layer2", "layer3"]
 				}
 			}]`,
-			image:      "nginx:latest",
-			binary:     "docker",
-			wantErr:    false,
-			wantArch:   "amd64",
-			wantOS:     "linux",
-			wantLayers: 3,
-			wantSizeMB: "64.00 MB",
+			image:         "nginx:latest",
+			binary:        "docker",
+			wantErr:       false,
+			wantArch:      "amd64",
+			wantOS:        "linux",
+			wantLayers:    3,
+			wantSizeBytes: 67108864,
 		},
 		{
 			name: "arm64 image",
@@ -571,13 +572,13 @@ func TestParseRuntimeInspect(t *testing.T) {
 					"Layers": ["sha256:abc", "sha256:def"]
 				}
 			}]`,
-			image:      "alpine:3.18",
-			binary:     "podman",
-			wantErr:    false,
-			wantArch:   "arm64",
-			wantOS:     "linux",
-			wantLayers: 2,
-			wantSizeMB: "50.00 MB",
+			image:         "alpine:3.18",
+			binary:        "podman",
+			wantErr:       false,
+			wantArch:      "arm64",
+			wantOS:        "linux",
+			wantLayers:    2,
+			wantSizeBytes: 52428800,
 		},
 		{
 			name:       "empty array",
@@ -594,15 +595,15 @@ func TestParseRuntimeInspect(t *testing.T) {
 			wantErr:    true,
 		},
 		{
-			name:       "zero-size image with no layers",
-			jsonOutput: `[{"Architecture": "amd64", "Os": "linux", "Size": 0, "RootFS": {"Layers": []}}]`,
-			image:      "scratch",
-			binary:     "docker",
-			wantErr:    false,
-			wantArch:   "amd64",
-			wantOS:     "linux",
-			wantLayers: 0,
-			wantSizeMB: "0.00 MB",
+			name:          "zero-size image with no layers",
+			jsonOutput:    `[{"Architecture": "amd64", "Os": "linux", "Size": 0, "RootFS": {"Layers": []}}]`,
+			image:         "scratch",
+			binary:        "docker",
+			wantErr:       false,
+			wantArch:      "amd64",
+			wantOS:        "linux",
+			wantLayers:    0,
+			wantSizeBytes: 0,
 		},
 	}
 
@@ -627,8 +628,8 @@ func TestParseRuntimeInspect(t *testing.T) {
 			if stats.TotalLayers != tt.wantLayers {
 				t.Errorf("TotalLayers = %v, want %v", stats.TotalLayers, tt.wantLayers)
 			}
-			if stats.SizeMB != tt.wantSizeMB {
-				t.Errorf("SizeMB = %v, want %v", stats.SizeMB, tt.wantSizeMB)
+			if stats.SizeBytes != tt.wantSizeBytes {
+				t.Errorf("SizeBytes = %v, want %v", stats.SizeBytes, tt.wantSizeBytes)
 			}
 			if stats.ImageTag != tt.image {
 				t.Errorf("ImageTag = %v, want %v", stats.ImageTag, tt.image)
@@ -1135,6 +1136,551 @@ func TestParseDiveOutput(t *testing.T) {
 			}
 			if stats.WastedBytes != tt.wantWasted {
 				t.Errorf("WastedBytes = %v, want %v", stats.WastedBytes, tt.wantWasted)
+			}
+		})
+	}
+}
+
+// --- Additional edge-case tests for parse functions (item 3.2) ---
+
+func TestParseRuntimeInspect_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name          string
+		jsonOutput    string
+		image         string
+		binary        string
+		wantErr       bool
+		wantArch      string
+		wantOS        string
+		wantLayers    int
+		wantSizeBytes int64
+	}{
+		{
+			name: "missing architecture and os fields",
+			jsonOutput: `[{
+				"Size": 1048576,
+				"RootFS": {"Layers": ["sha256:abc"]}
+			}]`,
+			image:         "minimal:latest",
+			binary:        "docker",
+			wantArch:      "",
+			wantOS:        "",
+			wantLayers:    1,
+			wantSizeBytes: 1048576,
+		},
+		{
+			name: "missing RootFS field",
+			jsonOutput: `[{
+				"Architecture": "amd64",
+				"Os": "linux",
+				"Size": 2097152
+			}]`,
+			image:         "no-rootfs:latest",
+			binary:        "docker",
+			wantArch:      "amd64",
+			wantOS:        "linux",
+			wantLayers:    0,
+			wantSizeBytes: 2097152,
+		},
+		{
+			name:          "large image size (GB range)",
+			jsonOutput:    `[{"Architecture": "amd64", "Os": "linux", "Size": 2147483648, "RootFS": {"Layers": ["l1"]}}]`,
+			image:         "large:latest",
+			binary:        "docker",
+			wantArch:      "amd64",
+			wantOS:        "linux",
+			wantLayers:    1,
+			wantSizeBytes: 2147483648,
+		},
+		{
+			name:          "negative size value",
+			jsonOutput:    `[{"Architecture": "amd64", "Os": "linux", "Size": -1, "RootFS": {"Layers": []}}]`,
+			image:         "negative:latest",
+			binary:        "docker",
+			wantArch:      "amd64",
+			wantOS:        "linux",
+			wantLayers:    0,
+			wantSizeBytes: -1,
+		},
+		{
+			name:          "multiple images returns first",
+			jsonOutput:    `[{"Architecture": "amd64", "Os": "linux", "Size": 100, "RootFS": {"Layers": []}}, {"Architecture": "arm64", "Os": "linux", "Size": 200, "RootFS": {"Layers": ["a"]}}]`,
+			image:         "multi:latest",
+			binary:        "docker",
+			wantArch:      "amd64",
+			wantOS:        "linux",
+			wantLayers:    0,
+			wantSizeBytes: 100,
+		},
+		{
+			name:       "error message includes binary name",
+			jsonOutput: `{not-an-array}`,
+			image:      "test:latest",
+			binary:     "podman",
+			wantErr:    true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stats, err := parseRuntimeInspect([]byte(tt.jsonOutput), tt.image, tt.binary)
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("parseRuntimeInspect() expected error, got nil")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("parseRuntimeInspect() unexpected error: %v", err)
+			}
+			if stats.Architecture != tt.wantArch {
+				t.Errorf("Architecture = %q, want %q", stats.Architecture, tt.wantArch)
+			}
+			if stats.OS != tt.wantOS {
+				t.Errorf("OS = %q, want %q", stats.OS, tt.wantOS)
+			}
+			if stats.TotalLayers != tt.wantLayers {
+				t.Errorf("TotalLayers = %d, want %d", stats.TotalLayers, tt.wantLayers)
+			}
+			if stats.SizeBytes != tt.wantSizeBytes {
+				t.Errorf("SizeBytes = %d, want %d", stats.SizeBytes, tt.wantSizeBytes)
+			}
+			if stats.ImageTag != tt.image {
+				t.Errorf("ImageTag = %q, want %q", stats.ImageTag, tt.image)
+			}
+		})
+	}
+}
+
+func TestParseManifestInspect_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name      string
+		json      string
+		image     string
+		wantArchs []string
+	}{
+		{
+			name:      "null manifests field",
+			json:      `{"manifests": null}`,
+			image:     "null-manifests:latest",
+			wantArchs: nil,
+		},
+		{
+			name: "platform with empty architecture and os",
+			json: `{
+				"manifests": [
+					{"platform": {"architecture": "", "os": ""}}
+				]
+			}`,
+			image:     "empty-platform:latest",
+			wantArchs: []string{"/"},
+		},
+		{
+			name: "platforms with only os, no architecture",
+			json: `{
+				"manifests": [
+					{"platform": {"architecture": "", "os": "linux"}}
+				]
+			}`,
+			image:     "no-arch:latest",
+			wantArchs: []string{"linux/"},
+		},
+		{
+			name:      "completely empty json object",
+			json:      `{}`,
+			image:     "empty:latest",
+			wantArchs: nil,
+		},
+		{
+			name:      "valid json but wrong structure (array instead of object)",
+			json:      `[{"manifests": []}]`,
+			image:     "array:latest",
+			wantArchs: nil, // Unmarshal into struct fails silently, returns empty stats
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stats, err := parseManifestInspect([]byte(tt.json), tt.image)
+			if err != nil {
+				t.Fatalf("parseManifestInspect() unexpected error: %v", err)
+			}
+			if stats.ImageTag != tt.image {
+				t.Errorf("ImageTag = %q, want %q", stats.ImageTag, tt.image)
+			}
+			if tt.wantArchs == nil {
+				if len(stats.SupportedArchitectures) != 0 {
+					t.Errorf("SupportedArchitectures = %v, want empty", stats.SupportedArchitectures)
+				}
+				return
+			}
+			if len(stats.SupportedArchitectures) != len(tt.wantArchs) {
+				t.Fatalf("SupportedArchitectures count = %d, want %d: %v",
+					len(stats.SupportedArchitectures), len(tt.wantArchs), stats.SupportedArchitectures)
+			}
+			for i, arch := range stats.SupportedArchitectures {
+				if arch != tt.wantArchs[i] {
+					t.Errorf("SupportedArchitectures[%d] = %q, want %q", i, arch, tt.wantArchs[i])
+				}
+			}
+		})
+	}
+}
+
+func TestParseSyftOutput_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name         string
+		json         string
+		wantErr      bool
+		wantDistro   string
+		wantPkgCount int
+		wantPkgs     []string // expected package names in order
+	}{
+		{
+			name: "artifacts with missing name field",
+			json: `{
+				"distro": {"name": "debian", "version": "12"},
+				"artifacts": [
+					{"name": "", "version": "1.0", "type": "deb"},
+					{"name": "curl", "version": "7.88", "type": "deb"}
+				]
+			}`,
+			wantDistro:   "debian 12",
+			wantPkgCount: 2,
+			wantPkgs:     []string{"", "curl"},
+		},
+		{
+			name: "artifacts with missing version field",
+			json: `{
+				"distro": {"name": "alpine", "version": "3.19"},
+				"artifacts": [
+					{"name": "busybox", "version": "", "type": "apk"}
+				]
+			}`,
+			wantDistro:   "alpine 3.19",
+			wantPkgCount: 1,
+			wantPkgs:     []string{"busybox"},
+		},
+		{
+			name: "null distro field",
+			json: `{
+				"artifacts": [
+					{"name": "pkg", "version": "1.0", "type": "binary"}
+				]
+			}`,
+			wantDistro:   "",
+			wantPkgCount: 1,
+			wantPkgs:     []string{"pkg"},
+		},
+		{
+			name:         "null artifacts field",
+			json:         `{"distro": {"name": "ubuntu", "version": "22.04"}, "artifacts": null}`,
+			wantDistro:   "ubuntu 22.04",
+			wantPkgCount: 0,
+		},
+		{
+			name: "same name different versions are not deduped",
+			json: `{
+				"distro": {"name": "", "version": ""},
+				"artifacts": [
+					{"name": "openssl", "version": "1.1.1", "type": "deb"},
+					{"name": "openssl", "version": "3.0.0", "type": "deb"}
+				]
+			}`,
+			wantDistro:   "",
+			wantPkgCount: 2,
+			wantPkgs:     []string{"openssl", "openssl"},
+		},
+		{
+			name: "package version and name preserved",
+			json: `{
+				"distro": {"name": "alpine", "version": "3.18"},
+				"artifacts": [
+					{"name": "musl", "version": "1.2.4", "type": "apk"}
+				]
+			}`,
+			wantDistro:   "alpine 3.18",
+			wantPkgCount: 1,
+			wantPkgs:     []string{"musl"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stats, err := parseSyftOutput([]byte(tt.json))
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("parseSyftOutput() expected error, got nil")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("parseSyftOutput() unexpected error: %v", err)
+			}
+			if stats.OSDistro != tt.wantDistro {
+				t.Errorf("OSDistro = %q, want %q", stats.OSDistro, tt.wantDistro)
+			}
+			if stats.TotalPackages != tt.wantPkgCount {
+				t.Errorf("TotalPackages = %d, want %d", stats.TotalPackages, tt.wantPkgCount)
+			}
+			if len(stats.Packages) != tt.wantPkgCount {
+				t.Errorf("len(Packages) = %d, want %d", len(stats.Packages), tt.wantPkgCount)
+			}
+			if tt.wantPkgs != nil {
+				for i, name := range tt.wantPkgs {
+					if i < len(stats.Packages) && stats.Packages[i].Name != name {
+						t.Errorf("Packages[%d].Name = %q, want %q", i, stats.Packages[i].Name, name)
+					}
+				}
+			}
+			// Verify version is preserved when we have a specific test for it
+			if tt.name == "package version and name preserved" && len(stats.Packages) > 0 {
+				if stats.Packages[0].Version != "1.2.4" {
+					t.Errorf("Packages[0].Version = %q, want %q", stats.Packages[0].Version, "1.2.4")
+				}
+			}
+		})
+	}
+}
+
+func TestParseGrypeOutput_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name             string
+		json             string
+		verbose          bool
+		wantErr          bool
+		wantTotalVulns   int
+		wantNegligible   int
+		wantUnknown      int
+		wantFirstVulnSev string
+		wantFirstVulnPkg string
+		wantFirstVulnVer string
+	}{
+		{
+			name: "negligible severity",
+			json: `{
+				"descriptor": {"timestamp": "2024-01-01T00:00:00Z"},
+				"matches": [
+					{
+						"vulnerability": {"id": "CVE-2024-9999", "severity": "Negligible"},
+						"artifact": {"name": "zlib", "version": "1.2.11"}
+					}
+				]
+			}`,
+			wantTotalVulns:   1,
+			wantNegligible:   1,
+			wantFirstVulnSev: "Negligible",
+			wantFirstVulnPkg: "zlib",
+			wantFirstVulnVer: "1.2.11",
+		},
+		{
+			name: "unknown severity",
+			json: `{
+				"descriptor": {"timestamp": "2024-01-01T00:00:00Z"},
+				"matches": [
+					{
+						"vulnerability": {"id": "GHSA-1234", "severity": "Unknown"},
+						"artifact": {"name": "lodash", "version": "4.17.20"}
+					}
+				]
+			}`,
+			wantTotalVulns:   1,
+			wantUnknown:      1,
+			wantFirstVulnSev: "Unknown",
+			wantFirstVulnPkg: "lodash",
+			wantFirstVulnVer: "4.17.20",
+		},
+		{
+			name: "artifact name and version correctly mapped",
+			json: `{
+				"descriptor": {"timestamp": "2024-06-01T00:00:00Z"},
+				"matches": [
+					{
+						"vulnerability": {"id": "CVE-2024-0001", "severity": "High"},
+						"artifact": {"name": "libcurl", "version": "7.88.1-10+deb12u5"}
+					}
+				]
+			}`,
+			wantTotalVulns:   1,
+			wantFirstVulnSev: "High",
+			wantFirstVulnPkg: "libcurl",
+			wantFirstVulnVer: "7.88.1-10+deb12u5",
+		},
+		{
+			name: "empty matches produces initialized empty map",
+			json: `{
+				"descriptor": {"timestamp": "2024-01-01T00:00:00Z"},
+				"matches": []
+			}`,
+			wantTotalVulns: 0,
+		},
+		{
+			name: "mixed negligible and unknown with known severities",
+			json: `{
+				"descriptor": {"timestamp": "2024-01-01T00:00:00Z"},
+				"matches": [
+					{
+						"vulnerability": {"id": "CVE-UNK", "severity": "Unknown"},
+						"artifact": {"name": "a", "version": "1.0"}
+					},
+					{
+						"vulnerability": {"id": "CVE-CRIT", "severity": "Critical"},
+						"artifact": {"name": "b", "version": "2.0"}
+					},
+					{
+						"vulnerability": {"id": "CVE-NEG", "severity": "Negligible"},
+						"artifact": {"name": "c", "version": "3.0"}
+					}
+				]
+			}`,
+			wantTotalVulns:   3,
+			wantNegligible:   1,
+			wantUnknown:      1,
+			wantFirstVulnSev: "Critical", // Critical sorts first
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stats, err := parseGrypeOutput([]byte(tt.json), tt.verbose)
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("parseGrypeOutput() expected error, got nil")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("parseGrypeOutput() unexpected error: %v", err)
+			}
+			if len(stats.Vulnerabilities) != tt.wantTotalVulns {
+				t.Errorf("total vulns = %d, want %d", len(stats.Vulnerabilities), tt.wantTotalVulns)
+			}
+			if stats.VulnSummary == nil {
+				t.Fatal("VulnSummary should not be nil")
+			}
+			if tt.wantNegligible > 0 && stats.VulnSummary["Negligible"] != tt.wantNegligible {
+				t.Errorf("Negligible = %d, want %d", stats.VulnSummary["Negligible"], tt.wantNegligible)
+			}
+			if tt.wantUnknown > 0 && stats.VulnSummary["Unknown"] != tt.wantUnknown {
+				t.Errorf("Unknown = %d, want %d", stats.VulnSummary["Unknown"], tt.wantUnknown)
+			}
+			if tt.wantTotalVulns > 0 && tt.wantFirstVulnSev != "" {
+				if stats.Vulnerabilities[0].Severity != tt.wantFirstVulnSev {
+					t.Errorf("first vuln severity = %q, want %q",
+						stats.Vulnerabilities[0].Severity, tt.wantFirstVulnSev)
+				}
+			}
+			if tt.wantFirstVulnPkg != "" && tt.wantTotalVulns > 0 {
+				if stats.Vulnerabilities[0].Package != tt.wantFirstVulnPkg {
+					t.Errorf("first vuln package = %q, want %q",
+						stats.Vulnerabilities[0].Package, tt.wantFirstVulnPkg)
+				}
+			}
+			if tt.wantFirstVulnVer != "" && tt.wantTotalVulns > 0 {
+				if stats.Vulnerabilities[0].Version != tt.wantFirstVulnVer {
+					t.Errorf("first vuln version = %q, want %q",
+						stats.Vulnerabilities[0].Version, tt.wantFirstVulnVer)
+				}
+			}
+		})
+	}
+}
+
+func TestParseDiveOutput_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name           string
+		json           string
+		wantErr        bool
+		wantEfficiency float64
+		wantWasted     string
+	}{
+		{
+			name: "zero efficiency score",
+			json: `{
+				"image": {
+					"inefficientBytes": 52428800,
+					"efficiencyScore": 0.0
+				}
+			}`,
+			wantEfficiency: 0.0,
+			wantWasted:     "50.00 MB",
+		},
+		{
+			name: "missing image key entirely",
+			json: `{}`,
+			// json.Unmarshal succeeds with zero values
+			wantEfficiency: 0.0,
+			wantWasted:     "0.00 MB",
+		},
+		{
+			name: "efficiency rounding (0.999)",
+			json: `{
+				"image": {
+					"inefficientBytes": 1024,
+					"efficiencyScore": 0.999
+				}
+			}`,
+			wantEfficiency: 99.9,
+			wantWasted:     "0.00 MB",
+		},
+		{
+			name: "efficiency above 1.0 (malformed)",
+			json: `{
+				"image": {
+					"inefficientBytes": 0,
+					"efficiencyScore": 1.5
+				}
+			}`,
+			wantEfficiency: 150.0,
+			wantWasted:     "0.00 MB",
+		},
+		{
+			name: "very large wasted bytes (GB range)",
+			json: `{
+				"image": {
+					"inefficientBytes": 1073741824,
+					"efficiencyScore": 0.5
+				}
+			}`,
+			wantEfficiency: 50.0,
+			wantWasted:     "1024.00 MB",
+		},
+		{
+			name:    "empty input",
+			json:    ``,
+			wantErr: true,
+		},
+		{
+			name: "nested image with extra fields (forward compat)",
+			json: `{
+				"image": {
+					"inefficientBytes": 5242880,
+					"efficiencyScore": 0.88,
+					"unknownField": "ignored"
+				}
+			}`,
+			wantEfficiency: 88.0,
+			wantWasted:     "5.00 MB",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stats, err := parseDiveOutput([]byte(tt.json))
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("parseDiveOutput() expected error, got nil")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("parseDiveOutput() unexpected error: %v", err)
+			}
+			if stats.Efficiency != tt.wantEfficiency {
+				t.Errorf("Efficiency = %v, want %v", stats.Efficiency, tt.wantEfficiency)
+			}
+			if stats.WastedBytes != tt.wantWasted {
+				t.Errorf("WastedBytes = %q, want %q", stats.WastedBytes, tt.wantWasted)
 			}
 		})
 	}
