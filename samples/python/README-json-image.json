@@ -1,0 +1,843 @@
+{
+  "image": "python:3.14-slim",
+  "configuration": {
+    "environment_variables": [
+      {
+        "name": "NAME",
+        "description": "The name to greet",
+        "default": "World",
+        "required": false
+      }
+    ],
+    "build_arguments": [
+    ],
+    "exposed_ports": [
+      {
+        "port": "80",
+        "description": "The port where the FastAPI application listens"
+      }
+    ],
+    "labels": [
+    ]
+  },
+  "analysis": {
+    "architecture": "amd64",
+    "os": "linux",
+    "os_distro": "Debian GNU/Linux 13 (trixie)",
+    "supported_architectures": [
+      "linux/386"
+      ,"linux/amd64"
+      ,"linux/arm"
+      ,"linux/arm64"
+      ,"linux/ppc64le"
+      ,"linux/riscv64"
+      ,"linux/s390x"
+      ,"unknown/unknown"
+    ],
+    "size_mb": "41.32 MB",
+    "total_layers": 4,
+    "efficiency": 96.71,
+    "wasted_bytes": "5.38 MB",
+    "total_packages": 90,
+    "security": {
+      "scan_time": "2026-02-18T04:47:36Z",
+      "summary": {
+        "critical": 0,
+        "high": 6,
+        "medium": 22,
+        "low": 3,
+        "total": 71
+      },
+      "vulnerabilities": [
+        {
+          "id": "CVE-2025-15281",
+          "severity": "High",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2025-15281",
+          "severity": "High",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2026-0861",
+          "severity": "High",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2026-0861",
+          "severity": "High",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2026-0915",
+          "severity": "High",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2026-0915",
+          "severity": "High",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2025-11468",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2025-12781",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "libblkid1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "libmount1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "bsdutils",
+          "version": "1:2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "liblastlog2-2",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "util-linux",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "mount",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "login",
+          "version": "1:4.16.0-2+really2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "libuuid1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-14104",
+          "severity": "Medium",
+          "package": "libsmartcols1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2025-15282",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2025-15366",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2025-15367",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2025-6141",
+          "severity": "Medium",
+          "package": "libncursesw6",
+          "version": "6.5+20250216-2"
+        }
+        ,{
+          "id": "CVE-2025-6141",
+          "severity": "Medium",
+          "package": "libtinfo6",
+          "version": "6.5+20250216-2"
+        }
+        ,{
+          "id": "CVE-2025-6141",
+          "severity": "Medium",
+          "package": "ncurses-base",
+          "version": "6.5+20250216-2"
+        }
+        ,{
+          "id": "CVE-2025-6141",
+          "severity": "Medium",
+          "package": "ncurses-bin",
+          "version": "6.5+20250216-2"
+        }
+        ,{
+          "id": "CVE-2025-7709",
+          "severity": "Medium",
+          "package": "libsqlite3-0",
+          "version": "3.46.1-7"
+        }
+        ,{
+          "id": "CVE-2026-0672",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2026-0865",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2026-1299",
+          "severity": "Medium",
+          "package": "python",
+          "version": "3.14.3"
+        }
+        ,{
+          "id": "CVE-2024-56433",
+          "severity": "Low",
+          "package": "login.defs",
+          "version": "1:4.17.4-2"
+        }
+        ,{
+          "id": "CVE-2024-56433",
+          "severity": "Low",
+          "package": "passwd",
+          "version": "1:4.17.4-2"
+        }
+        ,{
+          "id": "GHSA-6vgw-5pg2-w6jp",
+          "severity": "Low",
+          "package": "pip",
+          "version": "25.3"
+        }
+        ,{
+          "id": "CVE-2005-2541",
+          "severity": "Negligible",
+          "package": "tar",
+          "version": "1.35+dfsg-3.1"
+        }
+        ,{
+          "id": "CVE-2007-5686",
+          "severity": "Negligible",
+          "package": "passwd",
+          "version": "1:4.17.4-2"
+        }
+        ,{
+          "id": "CVE-2007-5686",
+          "severity": "Negligible",
+          "package": "login.defs",
+          "version": "1:4.17.4-2"
+        }
+        ,{
+          "id": "CVE-2010-4756",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2010-4756",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2011-3374",
+          "severity": "Negligible",
+          "package": "apt",
+          "version": "3.0.3"
+        }
+        ,{
+          "id": "CVE-2011-3374",
+          "severity": "Negligible",
+          "package": "libapt-pkg7.0",
+          "version": "3.0.3"
+        }
+        ,{
+          "id": "CVE-2011-4116",
+          "severity": "Negligible",
+          "package": "perl-base",
+          "version": "5.40.1-6"
+        }
+        ,{
+          "id": "CVE-2013-4392",
+          "severity": "Negligible",
+          "package": "libsystemd0",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2013-4392",
+          "severity": "Negligible",
+          "package": "libudev1",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2017-18018",
+          "severity": "Negligible",
+          "package": "coreutils",
+          "version": "9.7-3"
+        }
+        ,{
+          "id": "CVE-2018-20796",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2018-20796",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010022",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010022",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010023",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010023",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010024",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010024",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010025",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-1010025",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-9192",
+          "severity": "Negligible",
+          "package": "libc-bin",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2019-9192",
+          "severity": "Negligible",
+          "package": "libc6",
+          "version": "2.41-12+deb13u1"
+        }
+        ,{
+          "id": "CVE-2021-45346",
+          "severity": "Negligible",
+          "package": "libsqlite3-0",
+          "version": "3.46.1-7"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "mount",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "util-linux",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "login",
+          "version": "1:4.16.0-2+really2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "libsmartcols1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "libuuid1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "bsdutils",
+          "version": "1:2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "libblkid1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "liblastlog2-2",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2022-0563",
+          "severity": "Negligible",
+          "package": "libmount1",
+          "version": "2.41-5"
+        }
+        ,{
+          "id": "CVE-2023-31437",
+          "severity": "Negligible",
+          "package": "libsystemd0",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2023-31437",
+          "severity": "Negligible",
+          "package": "libudev1",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2023-31438",
+          "severity": "Negligible",
+          "package": "libudev1",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2023-31438",
+          "severity": "Negligible",
+          "package": "libsystemd0",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2023-31439",
+          "severity": "Negligible",
+          "package": "libudev1",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2023-31439",
+          "severity": "Negligible",
+          "package": "libsystemd0",
+          "version": "257.9-1~deb13u1"
+        }
+        ,{
+          "id": "CVE-2025-5278",
+          "severity": "Negligible",
+          "package": "coreutils",
+          "version": "9.7-3"
+        }
+      ]
+    },
+    "packages": [
+      {
+        "name": "Simple Launcher",
+        "version": "1.1.0.14"
+      }
+      ,{
+        "name": "adduser",
+        "version": "3.152"
+      }
+      ,{
+        "name": "apt",
+        "version": "3.0.3"
+      }
+      ,{
+        "name": "base-files",
+        "version": "13.8+deb13u3"
+      }
+      ,{
+        "name": "base-passwd",
+        "version": "3.6.7"
+      }
+      ,{
+        "name": "bash",
+        "version": "5.2.37-2+b7"
+      }
+      ,{
+        "name": "bsdutils",
+        "version": "1:2.41-5"
+      }
+      ,{
+        "name": "ca-certificates",
+        "version": "20250419"
+      }
+      ,{
+        "name": "coreutils",
+        "version": "9.7-3"
+      }
+      ,{
+        "name": "dash",
+        "version": "0.5.12-12"
+      }
+      ,{
+        "name": "debconf",
+        "version": "1.5.91"
+      }
+      ,{
+        "name": "debian-archive-keyring",
+        "version": "2025.1"
+      }
+      ,{
+        "name": "debianutils",
+        "version": "5.23.2"
+      }
+      ,{
+        "name": "diffutils",
+        "version": "1:3.10-4"
+      }
+      ,{
+        "name": "dpkg",
+        "version": "1.22.21"
+      }
+      ,{
+        "name": "findutils",
+        "version": "4.10.0-3"
+      }
+      ,{
+        "name": "gcc-14-base",
+        "version": "14.2.0-19"
+      }
+      ,{
+        "name": "grep",
+        "version": "3.11-4"
+      }
+      ,{
+        "name": "gzip",
+        "version": "1.13-1"
+      }
+      ,{
+        "name": "hostname",
+        "version": "3.25"
+      }
+      ,{
+        "name": "init-system-helpers",
+        "version": "1.69~deb13u1"
+      }
+      ,{
+        "name": "libacl1",
+        "version": "2.3.2-2+b1"
+      }
+      ,{
+        "name": "libapt-pkg7.0",
+        "version": "3.0.3"
+      }
+      ,{
+        "name": "libattr1",
+        "version": "1:2.5.2-3"
+      }
+      ,{
+        "name": "libaudit-common",
+        "version": "1:4.0.2-2"
+      }
+      ,{
+        "name": "libaudit1",
+        "version": "1:4.0.2-2+b2"
+      }
+      ,{
+        "name": "libblkid1",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "libbsd0",
+        "version": "0.12.2-2"
+      }
+      ,{
+        "name": "libbz2-1.0",
+        "version": "1.0.8-6"
+      }
+      ,{
+        "name": "libc-bin",
+        "version": "2.41-12+deb13u1"
+      }
+      ,{
+        "name": "libc6",
+        "version": "2.41-12+deb13u1"
+      }
+      ,{
+        "name": "libcap-ng0",
+        "version": "0.8.5-4+b1"
+      }
+      ,{
+        "name": "libcap2",
+        "version": "1:2.75-10+b3"
+      }
+      ,{
+        "name": "libcrypt1",
+        "version": "1:4.4.38-1"
+      }
+      ,{
+        "name": "libdb5.3t64",
+        "version": "5.3.28+dfsg2-9"
+      }
+      ,{
+        "name": "libdebconfclient0",
+        "version": "0.280"
+      }
+      ,{
+        "name": "libffi8",
+        "version": "3.4.8-2"
+      }
+      ,{
+        "name": "libgcc-s1",
+        "version": "14.2.0-19"
+      }
+      ,{
+        "name": "libgdbm6t64",
+        "version": "1.24-2"
+      }
+      ,{
+        "name": "libgmp10",
+        "version": "2:6.3.0+dfsg-3"
+      }
+      ,{
+        "name": "libhogweed6t64",
+        "version": "3.10.1-1"
+      }
+      ,{
+        "name": "liblastlog2-2",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "liblz4-1",
+        "version": "1.10.0-4"
+      }
+      ,{
+        "name": "liblzma5",
+        "version": "5.8.1-1"
+      }
+      ,{
+        "name": "libmd0",
+        "version": "1.1.0-2+b1"
+      }
+      ,{
+        "name": "libmount1",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "libncursesw6",
+        "version": "6.5+20250216-2"
+      }
+      ,{
+        "name": "libnettle8t64",
+        "version": "3.10.1-1"
+      }
+      ,{
+        "name": "libpam-modules",
+        "version": "1.7.0-5"
+      }
+      ,{
+        "name": "libpam-modules-bin",
+        "version": "1.7.0-5"
+      }
+      ,{
+        "name": "libpam-runtime",
+        "version": "1.7.0-5"
+      }
+      ,{
+        "name": "libpam0g",
+        "version": "1.7.0-5"
+      }
+      ,{
+        "name": "libpcre2-8-0",
+        "version": "10.46-1~deb13u1"
+      }
+      ,{
+        "name": "libreadline8t64",
+        "version": "8.2-6"
+      }
+      ,{
+        "name": "libseccomp2",
+        "version": "2.6.0-2"
+      }
+      ,{
+        "name": "libselinux1",
+        "version": "3.8.1-1"
+      }
+      ,{
+        "name": "libsemanage-common",
+        "version": "3.8.1-1"
+      }
+      ,{
+        "name": "libsemanage2",
+        "version": "3.8.1-1"
+      }
+      ,{
+        "name": "libsepol2",
+        "version": "3.8.1-1"
+      }
+      ,{
+        "name": "libsmartcols1",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "libsqlite3-0",
+        "version": "3.46.1-7"
+      }
+      ,{
+        "name": "libssl3t64",
+        "version": "3.5.4-1~deb13u2"
+      }
+      ,{
+        "name": "libstdc++6",
+        "version": "14.2.0-19"
+      }
+      ,{
+        "name": "libsystemd0",
+        "version": "257.9-1~deb13u1"
+      }
+      ,{
+        "name": "libtinfo6",
+        "version": "6.5+20250216-2"
+      }
+      ,{
+        "name": "libudev1",
+        "version": "257.9-1~deb13u1"
+      }
+      ,{
+        "name": "libuuid1",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "libxxhash0",
+        "version": "0.8.3-2"
+      }
+      ,{
+        "name": "libzstd1",
+        "version": "1.5.7+dfsg-1"
+      }
+      ,{
+        "name": "login",
+        "version": "1:4.16.0-2+really2.41-5"
+      }
+      ,{
+        "name": "login.defs",
+        "version": "1:4.17.4-2"
+      }
+      ,{
+        "name": "mawk",
+        "version": "1.3.4.20250131-1"
+      }
+      ,{
+        "name": "mount",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "ncurses-base",
+        "version": "6.5+20250216-2"
+      }
+      ,{
+        "name": "ncurses-bin",
+        "version": "6.5+20250216-2"
+      }
+      ,{
+        "name": "netbase",
+        "version": "6.5"
+      }
+      ,{
+        "name": "openssl",
+        "version": "3.5.4-1~deb13u2"
+      }
+      ,{
+        "name": "openssl-provider-legacy",
+        "version": "3.5.4-1~deb13u2"
+      }
+      ,{
+        "name": "passwd",
+        "version": "1:4.17.4-2"
+      }
+      ,{
+        "name": "perl-base",
+        "version": "5.40.1-6"
+      }
+      ,{
+        "name": "pip",
+        "version": "25.3"
+      }
+      ,{
+        "name": "python",
+        "version": "3.14.3"
+      }
+      ,{
+        "name": "readline-common",
+        "version": "8.2-6"
+      }
+      ,{
+        "name": "sed",
+        "version": "4.9-2"
+      }
+      ,{
+        "name": "sqv",
+        "version": "1.3.0-3+b2"
+      }
+      ,{
+        "name": "sysvinit-utils",
+        "version": "3.14-4"
+      }
+      ,{
+        "name": "tar",
+        "version": "1.35+dfsg-3.1"
+      }
+      ,{
+        "name": "tzdata",
+        "version": "2025b-4+deb13u1"
+      }
+      ,{
+        "name": "util-linux",
+        "version": "2.41-5"
+      }
+      ,{
+        "name": "zlib1g",
+        "version": "1:1.3.dfsg+really1.3.1-1+b1"
+      }
+    ]
+  }
+}

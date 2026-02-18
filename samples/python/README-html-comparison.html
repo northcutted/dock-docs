@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Image Comparison</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --red: #f85149;
+            --orange: #d29922;
+            --blue: #58a6ff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .dashboard { max-width: 1400px; margin: 0 auto; }
+        h1 { color: #f0f6fc; margin-bottom: 0.5rem; font-size: 1.8rem; }
+        h2 { color: #f0f6fc; margin: 1.5rem 0 0.75rem; font-size: 1.3rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        h3 { color: var(--text); margin: 1rem 0 0.5rem; font-size: 1.1rem; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: var(--surface);
+            color: var(--text-muted);
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        td {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+        }
+        tr:hover td { background: rgba(177, 186, 196, 0.04); }
+        code {
+            background: rgba(110, 118, 129, 0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+        .severity-critical { color: var(--red); font-weight: 700; }
+        .severity-high { color: var(--orange); font-weight: 600; }
+        .severity-medium { color: var(--orange); }
+        .severity-low { color: var(--blue); }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .card-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-value { font-size: 1.2rem; font-weight: 700; color: #f0f6fc; margin-top: 0.15rem; }
+        .stat-row { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+        .stat-row:last-child { border-bottom: none; }
+        .vuln-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin: 0.5rem 0; }
+        .vuln-card { text-align: center; padding: 0.5rem; background: var(--bg); border-radius: 4px; }
+        .vuln-count { font-size: 1.3rem; font-weight: 700; }
+        .vuln-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; }
+        .best { color: var(--green); }
+        .worst { color: var(--red); }
+        .tab-container { margin: 1rem 0; }
+        .tab-buttons { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: 1px solid transparent;
+            border-bottom: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            border-radius: 6px 6px 0 0;
+        }
+        .tab-btn:hover { color: var(--text); }
+        .tab-btn.active {
+            background: var(--surface);
+            color: #f0f6fc;
+            border-color: var(--border);
+            border-bottom: 1px solid var(--surface);
+            margin-bottom: -1px;
+        }
+        .tab-content { display: none; background: var(--surface); border: 1px solid var(--border); border-top: none; border-radius: 0 0 6px 6px; padding: 1rem; }
+        .tab-content.active { display: block; }
+        .footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Docker Image Comparison</h1>
+        <p style="color: var(--text-muted);">Comparing 3 image tags</p>
+
+        <h2>Overview</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Size</th>
+                    <th>Layers</th>
+                    <th>Efficiency</th>
+                    <th>Critical</th>
+                    <th>High</th>
+                    <th>Medium</th>
+                    <th>Low</th>
+                    <th>Total Vulns</th>
+                    <th>Packages</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>python:3.12-slim</code></td>
+                    <td>41.20 MB</td>
+                    <td>4</td>
+                    <td>96.7%</td>
+                    <td><span class="best">0</span></td>
+                    <td><span class="severity-high">7</span></td>
+                    <td><span class="severity-medium">26</span></td>
+                    <td><span class="severity-low">3</span></td>
+                    <td>76</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <td><code>python:3.13-slim</code></td>
+                    <td>40.90 MB</td>
+                    <td>4</td>
+                    <td>96.7%</td>
+                    <td><span class="best">0</span></td>
+                    <td><span class="severity-high">6</span></td>
+                    <td><span class="severity-medium">22</span></td>
+                    <td><span class="severity-low">3</span></td>
+                    <td>71</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <td><code>python:3.14-slim</code></td>
+                    <td>41.32 MB</td>
+                    <td>4</td>
+                    <td>96.7%</td>
+                    <td><span class="best">0</span></td>
+                    <td><span class="severity-high">6</span></td>
+                    <td><span class="severity-medium">22</span></td>
+                    <td><span class="severity-low">3</span></td>
+                    <td>71</td>
+                    <td>90</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Per-Image Details</h2>
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-0')">python:3.12-slim</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-1')">python:3.13-slim</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-2')">python:3.14-slim</button>
+            </div>
+            <div id="tab-0" class="tab-content active">
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="card">
+                        <div class="card-label">Image Size</div>
+                        <div class="card-value">41.20 MB</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Layers</div>
+                        <div class="card-value">4</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Efficiency</div>
+                        <div class="card-value">96.7%</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Packages</div>
+                        <div class="card-value">90</div>
+                    </div>
+                </div>
+
+                <h3>Image Details</h3>
+                <table>
+                    <tbody>
+                        <tr><td><strong>Base Image OS</strong></td><td>Debian GNU/Linux 13 (trixie) (linux/amd64)</td></tr>
+                        <tr><td><strong>Supported Architectures</strong></td><td>linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown</td></tr>
+                        <tr><td><strong>Wasted Space</strong></td><td>5.38 MB</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Vulnerabilities</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Last scanned: 2026-02-18T04:47:30Z</p>
+
+                <div class="vuln-grid">
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-critical">0</div>
+                        <div class="vuln-label">Critical</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-high">7</div>
+                        <div class="vuln-label">High</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-medium">26</div>
+                        <div class="vuln-label">Medium</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-low">3</div>
+                        <div class="vuln-label">Low</div>
+                    </div>
+                </div>
+                <details>
+                    <summary style="cursor: pointer; color: var(--accent); margin: 0.5rem 0;">Show all 76 vulnerabilities</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Severity</th>
+                                <th>Package</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-13836">CVE-2025-13836</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15281">CVE-2025-15281</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15281">CVE-2025-15281</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0861">CVE-2026-0861</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0861">CVE-2026-0861</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0915">CVE-2026-0915</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0915">CVE-2026-0915</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-11468">CVE-2025-11468</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-12084">CVE-2025-12084</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-12781">CVE-2025-12781</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-13837">CVE-2025-13837</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libblkid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libsmartcols1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>bsdutils</code></td>
+                                <td><code>1:2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>liblastlog2-2</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libuuid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>login</code></td>
+                                <td><code>1:4.16.0-2+really2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>mount</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libmount1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>util-linux</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15282">CVE-2025-15282</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15366">CVE-2025-15366</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15367">CVE-2025-15367</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6075">CVE-2025-6075</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libncursesw6</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libtinfo6</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>ncurses-base</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>ncurses-bin</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-7709">CVE-2025-7709</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libsqlite3-0</code></td>
+                                <td><code>3.46.1-7</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0672">CVE-2026-0672</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0865">CVE-2026-0865</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-1299">CVE-2026-1299</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.12.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/GHSA-4xh5-x5gv-qwph">GHSA-4xh5-x5gv-qwph</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>pip</code></td>
+                                <td><code>25.0.1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-56433">CVE-2024-56433</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>passwd</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-56433">CVE-2024-56433</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>login.defs</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/GHSA-6vgw-5pg2-w6jp">GHSA-6vgw-5pg2-w6jp</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>pip</code></td>
+                                <td><code>25.0.1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2005-2541">CVE-2005-2541</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>tar</code></td>
+                                <td><code>1.35+dfsg-3.1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2007-5686">CVE-2007-5686</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>login.defs</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2007-5686">CVE-2007-5686</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>passwd</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-4756">CVE-2010-4756</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-4756">CVE-2010-4756</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-3374">CVE-2011-3374</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>apt</code></td>
+                                <td><code>3.0.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-3374">CVE-2011-3374</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libapt-pkg7.0</code></td>
+                                <td><code>3.0.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-4116">CVE-2011-4116</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>perl-base</code></td>
+                                <td><code>5.40.1-6</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4392">CVE-2013-4392</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4392">CVE-2013-4392</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-18018">CVE-2017-18018</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>coreutils</code></td>
+                                <td><code>9.7-3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-20796">CVE-2018-20796</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-20796">CVE-2018-20796</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010022">CVE-2019-1010022</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010022">CVE-2019-1010022</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010023">CVE-2019-1010023</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010023">CVE-2019-1010023</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010024">CVE-2019-1010024</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010024">CVE-2019-1010024</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010025">CVE-2019-1010025</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010025">CVE-2019-1010025</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9192">CVE-2019-9192</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9192">CVE-2019-9192</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-45346">CVE-2021-45346</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsqlite3-0</code></td>
+                                <td><code>3.46.1-7</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>bsdutils</code></td>
+                                <td><code>1:2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>liblastlog2-2</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>util-linux</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>mount</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>login</code></td>
+                                <td><code>1:4.16.0-2+really2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libuuid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsmartcols1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libmount1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libblkid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31437">CVE-2023-31437</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31437">CVE-2023-31437</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31438">CVE-2023-31438</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31438">CVE-2023-31438</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31439">CVE-2023-31439</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31439">CVE-2023-31439</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-5278">CVE-2025-5278</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>coreutils</code></td>
+                                <td><code>9.7-3</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+                <details>
+                    <summary style="cursor: pointer; color: var(--accent); margin: 0.5rem 0;">Show all 90 packages</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Simple Launcher</td>
+                                <td>1.1.0.14</td>
+                            </tr>
+                            <tr>
+                                <td>adduser</td>
+                                <td>3.152</td>
+                            </tr>
+                            <tr>
+                                <td>apt</td>
+                                <td>3.0.3</td>
+                            </tr>
+                            <tr>
+                                <td>base-files</td>
+                                <td>13.8+deb13u3</td>
+                            </tr>
+                            <tr>
+                                <td>base-passwd</td>
+                                <td>3.6.7</td>
+                            </tr>
+                            <tr>
+                                <td>bash</td>
+                                <td>5.2.37-2+b7</td>
+                            </tr>
+                            <tr>
+                                <td>bsdutils</td>
+                                <td>1:2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>ca-certificates</td>
+                                <td>20250419</td>
+                            </tr>
+                            <tr>
+                                <td>coreutils</td>
+                                <td>9.7-3</td>
+                            </tr>
+                            <tr>
+                                <td>dash</td>
+                                <td>0.5.12-12</td>
+                            </tr>
+                            <tr>
+                                <td>debconf</td>
+                                <td>1.5.91</td>
+                            </tr>
+                            <tr>
+                                <td>debian-archive-keyring</td>
+                                <td>2025.1</td>
+                            </tr>
+                            <tr>
+                                <td>debianutils</td>
+                                <td>5.23.2</td>
+                            </tr>
+                            <tr>
+                                <td>diffutils</td>
+                                <td>1:3.10-4</td>
+                            </tr>
+                            <tr>
+                                <td>dpkg</td>
+                                <td>1.22.21</td>
+                            </tr>
+                            <tr>
+                                <td>findutils</td>
+                                <td>4.10.0-3</td>
+                            </tr>
+                            <tr>
+                                <td>gcc-14-base</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>grep</td>
+                                <td>3.11-4</td>
+                            </tr>
+                            <tr>
+                                <td>gzip</td>
+                                <td>1.13-1</td>
+                            </tr>
+                            <tr>
+                                <td>hostname</td>
+                                <td>3.25</td>
+                            </tr>
+                            <tr>
+                                <td>init-system-helpers</td>
+                                <td>1.69~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libacl1</td>
+                                <td>2.3.2-2+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libapt-pkg7.0</td>
+                                <td>3.0.3</td>
+                            </tr>
+                            <tr>
+                                <td>libattr1</td>
+                                <td>1:2.5.2-3</td>
+                            </tr>
+                            <tr>
+                                <td>libaudit-common</td>
+                                <td>1:4.0.2-2</td>
+                            </tr>
+                            <tr>
+                                <td>libaudit1</td>
+                                <td>1:4.0.2-2+b2</td>
+                            </tr>
+                            <tr>
+                                <td>libblkid1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libbsd0</td>
+                                <td>0.12.2-2</td>
+                            </tr>
+                            <tr>
+                                <td>libbz2-1.0</td>
+                                <td>1.0.8-6</td>
+                            </tr>
+                            <tr>
+                                <td>libc-bin</td>
+                                <td>2.41-12+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libc6</td>
+                                <td>2.41-12+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libcap-ng0</td>
+                                <td>0.8.5-4+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libcap2</td>
+                                <td>1:2.75-10+b3</td>
+                            </tr>
+                            <tr>
+                                <td>libcrypt1</td>
+                                <td>1:4.4.38-1</td>
+                            </tr>
+                            <tr>
+                                <td>libdb5.3t64</td>
+                                <td>5.3.28+dfsg2-9</td>
+                            </tr>
+                            <tr>
+                                <td>libdebconfclient0</td>
+                                <td>0.280</td>
+                            </tr>
+                            <tr>
+                                <td>libffi8</td>
+                                <td>3.4.8-2</td>
+                            </tr>
+                            <tr>
+                                <td>libgcc-s1</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>libgdbm6t64</td>
+                                <td>1.24-2</td>
+                            </tr>
+                            <tr>
+                                <td>libgmp10</td>
+                                <td>2:6.3.0+dfsg-3</td>
+                            </tr>
+                            <tr>
+                                <td>libhogweed6t64</td>
+                                <td>3.10.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>liblastlog2-2</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>liblz4-1</td>
+                                <td>1.10.0-4</td>
+                            </tr>
+                            <tr>
+                                <td>liblzma5</td>
+                                <td>5.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libmd0</td>
+                                <td>1.1.0-2+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libmount1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libncursesw6</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>libnettle8t64</td>
+                                <td>3.10.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-modules</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-modules-bin</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-runtime</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam0g</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpcre2-8-0</td>
+                                <td>10.46-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libreadline8t64</td>
+                                <td>8.2-6</td>
+                            </tr>
+                            <tr>
+                                <td>libseccomp2</td>
+                                <td>2.6.0-2</td>
+                            </tr>
+                            <tr>
+                                <td>libselinux1</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsemanage-common</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsemanage2</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsepol2</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsmartcols1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libsqlite3-0</td>
+                                <td>3.46.1-7</td>
+                            </tr>
+                            <tr>
+                                <td>libssl3t64</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>libstdc++6</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>libsystemd0</td>
+                                <td>257.9-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libtinfo6</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>libudev1</td>
+                                <td>257.9-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libuuid1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libxxhash0</td>
+                                <td>0.8.3-2</td>
+                            </tr>
+                            <tr>
+                                <td>libzstd1</td>
+                                <td>1.5.7+dfsg-1</td>
+                            </tr>
+                            <tr>
+                                <td>login</td>
+                                <td>1:4.16.0-2+really2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>login.defs</td>
+                                <td>1:4.17.4-2</td>
+                            </tr>
+                            <tr>
+                                <td>mawk</td>
+                                <td>1.3.4.20250131-1</td>
+                            </tr>
+                            <tr>
+                                <td>mount</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>ncurses-base</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>ncurses-bin</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>netbase</td>
+                                <td>6.5</td>
+                            </tr>
+                            <tr>
+                                <td>openssl</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>openssl-provider-legacy</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>passwd</td>
+                                <td>1:4.17.4-2</td>
+                            </tr>
+                            <tr>
+                                <td>perl-base</td>
+                                <td>5.40.1-6</td>
+                            </tr>
+                            <tr>
+                                <td>pip</td>
+                                <td>25.0.1</td>
+                            </tr>
+                            <tr>
+                                <td>python</td>
+                                <td>3.12.12</td>
+                            </tr>
+                            <tr>
+                                <td>readline-common</td>
+                                <td>8.2-6</td>
+                            </tr>
+                            <tr>
+                                <td>sed</td>
+                                <td>4.9-2</td>
+                            </tr>
+                            <tr>
+                                <td>sqv</td>
+                                <td>1.3.0-3+b2</td>
+                            </tr>
+                            <tr>
+                                <td>sysvinit-utils</td>
+                                <td>3.14-4</td>
+                            </tr>
+                            <tr>
+                                <td>tar</td>
+                                <td>1.35+dfsg-3.1</td>
+                            </tr>
+                            <tr>
+                                <td>tzdata</td>
+                                <td>2025b-4+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>util-linux</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>zlib1g</td>
+                                <td>1:1.3.dfsg+really1.3.1-1+b1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div id="tab-1" class="tab-content">
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="card">
+                        <div class="card-label">Image Size</div>
+                        <div class="card-value">40.90 MB</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Layers</div>
+                        <div class="card-value">4</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Efficiency</div>
+                        <div class="card-value">96.7%</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Packages</div>
+                        <div class="card-value">90</div>
+                    </div>
+                </div>
+
+                <h3>Image Details</h3>
+                <table>
+                    <tbody>
+                        <tr><td><strong>Base Image OS</strong></td><td>Debian GNU/Linux 13 (trixie) (linux/amd64)</td></tr>
+                        <tr><td><strong>Supported Architectures</strong></td><td>linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown</td></tr>
+                        <tr><td><strong>Wasted Space</strong></td><td>5.38 MB</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Vulnerabilities</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Last scanned: 2026-02-18T04:47:30Z</p>
+
+                <div class="vuln-grid">
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-critical">0</div>
+                        <div class="vuln-label">Critical</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-high">6</div>
+                        <div class="vuln-label">High</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-medium">22</div>
+                        <div class="vuln-label">Medium</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-low">3</div>
+                        <div class="vuln-label">Low</div>
+                    </div>
+                </div>
+                <details>
+                    <summary style="cursor: pointer; color: var(--accent); margin: 0.5rem 0;">Show all 71 vulnerabilities</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Severity</th>
+                                <th>Package</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15281">CVE-2025-15281</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15281">CVE-2025-15281</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0861">CVE-2026-0861</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0861">CVE-2026-0861</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0915">CVE-2026-0915</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0915">CVE-2026-0915</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-11468">CVE-2025-11468</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-12781">CVE-2025-12781</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libblkid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libmount1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>bsdutils</code></td>
+                                <td><code>1:2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>liblastlog2-2</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>util-linux</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>mount</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>login</code></td>
+                                <td><code>1:4.16.0-2+really2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libuuid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libsmartcols1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15282">CVE-2025-15282</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15366">CVE-2025-15366</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15367">CVE-2025-15367</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libncursesw6</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libtinfo6</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>ncurses-base</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>ncurses-bin</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-7709">CVE-2025-7709</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libsqlite3-0</code></td>
+                                <td><code>3.46.1-7</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0672">CVE-2026-0672</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0865">CVE-2026-0865</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-1299">CVE-2026-1299</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.13.12</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-56433">CVE-2024-56433</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>login.defs</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-56433">CVE-2024-56433</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>passwd</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/GHSA-6vgw-5pg2-w6jp">GHSA-6vgw-5pg2-w6jp</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>pip</code></td>
+                                <td><code>25.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2005-2541">CVE-2005-2541</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>tar</code></td>
+                                <td><code>1.35+dfsg-3.1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2007-5686">CVE-2007-5686</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>passwd</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2007-5686">CVE-2007-5686</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>login.defs</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-4756">CVE-2010-4756</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-4756">CVE-2010-4756</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-3374">CVE-2011-3374</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>apt</code></td>
+                                <td><code>3.0.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-3374">CVE-2011-3374</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libapt-pkg7.0</code></td>
+                                <td><code>3.0.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-4116">CVE-2011-4116</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>perl-base</code></td>
+                                <td><code>5.40.1-6</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4392">CVE-2013-4392</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4392">CVE-2013-4392</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-18018">CVE-2017-18018</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>coreutils</code></td>
+                                <td><code>9.7-3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-20796">CVE-2018-20796</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-20796">CVE-2018-20796</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010022">CVE-2019-1010022</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010022">CVE-2019-1010022</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010023">CVE-2019-1010023</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010023">CVE-2019-1010023</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010024">CVE-2019-1010024</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010024">CVE-2019-1010024</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010025">CVE-2019-1010025</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010025">CVE-2019-1010025</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9192">CVE-2019-9192</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9192">CVE-2019-9192</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-45346">CVE-2021-45346</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsqlite3-0</code></td>
+                                <td><code>3.46.1-7</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>mount</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>util-linux</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>login</code></td>
+                                <td><code>1:4.16.0-2+really2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsmartcols1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libuuid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>bsdutils</code></td>
+                                <td><code>1:2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libblkid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>liblastlog2-2</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libmount1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31437">CVE-2023-31437</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31437">CVE-2023-31437</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31438">CVE-2023-31438</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31438">CVE-2023-31438</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31439">CVE-2023-31439</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31439">CVE-2023-31439</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-5278">CVE-2025-5278</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>coreutils</code></td>
+                                <td><code>9.7-3</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+                <details>
+                    <summary style="cursor: pointer; color: var(--accent); margin: 0.5rem 0;">Show all 90 packages</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Simple Launcher</td>
+                                <td>1.1.0.14</td>
+                            </tr>
+                            <tr>
+                                <td>adduser</td>
+                                <td>3.152</td>
+                            </tr>
+                            <tr>
+                                <td>apt</td>
+                                <td>3.0.3</td>
+                            </tr>
+                            <tr>
+                                <td>base-files</td>
+                                <td>13.8+deb13u3</td>
+                            </tr>
+                            <tr>
+                                <td>base-passwd</td>
+                                <td>3.6.7</td>
+                            </tr>
+                            <tr>
+                                <td>bash</td>
+                                <td>5.2.37-2+b7</td>
+                            </tr>
+                            <tr>
+                                <td>bsdutils</td>
+                                <td>1:2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>ca-certificates</td>
+                                <td>20250419</td>
+                            </tr>
+                            <tr>
+                                <td>coreutils</td>
+                                <td>9.7-3</td>
+                            </tr>
+                            <tr>
+                                <td>dash</td>
+                                <td>0.5.12-12</td>
+                            </tr>
+                            <tr>
+                                <td>debconf</td>
+                                <td>1.5.91</td>
+                            </tr>
+                            <tr>
+                                <td>debian-archive-keyring</td>
+                                <td>2025.1</td>
+                            </tr>
+                            <tr>
+                                <td>debianutils</td>
+                                <td>5.23.2</td>
+                            </tr>
+                            <tr>
+                                <td>diffutils</td>
+                                <td>1:3.10-4</td>
+                            </tr>
+                            <tr>
+                                <td>dpkg</td>
+                                <td>1.22.21</td>
+                            </tr>
+                            <tr>
+                                <td>findutils</td>
+                                <td>4.10.0-3</td>
+                            </tr>
+                            <tr>
+                                <td>gcc-14-base</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>grep</td>
+                                <td>3.11-4</td>
+                            </tr>
+                            <tr>
+                                <td>gzip</td>
+                                <td>1.13-1</td>
+                            </tr>
+                            <tr>
+                                <td>hostname</td>
+                                <td>3.25</td>
+                            </tr>
+                            <tr>
+                                <td>init-system-helpers</td>
+                                <td>1.69~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libacl1</td>
+                                <td>2.3.2-2+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libapt-pkg7.0</td>
+                                <td>3.0.3</td>
+                            </tr>
+                            <tr>
+                                <td>libattr1</td>
+                                <td>1:2.5.2-3</td>
+                            </tr>
+                            <tr>
+                                <td>libaudit-common</td>
+                                <td>1:4.0.2-2</td>
+                            </tr>
+                            <tr>
+                                <td>libaudit1</td>
+                                <td>1:4.0.2-2+b2</td>
+                            </tr>
+                            <tr>
+                                <td>libblkid1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libbsd0</td>
+                                <td>0.12.2-2</td>
+                            </tr>
+                            <tr>
+                                <td>libbz2-1.0</td>
+                                <td>1.0.8-6</td>
+                            </tr>
+                            <tr>
+                                <td>libc-bin</td>
+                                <td>2.41-12+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libc6</td>
+                                <td>2.41-12+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libcap-ng0</td>
+                                <td>0.8.5-4+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libcap2</td>
+                                <td>1:2.75-10+b3</td>
+                            </tr>
+                            <tr>
+                                <td>libcrypt1</td>
+                                <td>1:4.4.38-1</td>
+                            </tr>
+                            <tr>
+                                <td>libdb5.3t64</td>
+                                <td>5.3.28+dfsg2-9</td>
+                            </tr>
+                            <tr>
+                                <td>libdebconfclient0</td>
+                                <td>0.280</td>
+                            </tr>
+                            <tr>
+                                <td>libffi8</td>
+                                <td>3.4.8-2</td>
+                            </tr>
+                            <tr>
+                                <td>libgcc-s1</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>libgdbm6t64</td>
+                                <td>1.24-2</td>
+                            </tr>
+                            <tr>
+                                <td>libgmp10</td>
+                                <td>2:6.3.0+dfsg-3</td>
+                            </tr>
+                            <tr>
+                                <td>libhogweed6t64</td>
+                                <td>3.10.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>liblastlog2-2</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>liblz4-1</td>
+                                <td>1.10.0-4</td>
+                            </tr>
+                            <tr>
+                                <td>liblzma5</td>
+                                <td>5.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libmd0</td>
+                                <td>1.1.0-2+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libmount1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libncursesw6</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>libnettle8t64</td>
+                                <td>3.10.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-modules</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-modules-bin</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-runtime</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam0g</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpcre2-8-0</td>
+                                <td>10.46-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libreadline8t64</td>
+                                <td>8.2-6</td>
+                            </tr>
+                            <tr>
+                                <td>libseccomp2</td>
+                                <td>2.6.0-2</td>
+                            </tr>
+                            <tr>
+                                <td>libselinux1</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsemanage-common</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsemanage2</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsepol2</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsmartcols1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libsqlite3-0</td>
+                                <td>3.46.1-7</td>
+                            </tr>
+                            <tr>
+                                <td>libssl3t64</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>libstdc++6</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>libsystemd0</td>
+                                <td>257.9-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libtinfo6</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>libudev1</td>
+                                <td>257.9-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libuuid1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libxxhash0</td>
+                                <td>0.8.3-2</td>
+                            </tr>
+                            <tr>
+                                <td>libzstd1</td>
+                                <td>1.5.7+dfsg-1</td>
+                            </tr>
+                            <tr>
+                                <td>login</td>
+                                <td>1:4.16.0-2+really2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>login.defs</td>
+                                <td>1:4.17.4-2</td>
+                            </tr>
+                            <tr>
+                                <td>mawk</td>
+                                <td>1.3.4.20250131-1</td>
+                            </tr>
+                            <tr>
+                                <td>mount</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>ncurses-base</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>ncurses-bin</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>netbase</td>
+                                <td>6.5</td>
+                            </tr>
+                            <tr>
+                                <td>openssl</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>openssl-provider-legacy</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>passwd</td>
+                                <td>1:4.17.4-2</td>
+                            </tr>
+                            <tr>
+                                <td>perl-base</td>
+                                <td>5.40.1-6</td>
+                            </tr>
+                            <tr>
+                                <td>pip</td>
+                                <td>25.3</td>
+                            </tr>
+                            <tr>
+                                <td>python</td>
+                                <td>3.13.12</td>
+                            </tr>
+                            <tr>
+                                <td>readline-common</td>
+                                <td>8.2-6</td>
+                            </tr>
+                            <tr>
+                                <td>sed</td>
+                                <td>4.9-2</td>
+                            </tr>
+                            <tr>
+                                <td>sqv</td>
+                                <td>1.3.0-3+b2</td>
+                            </tr>
+                            <tr>
+                                <td>sysvinit-utils</td>
+                                <td>3.14-4</td>
+                            </tr>
+                            <tr>
+                                <td>tar</td>
+                                <td>1.35+dfsg-3.1</td>
+                            </tr>
+                            <tr>
+                                <td>tzdata</td>
+                                <td>2025b-4+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>util-linux</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>zlib1g</td>
+                                <td>1:1.3.dfsg+really1.3.1-1+b1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div id="tab-2" class="tab-content">
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="card">
+                        <div class="card-label">Image Size</div>
+                        <div class="card-value">41.32 MB</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Layers</div>
+                        <div class="card-value">4</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Efficiency</div>
+                        <div class="card-value">96.7%</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Packages</div>
+                        <div class="card-value">90</div>
+                    </div>
+                </div>
+
+                <h3>Image Details</h3>
+                <table>
+                    <tbody>
+                        <tr><td><strong>Base Image OS</strong></td><td>Debian GNU/Linux 13 (trixie) (linux/amd64)</td></tr>
+                        <tr><td><strong>Supported Architectures</strong></td><td>linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown</td></tr>
+                        <tr><td><strong>Wasted Space</strong></td><td>5.38 MB</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Vulnerabilities</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Last scanned: 2026-02-18T04:47:29Z</p>
+
+                <div class="vuln-grid">
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-critical">0</div>
+                        <div class="vuln-label">Critical</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-high">6</div>
+                        <div class="vuln-label">High</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-medium">22</div>
+                        <div class="vuln-label">Medium</div>
+                    </div>
+                    <div class="card vuln-card">
+                        <div class="vuln-count severity-low">3</div>
+                        <div class="vuln-label">Low</div>
+                    </div>
+                </div>
+                <details>
+                    <summary style="cursor: pointer; color: var(--accent); margin: 0.5rem 0;">Show all 71 vulnerabilities</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Severity</th>
+                                <th>Package</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15281">CVE-2025-15281</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15281">CVE-2025-15281</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0861">CVE-2026-0861</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0861">CVE-2026-0861</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0915">CVE-2026-0915</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0915">CVE-2026-0915</a></td>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-11468">CVE-2025-11468</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-12781">CVE-2025-12781</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libblkid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libmount1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>bsdutils</code></td>
+                                <td><code>1:2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>liblastlog2-2</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>util-linux</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>mount</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>login</code></td>
+                                <td><code>1:4.16.0-2+really2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libuuid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14104">CVE-2025-14104</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libsmartcols1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15282">CVE-2025-15282</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15366">CVE-2025-15366</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-15367">CVE-2025-15367</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libncursesw6</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libtinfo6</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>ncurses-base</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-6141">CVE-2025-6141</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>ncurses-bin</code></td>
+                                <td><code>6.5+20250216-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-7709">CVE-2025-7709</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>libsqlite3-0</code></td>
+                                <td><code>3.46.1-7</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0672">CVE-2026-0672</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-0865">CVE-2026-0865</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-1299">CVE-2026-1299</a></td>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>python</code></td>
+                                <td><code>3.14.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-56433">CVE-2024-56433</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>login.defs</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-56433">CVE-2024-56433</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>passwd</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/GHSA-6vgw-5pg2-w6jp">GHSA-6vgw-5pg2-w6jp</a></td>
+                                <td><span class="severity-low">Low</span></td>
+                                <td><code>pip</code></td>
+                                <td><code>25.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2005-2541">CVE-2005-2541</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>tar</code></td>
+                                <td><code>1.35+dfsg-3.1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2007-5686">CVE-2007-5686</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>passwd</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2007-5686">CVE-2007-5686</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>login.defs</code></td>
+                                <td><code>1:4.17.4-2</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-4756">CVE-2010-4756</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-4756">CVE-2010-4756</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-3374">CVE-2011-3374</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>apt</code></td>
+                                <td><code>3.0.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-3374">CVE-2011-3374</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libapt-pkg7.0</code></td>
+                                <td><code>3.0.3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2011-4116">CVE-2011-4116</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>perl-base</code></td>
+                                <td><code>5.40.1-6</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4392">CVE-2013-4392</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4392">CVE-2013-4392</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-18018">CVE-2017-18018</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>coreutils</code></td>
+                                <td><code>9.7-3</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-20796">CVE-2018-20796</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-20796">CVE-2018-20796</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010022">CVE-2019-1010022</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010022">CVE-2019-1010022</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010023">CVE-2019-1010023</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010023">CVE-2019-1010023</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010024">CVE-2019-1010024</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010024">CVE-2019-1010024</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010025">CVE-2019-1010025</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1010025">CVE-2019-1010025</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9192">CVE-2019-9192</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc-bin</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9192">CVE-2019-9192</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libc6</code></td>
+                                <td><code>2.41-12+deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-45346">CVE-2021-45346</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsqlite3-0</code></td>
+                                <td><code>3.46.1-7</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>mount</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>util-linux</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>login</code></td>
+                                <td><code>1:4.16.0-2+really2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsmartcols1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libuuid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>bsdutils</code></td>
+                                <td><code>1:2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libblkid1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>liblastlog2-2</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-0563">CVE-2022-0563</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libmount1</code></td>
+                                <td><code>2.41-5</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31437">CVE-2023-31437</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31437">CVE-2023-31437</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31438">CVE-2023-31438</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31438">CVE-2023-31438</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31439">CVE-2023-31439</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libudev1</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-31439">CVE-2023-31439</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>libsystemd0</code></td>
+                                <td><code>257.9-1~deb13u1</code></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-5278">CVE-2025-5278</a></td>
+                                <td><span class="severity-negligible">Negligible</span></td>
+                                <td><code>coreutils</code></td>
+                                <td><code>9.7-3</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+                <details>
+                    <summary style="cursor: pointer; color: var(--accent); margin: 0.5rem 0;">Show all 90 packages</summary>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Simple Launcher</td>
+                                <td>1.1.0.14</td>
+                            </tr>
+                            <tr>
+                                <td>adduser</td>
+                                <td>3.152</td>
+                            </tr>
+                            <tr>
+                                <td>apt</td>
+                                <td>3.0.3</td>
+                            </tr>
+                            <tr>
+                                <td>base-files</td>
+                                <td>13.8+deb13u3</td>
+                            </tr>
+                            <tr>
+                                <td>base-passwd</td>
+                                <td>3.6.7</td>
+                            </tr>
+                            <tr>
+                                <td>bash</td>
+                                <td>5.2.37-2+b7</td>
+                            </tr>
+                            <tr>
+                                <td>bsdutils</td>
+                                <td>1:2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>ca-certificates</td>
+                                <td>20250419</td>
+                            </tr>
+                            <tr>
+                                <td>coreutils</td>
+                                <td>9.7-3</td>
+                            </tr>
+                            <tr>
+                                <td>dash</td>
+                                <td>0.5.12-12</td>
+                            </tr>
+                            <tr>
+                                <td>debconf</td>
+                                <td>1.5.91</td>
+                            </tr>
+                            <tr>
+                                <td>debian-archive-keyring</td>
+                                <td>2025.1</td>
+                            </tr>
+                            <tr>
+                                <td>debianutils</td>
+                                <td>5.23.2</td>
+                            </tr>
+                            <tr>
+                                <td>diffutils</td>
+                                <td>1:3.10-4</td>
+                            </tr>
+                            <tr>
+                                <td>dpkg</td>
+                                <td>1.22.21</td>
+                            </tr>
+                            <tr>
+                                <td>findutils</td>
+                                <td>4.10.0-3</td>
+                            </tr>
+                            <tr>
+                                <td>gcc-14-base</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>grep</td>
+                                <td>3.11-4</td>
+                            </tr>
+                            <tr>
+                                <td>gzip</td>
+                                <td>1.13-1</td>
+                            </tr>
+                            <tr>
+                                <td>hostname</td>
+                                <td>3.25</td>
+                            </tr>
+                            <tr>
+                                <td>init-system-helpers</td>
+                                <td>1.69~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libacl1</td>
+                                <td>2.3.2-2+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libapt-pkg7.0</td>
+                                <td>3.0.3</td>
+                            </tr>
+                            <tr>
+                                <td>libattr1</td>
+                                <td>1:2.5.2-3</td>
+                            </tr>
+                            <tr>
+                                <td>libaudit-common</td>
+                                <td>1:4.0.2-2</td>
+                            </tr>
+                            <tr>
+                                <td>libaudit1</td>
+                                <td>1:4.0.2-2+b2</td>
+                            </tr>
+                            <tr>
+                                <td>libblkid1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libbsd0</td>
+                                <td>0.12.2-2</td>
+                            </tr>
+                            <tr>
+                                <td>libbz2-1.0</td>
+                                <td>1.0.8-6</td>
+                            </tr>
+                            <tr>
+                                <td>libc-bin</td>
+                                <td>2.41-12+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libc6</td>
+                                <td>2.41-12+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libcap-ng0</td>
+                                <td>0.8.5-4+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libcap2</td>
+                                <td>1:2.75-10+b3</td>
+                            </tr>
+                            <tr>
+                                <td>libcrypt1</td>
+                                <td>1:4.4.38-1</td>
+                            </tr>
+                            <tr>
+                                <td>libdb5.3t64</td>
+                                <td>5.3.28+dfsg2-9</td>
+                            </tr>
+                            <tr>
+                                <td>libdebconfclient0</td>
+                                <td>0.280</td>
+                            </tr>
+                            <tr>
+                                <td>libffi8</td>
+                                <td>3.4.8-2</td>
+                            </tr>
+                            <tr>
+                                <td>libgcc-s1</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>libgdbm6t64</td>
+                                <td>1.24-2</td>
+                            </tr>
+                            <tr>
+                                <td>libgmp10</td>
+                                <td>2:6.3.0+dfsg-3</td>
+                            </tr>
+                            <tr>
+                                <td>libhogweed6t64</td>
+                                <td>3.10.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>liblastlog2-2</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>liblz4-1</td>
+                                <td>1.10.0-4</td>
+                            </tr>
+                            <tr>
+                                <td>liblzma5</td>
+                                <td>5.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libmd0</td>
+                                <td>1.1.0-2+b1</td>
+                            </tr>
+                            <tr>
+                                <td>libmount1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libncursesw6</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>libnettle8t64</td>
+                                <td>3.10.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-modules</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-modules-bin</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam-runtime</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpam0g</td>
+                                <td>1.7.0-5</td>
+                            </tr>
+                            <tr>
+                                <td>libpcre2-8-0</td>
+                                <td>10.46-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libreadline8t64</td>
+                                <td>8.2-6</td>
+                            </tr>
+                            <tr>
+                                <td>libseccomp2</td>
+                                <td>2.6.0-2</td>
+                            </tr>
+                            <tr>
+                                <td>libselinux1</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsemanage-common</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsemanage2</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsepol2</td>
+                                <td>3.8.1-1</td>
+                            </tr>
+                            <tr>
+                                <td>libsmartcols1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libsqlite3-0</td>
+                                <td>3.46.1-7</td>
+                            </tr>
+                            <tr>
+                                <td>libssl3t64</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>libstdc++6</td>
+                                <td>14.2.0-19</td>
+                            </tr>
+                            <tr>
+                                <td>libsystemd0</td>
+                                <td>257.9-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libtinfo6</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>libudev1</td>
+                                <td>257.9-1~deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>libuuid1</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>libxxhash0</td>
+                                <td>0.8.3-2</td>
+                            </tr>
+                            <tr>
+                                <td>libzstd1</td>
+                                <td>1.5.7+dfsg-1</td>
+                            </tr>
+                            <tr>
+                                <td>login</td>
+                                <td>1:4.16.0-2+really2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>login.defs</td>
+                                <td>1:4.17.4-2</td>
+                            </tr>
+                            <tr>
+                                <td>mawk</td>
+                                <td>1.3.4.20250131-1</td>
+                            </tr>
+                            <tr>
+                                <td>mount</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>ncurses-base</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>ncurses-bin</td>
+                                <td>6.5+20250216-2</td>
+                            </tr>
+                            <tr>
+                                <td>netbase</td>
+                                <td>6.5</td>
+                            </tr>
+                            <tr>
+                                <td>openssl</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>openssl-provider-legacy</td>
+                                <td>3.5.4-1~deb13u2</td>
+                            </tr>
+                            <tr>
+                                <td>passwd</td>
+                                <td>1:4.17.4-2</td>
+                            </tr>
+                            <tr>
+                                <td>perl-base</td>
+                                <td>5.40.1-6</td>
+                            </tr>
+                            <tr>
+                                <td>pip</td>
+                                <td>25.3</td>
+                            </tr>
+                            <tr>
+                                <td>python</td>
+                                <td>3.14.3</td>
+                            </tr>
+                            <tr>
+                                <td>readline-common</td>
+                                <td>8.2-6</td>
+                            </tr>
+                            <tr>
+                                <td>sed</td>
+                                <td>4.9-2</td>
+                            </tr>
+                            <tr>
+                                <td>sqv</td>
+                                <td>1.3.0-3+b2</td>
+                            </tr>
+                            <tr>
+                                <td>sysvinit-utils</td>
+                                <td>3.14-4</td>
+                            </tr>
+                            <tr>
+                                <td>tar</td>
+                                <td>1.35+dfsg-3.1</td>
+                            </tr>
+                            <tr>
+                                <td>tzdata</td>
+                                <td>2025b-4+deb13u1</td>
+                            </tr>
+                            <tr>
+                                <td>util-linux</td>
+                                <td>2.41-5</td>
+                            </tr>
+                            <tr>
+                                <td>zlib1g</td>
+                                <td>1:1.3.dfsg+really1.3.1-1+b1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+        </div>
+
+        <div class="footer">
+            Generated by <a href="https://github.com/northcutted/dock-docs">dock-docs</a>
+        </div>
+    </div>
+
+    <script>
+    function switchTab(evt, tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+    </script>
+</body>
+</html>

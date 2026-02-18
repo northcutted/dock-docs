@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>golang:1.26-alpine - Docker Documentation</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --red: #f85149;
+            --orange: #d29922;
+            --blue: #58a6ff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .dashboard { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #f0f6fc; margin-bottom: 0.5rem; font-size: 1.8rem; }
+        h2 { color: #f0f6fc; margin: 1.5rem 0 0.75rem; font-size: 1.3rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        h3 { color: var(--text); margin: 1rem 0 0.5rem; font-size: 1.1rem; }
+        .badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .badge-blue { background: rgba(88, 166, 255, 0.15); color: var(--blue); border: 1px solid rgba(88, 166, 255, 0.3); }
+        .badge-green { background: rgba(63, 185, 80, 0.15); color: var(--green); border: 1px solid rgba(63, 185, 80, 0.3); }
+        .badge-red { background: rgba(248, 81, 73, 0.15); color: var(--red); border: 1px solid rgba(248, 81, 73, 0.3); }
+        .badge-orange { background: rgba(210, 153, 34, 0.15); color: var(--orange); border: 1px solid rgba(210, 153, 34, 0.3); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        .card-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-value { font-size: 1.5rem; font-weight: 700; color: #f0f6fc; margin-top: 0.25rem; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: var(--surface);
+            color: var(--text-muted);
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        td {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+        }
+        tr:hover td { background: rgba(177, 186, 196, 0.04); }
+        code {
+            background: rgba(110, 118, 129, 0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+        .severity-critical { color: var(--red); font-weight: 700; }
+        .severity-high { color: var(--orange); font-weight: 600; }
+        .severity-medium { color: var(--orange); }
+        .severity-low { color: var(--blue); }
+        .tag-required { color: var(--green); }
+        .tag-optional { color: var(--text-muted); }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .vuln-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin: 1rem 0; }
+        .vuln-card { text-align: center; padding: 1rem; }
+        .vuln-count { font-size: 2rem; font-weight: 700; }
+        .vuln-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+        .footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>golang:1.26-alpine</h1>
+        <p style="color: var(--text-muted);">Docker Image Documentation</p>
+        <div class="badges">
+            <span class="badge badge-blue">68.04 MB</span>
+            <span class="badge badge-blue">5 Layers</span>
+            <span class="badge badge-green">0 Critical Vulns</span>
+            <span class="badge badge-green">99.9% Efficient</span>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-label">Image Size</div>
+                <div class="card-value">68.04 MB</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Layers</div>
+                <div class="card-value">5</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Efficiency</div>
+                <div class="card-value">99.9%</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Packages</div>
+                <div class="card-value">29</div>
+            </div>
+        </div>
+        <h2>Build Arguments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>CGO_ENABLED=0</code></td>
+                    <td>Enable CGO for building (default false)</td>
+                    <td><code></code></td>
+                    <td><span class="tag-optional">No</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Exposed Ports</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Port</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>8080</code></td>
+                    <td>The default port for the Go application</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Security &amp; Efficiency</h2>
+
+        <h3>Image Details</h3>
+        <table>
+            <tbody>
+                <tr><td><strong>Base Image OS</strong></td><td>Alpine Linux (linux/amd64)</td></tr>
+                <tr><td><strong>Supported Architectures</strong></td><td>linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown</td></tr>
+                <tr><td><strong>Wasted Space</strong></td><td>0.47 MB</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Vulnerabilities</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Last scanned: 2026-02-18T04:38:13Z</p>
+
+        <div class="vuln-grid">
+            <div class="card vuln-card">
+                <div class="vuln-count severity-critical">0</div>
+                <div class="vuln-label">Critical</div>
+            </div>
+            <div class="card vuln-card">
+                <div class="vuln-count severity-high">0</div>
+                <div class="vuln-label">High</div>
+            </div>
+            <div class="card vuln-card">
+                <div class="vuln-count severity-medium">3</div>
+                <div class="vuln-label">Medium</div>
+            </div>
+            <div class="card vuln-card">
+                <div class="vuln-count severity-low">0</div>
+                <div class="vuln-label">Low</div>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Severity</th>
+                    <th>Package</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-60876">CVE-2025-60876</a></td>
+                    <td><span class="severity-medium">Medium</span></td>
+                    <td><code>busybox</code></td>
+                    <td><code>1.37.0-r30</code></td>
+                </tr>
+                <tr>
+                    <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-60876">CVE-2025-60876</a></td>
+                    <td><span class="severity-medium">Medium</span></td>
+                    <td><code>busybox-binsh</code></td>
+                    <td><code>1.37.0-r30</code></td>
+                </tr>
+                <tr>
+                    <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-60876">CVE-2025-60876</a></td>
+                    <td><span class="severity-medium">Medium</span></td>
+                    <td><code>ssl_client</code></td>
+                    <td><code>1.37.0-r30</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Installed Packages (29 total)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Package</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>alpine-baselayout</td>
+                    <td>3.7.1-r8</td>
+                </tr>
+                <tr>
+                    <td>alpine-baselayout-data</td>
+                    <td>3.7.1-r8</td>
+                </tr>
+                <tr>
+                    <td>alpine-keys</td>
+                    <td>2.6-r0</td>
+                </tr>
+                <tr>
+                    <td>alpine-release</td>
+                    <td>3.23.3-r0</td>
+                </tr>
+                <tr>
+                    <td>apk-tools</td>
+                    <td>3.0.3-r1</td>
+                </tr>
+                <tr>
+                    <td>busybox</td>
+                    <td>1.37.0-r30</td>
+                </tr>
+                <tr>
+                    <td>busybox-binsh</td>
+                    <td>1.37.0-r30</td>
+                </tr>
+                <tr>
+                    <td>ca-certificates</td>
+                    <td>20251003-r0</td>
+                </tr>
+                <tr>
+                    <td>ca-certificates-bundle</td>
+                    <td>20251003-r0</td>
+                </tr>
+                <tr>
+                    <td>cmd/asm</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/cgo</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/compile</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/cover</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/fix</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/go</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/gofmt</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/link</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/preprofile</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>cmd/vet</td>
+                    <td>UNKNOWN</td>
+                </tr>
+                <tr>
+                    <td>go</td>
+                    <td>1.26.0</td>
+                </tr>
+                <tr>
+                    <td>libapk</td>
+                    <td>3.0.3-r1</td>
+                </tr>
+                <tr>
+                    <td>libcrypto3</td>
+                    <td>3.5.5-r0</td>
+                </tr>
+                <tr>
+                    <td>libssl3</td>
+                    <td>3.5.5-r0</td>
+                </tr>
+                <tr>
+                    <td>musl</td>
+                    <td>1.2.5-r21</td>
+                </tr>
+                <tr>
+                    <td>musl-utils</td>
+                    <td>1.2.5-r21</td>
+                </tr>
+                <tr>
+                    <td>scanelf</td>
+                    <td>1.3.8-r2</td>
+                </tr>
+                <tr>
+                    <td>ssl_client</td>
+                    <td>1.37.0-r30</td>
+                </tr>
+                <tr>
+                    <td>stdlib</td>
+                    <td>go1.26.0</td>
+                </tr>
+                <tr>
+                    <td>zlib</td>
+                    <td>1.3.1-r2</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            Generated by <a href="https://github.com/northcutted/dock-docs">dock-docs</a>
+        </div>
+    </div>
+</body>
+</html>

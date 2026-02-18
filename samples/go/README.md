@@ -11,7 +11,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:default-image -->
 
 # 🐳 Docker Image Analysis: golang:1.26-alpine
-![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=5&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.9%&color=green)
+![Size](https://img.shields.io/static/v1?label=Size&message=68.04+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=5&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.9%&color=green)
 
 ## ⚙️ Configuration
 ### Build Arguments
@@ -26,12 +26,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
 **Efficiency Score:** 99.9%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:09:47-06:00
+**Last scanned:** 2026-02-18T04:36:13Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -92,21 +92,21 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `golang:1.24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=258.71+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `golang:1.25-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=213.88+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `golang:1.26-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=79.44+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.25-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=61.35+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.26-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=68.04+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
 
 <details>
 <summary><strong>🔍 Full Report: golang:1.24-alpine</strong></summary>
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
 **Efficiency Score:** 99.9%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:10:24-06:00
+**Last scanned:** 2026-02-18T04:37:03Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -175,12 +175,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
 **Efficiency Score:** 99.9%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:10:23-06:00
+**Last scanned:** 2026-02-18T04:37:01Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -238,12 +238,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
 **Efficiency Score:** 99.9%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:10:23-06:00
+**Last scanned:** 2026-02-18T04:36:56Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -327,9 +327,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency |
 |-----|------|-------|------------|
-| `golang:1.24-alpine` | 258.71 MB | 0C / 0H | 99.9% |
-| `golang:1.25-alpine` | 213.88 MB | 0C / 0H | 99.9% |
-| `golang:1.26-alpine` | 237.87 MB | 0C / 0H | 99.9% |
+| `golang:1.24-alpine` | 79.44 MB | 0C / 0H | 99.9% |
+| `golang:1.25-alpine` | 61.35 MB | 0C / 0H | 99.9% |
+| `golang:1.26-alpine` | 68.04 MB | 0C / 0H | 99.9% |
 
 <!-- END: dock-docs:minimal-comparison -->
 
@@ -341,7 +341,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:detailed-image -->
 
 # 🐳 Docker Image Analysis: golang:1.26-alpine
-![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=5&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.9%&color=green)
+![Size](https://img.shields.io/static/v1?label=Size&message=68.04+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=5&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.9%&color=green)
 
 ## ⚙️ Configuration
 
@@ -367,17 +367,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `golang:1.26-alpine` |
 | **Base Image OS** | `Alpine Linux` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 237.87 MB |
+| **Image Size** | 68.04 MB |
 | **Total Layers** | 5 |
 | **Efficiency Score** | 99.9% |
 | **Wasted Space** | 0.47 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:09:58-06:00
+**Last scanned:** 2026-02-18T04:36:29Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -433,9 +433,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `golang:1.24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=258.71+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `golang:1.25-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=213.88+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `golang:1.26-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=237.87+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=79.44+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.25-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=61.35+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `golang:1.26-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=68.04+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=3+Vulns+%280+Crit%29&color=green) | 99.9% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
 
 ---
 
@@ -447,17 +447,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `golang:1.24-alpine` |
 | **Base Image OS** | `Alpine Linux` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 258.71 MB |
+| **Image Size** | 79.44 MB |
 | **Total Layers** | 5 |
 | **Efficiency Score** | 99.9% |
 | **Wasted Space** | 0.47 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:11:10-06:00
+**Last scanned:** 2026-02-18T04:37:43Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -525,17 +525,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `golang:1.25-alpine` |
 | **Base Image OS** | `Alpine Linux` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 213.88 MB |
+| **Image Size** | 61.35 MB |
 | **Total Layers** | 5 |
 | **Efficiency Score** | 99.9% |
 | **Wasted Space** | 0.47 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:11:08-06:00
+**Last scanned:** 2026-02-18T04:37:42Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -592,17 +592,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `golang:1.26-alpine` |
 | **Base Image OS** | `Alpine Linux` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 237.87 MB |
+| **Image Size** | 68.04 MB |
 | **Total Layers** | 5 |
 | **Efficiency Score** | 99.9% |
 | **Wasted Space** | 0.47 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:11:08-06:00
+**Last scanned:** 2026-02-18T04:37:43Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -660,7 +660,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ### Image Analysis
 <!-- BEGIN: dock-docs:compact-image -->
-**golang:1.26-alpine** | Size: 237.87 MB | Layers: 5 | Efficiency: 99.9% | Vulns: 0C/0H/3M/0L
+**golang:1.26-alpine** | Size: 68.04 MB | Layers: 5 | Efficiency: 99.9% | Vulns: 0C/0H/3M/0L
 | ARG | Default | Req |
 |-----|---------|:---:|
 | `CGO_ENABLED=0` | `` | ❌ |
@@ -674,8 +674,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:compact-comparison -->
 | Tag | Size | Vulns | Efficiency |
 |-----|------|-------|------------|
-| `golang:1.24-alpine` | 258.71 MB | 0C/0H/3M | 99.9% |
-| `golang:1.25-alpine` | 213.88 MB | 0C/0H/3M | 99.9% |
-| `golang:1.26-alpine` | 237.87 MB | 0C/0H/3M | 99.9% |
+| `golang:1.24-alpine` | 79.44 MB | 0C/0H/3M | 99.9% |
+| `golang:1.25-alpine` | 61.35 MB | 0C/0H/3M | 99.9% |
+| `golang:1.26-alpine` | 68.04 MB | 0C/0H/3M | 99.9% |
 
 <!-- END: dock-docs:compact-comparison -->

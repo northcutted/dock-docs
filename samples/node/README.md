@@ -11,7 +11,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:default-image -->
 
 # 🐳 Docker Image Analysis: node:24
-![Size](https://img.shields.io/static/v1?label=Size&message=1098.28+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=8&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=290+Vulns+%286+Crit%29&color=red) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.4%&color=green)
+![Size](https://img.shields.io/static/v1?label=Size&message=388.59+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=8&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=290+Vulns+%286+Crit%29&color=red) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.4%&color=green)
 
 ## ⚙️ Configuration
 ### Build Arguments
@@ -26,12 +26,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Debian GNU/Linux 12 (bookworm) (linux/arm64)`
+**Base Image:** `Debian GNU/Linux 12 (bookworm) (linux/amd64)`
 **Supported Architectures:** `linux/amd64, linux/arm64, linux/ppc64le, linux/s390x, unknown/unknown`
 **Efficiency Score:** 99.4%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:13:25-06:00
+**Last scanned:** 2026-02-18T04:39:51Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -444,12 +444,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2017-11755](https://nvd.nist.gov/vuln/detail/CVE-2017-11755) | Negligible | `libmagickcore-6-arch-config` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2017-11755](https://nvd.nist.gov/vuln/detail/CVE-2017-11755) | Negligible | `imagemagick-6.q16` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2017-11755](https://nvd.nist.gov/vuln/detail/CVE-2017-11755) | Negligible | `libmagickcore-6.q16-dev` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
-| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2017-14159](https://nvd.nist.gov/vuln/detail/CVE-2017-14159) | Negligible | `libldap-2.5-0` | `2.5.13+dfsg-5` |
 | [CVE-2017-14988](https://nvd.nist.gov/vuln/detail/CVE-2017-14988) | Negligible | `libopenexr-dev` | `3.1.5-5` |
@@ -499,19 +499,19 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2018-18064](https://nvd.nist.gov/vuln/detail/CVE-2018-18064) | Negligible | `libcairo2` | `1.16.0-7` |
 | [CVE-2018-18064](https://nvd.nist.gov/vuln/detail/CVE-2018-18064) | Negligible | `libcairo-script-interpreter2` | `1.16.0-7` |
 | [CVE-2018-18064](https://nvd.nist.gov/vuln/detail/CVE-2018-18064) | Negligible | `libcairo-gobject2` | `1.16.0-7` |
-| [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2018-20796](https://nvd.nist.gov/vuln/detail/CVE-2018-20796) | Negligible | `libc-dev-bin` | `2.36-9+deb12u13` |
 | [CVE-2018-20796](https://nvd.nist.gov/vuln/detail/CVE-2018-20796) | Negligible | `libc6` | `2.36-9+deb12u13` |
@@ -533,8 +533,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2019-1010022](https://nvd.nist.gov/vuln/detail/CVE-2019-1010022) | Negligible | `libc-dev-bin` | `2.36-9+deb12u13` |
@@ -576,9 +576,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2021-20311](https://nvd.nist.gov/vuln/detail/CVE-2021-20311) | Negligible | `imagemagick-6.q16` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2021-20311](https://nvd.nist.gov/vuln/detail/CVE-2021-20311) | Negligible | `libmagickwand-6.q16-6` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libctf0` | `2.40-2` |
@@ -604,12 +604,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2022-1210](https://nvd.nist.gov/vuln/detail/CVE-2022-1210) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2022-24975](https://nvd.nist.gov/vuln/detail/CVE-2022-24975) | Negligible | `git` | `1:2.39.5-0+deb12u3` |
 | [CVE-2022-24975](https://nvd.nist.gov/vuln/detail/CVE-2022-24975) | Negligible | `git-man` | `1:2.39.5-0+deb12u3` |
-| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libhwasan0` | `12.2.0-14+deb12u1` |
+| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libitm1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libatomic1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libgomp1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libgcc-12-dev` | `12.2.0-14+deb12u1` |
-| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libitm1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `liblsan0` | `12.2.0-14+deb12u1` |
+| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libquadmath0` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libstdc++-12-dev` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libstdc++6` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `gcc-12` | `12.2.0-14+deb12u1` |
@@ -637,9 +637,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2023-1916](https://nvd.nist.gov/vuln/detail/CVE-2023-1916) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2023-31437](https://nvd.nist.gov/vuln/detail/CVE-2023-31437) | Negligible | `libsystemd0` | `252.39-1~deb12u1` |
@@ -707,27 +707,27 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2024-28757](https://nvd.nist.gov/vuln/detail/CVE-2024-28757) | Negligible | `libexpat1-dev` | `2.5.0-1+deb12u2` |
 | [CVE-2024-52005](https://nvd.nist.gov/vuln/detail/CVE-2024-52005) | Negligible | `git` | `1:2.39.5-0+deb12u3` |
 | [CVE-2024-52005](https://nvd.nist.gov/vuln/detail/CVE-2024-52005) | Negligible | `git-man` | `1:2.39.5-0+deb12u3` |
-| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `curl` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `libcurl3-gnutls` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `libcurl4-openssl-dev` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `libcurl4` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libctf-nobfd0` | `2.40-2` |
+| [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libgprofng0` | `2.40-2` |
@@ -737,35 +737,35 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-10966](https://nvd.nist.gov/vuln/detail/CVE-2025-10966) | Negligible | `libcurl4` | `7.88.1-10+deb12u14` |
 | [CVE-2025-10966](https://nvd.nist.gov/vuln/detail/CVE-2025-10966) | Negligible | `libcurl4-openssl-dev` | `7.88.1-10+deb12u14` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libctf-nobfd0` | `2.40-2` |
+| [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `libgprofng0` | `2.40-2` |
@@ -774,8 +774,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11468](https://nvd.nist.gov/vuln/detail/CVE-2025-11468) | Negligible | `libpython3.11-stdlib` | `3.11.2-6+deb12u6` |
@@ -787,19 +787,19 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libctf-nobfd0` | `2.40-2` |
@@ -808,99 +808,99 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libgprofng0` | `2.40-2` |
+| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libgprofng0` | `2.40-2` |
+| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1352](https://nvd.nist.gov/vuln/detail/CVE-2025-1352) | Negligible | `libelf1` | `0.188-2.1` |
 | [CVE-2025-1365](https://nvd.nist.gov/vuln/detail/CVE-2025-1365) | Negligible | `libelf1` | `0.188-2.1` |
 | [CVE-2025-1371](https://nvd.nist.gov/vuln/detail/CVE-2025-1371) | Negligible | `libelf1` | `0.188-2.1` |
@@ -935,25 +935,25 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `python3.11-minimal` | `3.11.2-6+deb12u6` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `libpython3.11-minimal` | `3.11.2-6+deb12u6` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `libpython3.11-stdlib` | `3.11.2-6+deb12u6` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `python3.11` | `3.11.2-6+deb12u6` |
-| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libctf0` | `2.40-2` |
+| [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-5278](https://nvd.nist.gov/vuln/detail/CVE-2025-5278) | Negligible | `coreutils` | `9.1-1` |
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `imagemagick-6.q16` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
@@ -969,79 +969,79 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `libmagickcore-6.q16-6` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `libmagickcore-6-headers` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `libmagickcore-6-arch-config` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
-| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libctf-nobfd0` | `2.40-2` |
+| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8176](https://nvd.nist.gov/vuln/detail/CVE-2025-8176) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8176](https://nvd.nist.gov/vuln/detail/CVE-2025-8176) | Negligible | `libtiff6` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8176](https://nvd.nist.gov/vuln/detail/CVE-2025-8176) | Negligible | `libtiffxx6` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8177](https://nvd.nist.gov/vuln/detail/CVE-2025-8177) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8177](https://nvd.nist.gov/vuln/detail/CVE-2025-8177) | Negligible | `libtiff6` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8177](https://nvd.nist.gov/vuln/detail/CVE-2025-8177) | Negligible | `libtiffxx6` | `4.5.0-6+deb12u3` |
-| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libctf0` | `2.40-2` |
@@ -1112,8 +1112,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | bin-links | 6.0.0 |
 | binary-extensions | 3.1.0 |
 | binutils | 2.40-2 |
-| binutils-aarch64-linux-gnu | 2.40-2 |
 | binutils-common | 2.40-2 |
+| binutils-x86-64-linux-gnu | 2.40-2 |
 | bsdutils | 1:2.38.1-5+deb12u3 |
 | bzip2 | 1.0.8-5+b1 |
 | ca-certificates | 20230311+deb12u1 |
@@ -1314,7 +1314,6 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | libharfbuzz0b | 6.0.0+dfsg-3 |
 | libheif1 | 1.15.1-1+deb12u1 |
 | libhogweed6 | 3.8.1-2 |
-| libhwasan0 | 12.2.0-14+deb12u1 |
 | libice-dev | 2:1.0.10-1 |
 | libice6 | 2:1.0.10-1 |
 | libicu-dev | 72.1-3+deb12u1 |
@@ -1427,6 +1426,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | libpython3-stdlib | 3.11.2-1+b1 |
 | libpython3.11-minimal | 3.11.2-6+deb12u6 |
 | libpython3.11-stdlib | 3.11.2-6+deb12u6 |
+| libquadmath0 | 12.2.0-14+deb12u1 |
 | libreadline-dev | 8.2-1.3 |
 | libreadline8 | 8.2-1.3 |
 | librsvg2-2 | 2.54.7+dfsg-1~deb12u1 |
@@ -1656,20 +1656,20 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `node:22-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=155.69+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=14+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm, linux/arm64, linux/s390x, unknown/unknown` |
-| `node:24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=153.10+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=5+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm64, linux/s390x, unknown/unknown` |
+| `node:22-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=54.11+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=14+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm, linux/arm64, linux/s390x, unknown/unknown` |
+| `node:24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=53.59+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=5+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm64, linux/s390x, unknown/unknown` |
 
 <details>
 <summary><strong>🔍 Full Report: node:22-alpine</strong></summary>
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (linux/amd64)`
 **Supported Architectures:** `linux/amd64, linux/arm, linux/arm64, linux/s390x, unknown/unknown`
 **Efficiency Score:** 100.0%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:16:45-06:00
+**Last scanned:** 2026-02-18T04:42:27Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -1925,12 +1925,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Alpine Linux (linux/arm64)`
+**Base Image:** `Alpine Linux (linux/amd64)`
 **Supported Architectures:** `linux/amd64, linux/arm64, linux/s390x, unknown/unknown`
 **Efficiency Score:** 100.0%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:16:45-06:00
+**Last scanned:** 2026-02-18T04:42:26Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -2167,8 +2167,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency |
 |-----|------|-------|------------|
-| `node:22-alpine` | 155.69 MB | 0C / 10H | 100.0% |
-| `node:24-alpine` | 153.10 MB | 0C / 2H | 100.0% |
+| `node:22-alpine` | 54.11 MB | 0C / 10H | 100.0% |
+| `node:24-alpine` | 53.59 MB | 0C / 2H | 100.0% |
 
 <!-- END: dock-docs:minimal-comparison -->
 
@@ -2180,7 +2180,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:detailed-image -->
 
 # 🐳 Docker Image Analysis: node:24
-![Size](https://img.shields.io/static/v1?label=Size&message=1098.28+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=8&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=290+Vulns+%286+Crit%29&color=red) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.4%&color=green)
+![Size](https://img.shields.io/static/v1?label=Size&message=388.59+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=8&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=290+Vulns+%286+Crit%29&color=red) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=99.4%&color=green)
 
 ## ⚙️ Configuration
 
@@ -2206,17 +2206,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `node:24` |
 | **Base Image OS** | `Debian GNU/Linux 12 (bookworm)` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/amd64, linux/arm64, linux/ppc64le, linux/s390x, unknown/unknown` |
-| **Image Size** | 1098.28 MB |
+| **Image Size** | 388.59 MB |
 | **Total Layers** | 8 |
 | **Efficiency Score** | 99.4% |
 | **Wasted Space** | 7.99 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:15:22-06:00
+**Last scanned:** 2026-02-18T04:41:20Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -2628,12 +2628,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2017-11755](https://nvd.nist.gov/vuln/detail/CVE-2017-11755) | Negligible | `libmagickcore-6-arch-config` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2017-11755](https://nvd.nist.gov/vuln/detail/CVE-2017-11755) | Negligible | `imagemagick-6.q16` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2017-11755](https://nvd.nist.gov/vuln/detail/CVE-2017-11755) | Negligible | `libmagickcore-6.q16-dev` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
-| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2017-13716](https://nvd.nist.gov/vuln/detail/CVE-2017-13716) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2017-14159](https://nvd.nist.gov/vuln/detail/CVE-2017-14159) | Negligible | `libldap-2.5-0` | `2.5.13+dfsg-5` |
 | [CVE-2017-14988](https://nvd.nist.gov/vuln/detail/CVE-2017-14988) | Negligible | `libopenexr-dev` | `3.1.5-5` |
@@ -2683,19 +2683,19 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2018-18064](https://nvd.nist.gov/vuln/detail/CVE-2018-18064) | Negligible | `libcairo2` | `1.16.0-7` |
 | [CVE-2018-18064](https://nvd.nist.gov/vuln/detail/CVE-2018-18064) | Negligible | `libcairo-script-interpreter2` | `1.16.0-7` |
 | [CVE-2018-18064](https://nvd.nist.gov/vuln/detail/CVE-2018-18064) | Negligible | `libcairo-gobject2` | `1.16.0-7` |
-| [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2018-20673](https://nvd.nist.gov/vuln/detail/CVE-2018-20673) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2018-20712](https://nvd.nist.gov/vuln/detail/CVE-2018-20712) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2018-20796](https://nvd.nist.gov/vuln/detail/CVE-2018-20796) | Negligible | `libc-dev-bin` | `2.36-9+deb12u13` |
 | [CVE-2018-20796](https://nvd.nist.gov/vuln/detail/CVE-2018-20796) | Negligible | `libc6` | `2.36-9+deb12u13` |
@@ -2717,8 +2717,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2018-9996](https://nvd.nist.gov/vuln/detail/CVE-2018-9996) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2019-1010022](https://nvd.nist.gov/vuln/detail/CVE-2019-1010022) | Negligible | `libc-dev-bin` | `2.36-9+deb12u13` |
@@ -2760,9 +2760,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2021-20311](https://nvd.nist.gov/vuln/detail/CVE-2021-20311) | Negligible | `imagemagick-6.q16` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2021-20311](https://nvd.nist.gov/vuln/detail/CVE-2021-20311) | Negligible | `libmagickwand-6.q16-6` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2021-32256](https://nvd.nist.gov/vuln/detail/CVE-2021-32256) | Negligible | `libctf0` | `2.40-2` |
@@ -2788,12 +2788,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2022-1210](https://nvd.nist.gov/vuln/detail/CVE-2022-1210) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2022-24975](https://nvd.nist.gov/vuln/detail/CVE-2022-24975) | Negligible | `git` | `1:2.39.5-0+deb12u3` |
 | [CVE-2022-24975](https://nvd.nist.gov/vuln/detail/CVE-2022-24975) | Negligible | `git-man` | `1:2.39.5-0+deb12u3` |
-| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libhwasan0` | `12.2.0-14+deb12u1` |
+| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libitm1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libatomic1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libgomp1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libgcc-12-dev` | `12.2.0-14+deb12u1` |
-| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libitm1` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `liblsan0` | `12.2.0-14+deb12u1` |
+| [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libquadmath0` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libstdc++-12-dev` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `libstdc++6` | `12.2.0-14+deb12u1` |
 | [CVE-2022-27943](https://nvd.nist.gov/vuln/detail/CVE-2022-27943) | Negligible | `gcc-12` | `12.2.0-14+deb12u1` |
@@ -2821,9 +2821,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2023-1916](https://nvd.nist.gov/vuln/detail/CVE-2023-1916) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2023-1972](https://nvd.nist.gov/vuln/detail/CVE-2023-1972) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2023-31437](https://nvd.nist.gov/vuln/detail/CVE-2023-31437) | Negligible | `libsystemd0` | `252.39-1~deb12u1` |
@@ -2891,27 +2891,27 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2024-28757](https://nvd.nist.gov/vuln/detail/CVE-2024-28757) | Negligible | `libexpat1-dev` | `2.5.0-1+deb12u2` |
 | [CVE-2024-52005](https://nvd.nist.gov/vuln/detail/CVE-2024-52005) | Negligible | `git` | `1:2.39.5-0+deb12u3` |
 | [CVE-2024-52005](https://nvd.nist.gov/vuln/detail/CVE-2024-52005) | Negligible | `git-man` | `1:2.39.5-0+deb12u3` |
-| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2024-53589](https://nvd.nist.gov/vuln/detail/CVE-2024-53589) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2024-57360](https://nvd.nist.gov/vuln/detail/CVE-2024-57360) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `curl` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `libcurl3-gnutls` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `libcurl4-openssl-dev` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0725](https://nvd.nist.gov/vuln/detail/CVE-2025-0725) | Negligible | `libcurl4` | `7.88.1-10+deb12u14` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libctf-nobfd0` | `2.40-2` |
+| [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-0840](https://nvd.nist.gov/vuln/detail/CVE-2025-0840) | Negligible | `libgprofng0` | `2.40-2` |
@@ -2921,35 +2921,35 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-10966](https://nvd.nist.gov/vuln/detail/CVE-2025-10966) | Negligible | `libcurl4` | `7.88.1-10+deb12u14` |
 | [CVE-2025-10966](https://nvd.nist.gov/vuln/detail/CVE-2025-10966) | Negligible | `libcurl4-openssl-dev` | `7.88.1-10+deb12u14` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11081](https://nvd.nist.gov/vuln/detail/CVE-2025-11081) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11082](https://nvd.nist.gov/vuln/detail/CVE-2025-11082) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11083](https://nvd.nist.gov/vuln/detail/CVE-2025-11083) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-11412](https://nvd.nist.gov/vuln/detail/CVE-2025-11412) | Negligible | `libctf-nobfd0` | `2.40-2` |
+| [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11413](https://nvd.nist.gov/vuln/detail/CVE-2025-11413) | Negligible | `libgprofng0` | `2.40-2` |
@@ -2958,8 +2958,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11414](https://nvd.nist.gov/vuln/detail/CVE-2025-11414) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-11468](https://nvd.nist.gov/vuln/detail/CVE-2025-11468) | Negligible | `libpython3.11-stdlib` | `3.11.2-6+deb12u6` |
@@ -2971,19 +2971,19 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-1147](https://nvd.nist.gov/vuln/detail/CVE-2025-1147) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1148](https://nvd.nist.gov/vuln/detail/CVE-2025-1148) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1149](https://nvd.nist.gov/vuln/detail/CVE-2025-1149) | Negligible | `libctf-nobfd0` | `2.40-2` |
@@ -2992,99 +2992,99 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11494](https://nvd.nist.gov/vuln/detail/CVE-2025-11494) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11495](https://nvd.nist.gov/vuln/detail/CVE-2025-11495) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1150](https://nvd.nist.gov/vuln/detail/CVE-2025-1150) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1151](https://nvd.nist.gov/vuln/detail/CVE-2025-1151) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libgprofng0` | `2.40-2` |
+| [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1152](https://nvd.nist.gov/vuln/detail/CVE-2025-1152) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1153](https://nvd.nist.gov/vuln/detail/CVE-2025-1153) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1176](https://nvd.nist.gov/vuln/detail/CVE-2025-1176) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1178](https://nvd.nist.gov/vuln/detail/CVE-2025-1178) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1179](https://nvd.nist.gov/vuln/detail/CVE-2025-1179) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1180](https://nvd.nist.gov/vuln/detail/CVE-2025-1180) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1181](https://nvd.nist.gov/vuln/detail/CVE-2025-1181) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-1182](https://nvd.nist.gov/vuln/detail/CVE-2025-1182) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libgprofng0` | `2.40-2` |
+| [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11839](https://nvd.nist.gov/vuln/detail/CVE-2025-11839) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-11840](https://nvd.nist.gov/vuln/detail/CVE-2025-11840) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-1352](https://nvd.nist.gov/vuln/detail/CVE-2025-1352) | Negligible | `libelf1` | `0.188-2.1` |
 | [CVE-2025-1365](https://nvd.nist.gov/vuln/detail/CVE-2025-1365) | Negligible | `libelf1` | `0.188-2.1` |
 | [CVE-2025-1371](https://nvd.nist.gov/vuln/detail/CVE-2025-1371) | Negligible | `libelf1` | `0.188-2.1` |
@@ -3119,25 +3119,25 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-3198](https://nvd.nist.gov/vuln/detail/CVE-2025-3198) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `python3.11-minimal` | `3.11.2-6+deb12u6` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `libpython3.11-minimal` | `3.11.2-6+deb12u6` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `libpython3.11-stdlib` | `3.11.2-6+deb12u6` |
 | [CVE-2025-4516](https://nvd.nist.gov/vuln/detail/CVE-2025-4516) | Negligible | `python3.11` | `3.11.2-6+deb12u6` |
-| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-5244](https://nvd.nist.gov/vuln/detail/CVE-2025-5244) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `libctf0` | `2.40-2` |
+| [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-5245](https://nvd.nist.gov/vuln/detail/CVE-2025-5245) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-5278](https://nvd.nist.gov/vuln/detail/CVE-2025-5278) | Negligible | `coreutils` | `9.1-1` |
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `imagemagick-6.q16` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
@@ -3153,79 +3153,79 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `libmagickcore-6.q16-6` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `libmagickcore-6-headers` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
 | [CVE-2025-55160](https://nvd.nist.gov/vuln/detail/CVE-2025-55160) | Negligible | `libmagickcore-6-arch-config` | `8:6.9.11.60+dfsg-1.6+deb12u6` |
-| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66861](https://nvd.nist.gov/vuln/detail/CVE-2025-66861) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libctf-nobfd0` | `2.40-2` |
-| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66862](https://nvd.nist.gov/vuln/detail/CVE-2025-66862) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66863](https://nvd.nist.gov/vuln/detail/CVE-2025-66863) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66864](https://nvd.nist.gov/vuln/detail/CVE-2025-66864) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `libctf0` | `2.40-2` |
-| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-66865](https://nvd.nist.gov/vuln/detail/CVE-2025-66865) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
-| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libctf-nobfd0` | `2.40-2` |
+| [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-66866](https://nvd.nist.gov/vuln/detail/CVE-2025-66866) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils` | `2.40-2` |
+| [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-7545](https://nvd.nist.gov/vuln/detail/CVE-2025-7545) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libbinutils` | `2.40-2` |
-| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils` | `2.40-2` |
-| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-7546](https://nvd.nist.gov/vuln/detail/CVE-2025-7546) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8176](https://nvd.nist.gov/vuln/detail/CVE-2025-8176) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8176](https://nvd.nist.gov/vuln/detail/CVE-2025-8176) | Negligible | `libtiff6` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8176](https://nvd.nist.gov/vuln/detail/CVE-2025-8176) | Negligible | `libtiffxx6` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8177](https://nvd.nist.gov/vuln/detail/CVE-2025-8177) | Negligible | `libtiff-dev` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8177](https://nvd.nist.gov/vuln/detail/CVE-2025-8177) | Negligible | `libtiff6` | `4.5.0-6+deb12u3` |
 | [CVE-2025-8177](https://nvd.nist.gov/vuln/detail/CVE-2025-8177) | Negligible | `libtiffxx6` | `4.5.0-6+deb12u3` |
-| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
+| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-common` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libctf0` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libbinutils` | `2.40-2` |
 | [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `libgprofng0` | `2.40-2` |
-| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-common` | `2.40-2` |
+| [CVE-2025-8224](https://nvd.nist.gov/vuln/detail/CVE-2025-8224) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libgprofng0` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libbinutils` | `2.40-2` |
+| [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils-x86-64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils-common` | `2.40-2` |
-| [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils-aarch64-linux-gnu` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libctf-nobfd0` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `binutils` | `2.40-2` |
 | [CVE-2025-8225](https://nvd.nist.gov/vuln/detail/CVE-2025-8225) | Negligible | `libctf0` | `2.40-2` |
@@ -3294,8 +3294,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | bin-links | 6.0.0 |
 | binary-extensions | 3.1.0 |
 | binutils | 2.40-2 |
-| binutils-aarch64-linux-gnu | 2.40-2 |
 | binutils-common | 2.40-2 |
+| binutils-x86-64-linux-gnu | 2.40-2 |
 | bsdutils | 1:2.38.1-5+deb12u3 |
 | bzip2 | 1.0.8-5+b1 |
 | ca-certificates | 20230311+deb12u1 |
@@ -3496,7 +3496,6 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | libharfbuzz0b | 6.0.0+dfsg-3 |
 | libheif1 | 1.15.1-1+deb12u1 |
 | libhogweed6 | 3.8.1-2 |
-| libhwasan0 | 12.2.0-14+deb12u1 |
 | libice-dev | 2:1.0.10-1 |
 | libice6 | 2:1.0.10-1 |
 | libicu-dev | 72.1-3+deb12u1 |
@@ -3609,6 +3608,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | libpython3-stdlib | 3.11.2-1+b1 |
 | libpython3.11-minimal | 3.11.2-6+deb12u6 |
 | libpython3.11-stdlib | 3.11.2-6+deb12u6 |
+| libquadmath0 | 12.2.0-14+deb12u1 |
 | libreadline-dev | 8.2-1.3 |
 | libreadline8 | 8.2-1.3 |
 | librsvg2-2 | 2.54.7+dfsg-1~deb12u1 |
@@ -3836,8 +3836,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `node:22-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=155.69+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=14+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm, linux/arm64, linux/s390x, unknown/unknown` |
-| `node:24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=153.10+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=5+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm64, linux/s390x, unknown/unknown` |
+| `node:22-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=54.11+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=14+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm, linux/arm64, linux/s390x, unknown/unknown` |
+| `node:24-alpine` | ![Size](https://img.shields.io/static/v1?label=Size&message=53.59+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=5+Vulns+%280+Crit%29&color=orange) | 100.0% | `linux/amd64, linux/arm64, linux/s390x, unknown/unknown` |
 
 ---
 
@@ -3849,17 +3849,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `node:22-alpine` |
 | **Base Image OS** | `Alpine Linux` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/amd64, linux/arm, linux/arm64, linux/s390x, unknown/unknown` |
-| **Image Size** | 155.69 MB |
+| **Image Size** | 54.11 MB |
 | **Total Layers** | 4 |
 | **Efficiency Score** | 100.0% |
-| **Wasted Space** | 0.07 MB |
+| **Wasted Space** | 0.06 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:17:17-06:00
+**Last scanned:** 2026-02-18T04:43:04Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -4114,17 +4114,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `node:24-alpine` |
 | **Base Image OS** | `Alpine Linux` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/amd64, linux/arm64, linux/s390x, unknown/unknown` |
-| **Image Size** | 153.10 MB |
+| **Image Size** | 53.59 MB |
 | **Total Layers** | 4 |
 | **Efficiency Score** | 100.0% |
-| **Wasted Space** | 0.07 MB |
+| **Wasted Space** | 0.06 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:17:17-06:00
+**Last scanned:** 2026-02-18T04:43:04Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -4335,7 +4335,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ### Image Analysis
 <!-- BEGIN: dock-docs:compact-image -->
-**node:24** | Size: 1098.28 MB | Layers: 8 | Efficiency: 99.4% | Vulns: 6C/66H/161M/57L
+**node:24** | Size: 388.59 MB | Layers: 8 | Efficiency: 99.4% | Vulns: 6C/66H/161M/57L
 | ARG | Default | Req |
 |-----|---------|:---:|
 | `NODE_ENV=development` | `development` | ❌ |
@@ -4349,7 +4349,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:compact-comparison -->
 | Tag | Size | Vulns | Efficiency |
 |-----|------|-------|------------|
-| `node:22-alpine` | 155.69 MB | 0C/10H/3M | 100.0% |
-| `node:24-alpine` | 153.10 MB | 0C/2H/3M | 100.0% |
+| `node:22-alpine` | 54.11 MB | 0C/10H/3M | 100.0% |
+| `node:24-alpine` | 53.59 MB | 0C/2H/3M | 100.0% |
 
 <!-- END: dock-docs:compact-comparison -->

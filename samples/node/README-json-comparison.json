@@ -1,0 +1,1764 @@
+{
+  "comparison": {
+    "image_count": 2,
+    "images": [
+      {
+        "tag": "node:22-alpine",
+        "architecture": "amd64",
+        "os": "linux",
+        "os_distro": "Alpine Linux",
+        "supported_architectures": [
+          "linux/amd64"
+          ,"linux/arm"
+          ,"linux/arm64"
+          ,"linux/s390x"
+          ,"unknown/unknown"
+        ],
+        "size_mb": "54.11 MB",
+        "total_layers": 4,
+        "efficiency": 99.97,
+        "wasted_bytes": "0.06 MB",
+        "total_packages": 215,
+        "security": {
+          "scan_time": "2026-02-18T04:45:20Z",
+          "summary": {
+            "critical": 0,
+            "high": 10,
+            "medium": 3,
+            "low": 1,
+            "total": 14
+          },
+          "vulnerabilities": [
+            {
+              "id": "GHSA-34x7-hfp2-rc4v",
+              "severity": "High",
+              "package": "tar",
+              "version": "6.2.1"
+            }
+            ,{
+              "id": "GHSA-34x7-hfp2-rc4v",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.4.3"
+            }
+            ,{
+              "id": "GHSA-34x7-hfp2-rc4v",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.4.3"
+            }
+            ,{
+              "id": "GHSA-5j98-mcp5-4vw2",
+              "severity": "High",
+              "package": "glob",
+              "version": "10.4.5"
+            }
+            ,{
+              "id": "GHSA-8qq5-rm4j-mr97",
+              "severity": "High",
+              "package": "tar",
+              "version": "6.2.1"
+            }
+            ,{
+              "id": "GHSA-8qq5-rm4j-mr97",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.4.3"
+            }
+            ,{
+              "id": "GHSA-8qq5-rm4j-mr97",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.4.3"
+            }
+            ,{
+              "id": "GHSA-r6q2-hw4h-h46w",
+              "severity": "High",
+              "package": "tar",
+              "version": "6.2.1"
+            }
+            ,{
+              "id": "GHSA-r6q2-hw4h-h46w",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.4.3"
+            }
+            ,{
+              "id": "GHSA-r6q2-hw4h-h46w",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.4.3"
+            }
+            ,{
+              "id": "CVE-2025-60876",
+              "severity": "Medium",
+              "package": "busybox",
+              "version": "1.37.0-r30"
+            }
+            ,{
+              "id": "CVE-2025-60876",
+              "severity": "Medium",
+              "package": "ssl_client",
+              "version": "1.37.0-r30"
+            }
+            ,{
+              "id": "CVE-2025-60876",
+              "severity": "Medium",
+              "package": "busybox-binsh",
+              "version": "1.37.0-r30"
+            }
+            ,{
+              "id": "GHSA-73rr-hh4g-fpgx",
+              "severity": "Low",
+              "package": "diff",
+              "version": "5.2.0"
+            }
+          ]
+        },
+        "packages": [
+          {
+            "name": "@isaacs/cliui",
+            "version": "8.0.2"
+          }
+          ,{
+            "name": "@isaacs/fs-minipass",
+            "version": "4.0.1"
+          }
+          ,{
+            "name": "@isaacs/string-locale-compare",
+            "version": "1.1.0"
+          }
+          ,{
+            "name": "@npmcli/agent",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "@npmcli/arborist",
+            "version": "8.0.1"
+          }
+          ,{
+            "name": "@npmcli/config",
+            "version": "9.0.0"
+          }
+          ,{
+            "name": "@npmcli/fs",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@npmcli/git",
+            "version": "6.0.3"
+          }
+          ,{
+            "name": "@npmcli/installed-package-contents",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "@npmcli/map-workspaces",
+            "version": "4.0.2"
+          }
+          ,{
+            "name": "@npmcli/metavuln-calculator",
+            "version": "8.0.1"
+          }
+          ,{
+            "name": "@npmcli/name-from-folder",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "@npmcli/node-gyp",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@npmcli/package-json",
+            "version": "6.2.0"
+          }
+          ,{
+            "name": "@npmcli/promise-spawn",
+            "version": "8.0.2"
+          }
+          ,{
+            "name": "@npmcli/query",
+            "version": "4.0.1"
+          }
+          ,{
+            "name": "@npmcli/redact",
+            "version": "3.2.2"
+          }
+          ,{
+            "name": "@npmcli/run-script",
+            "version": "9.1.0"
+          }
+          ,{
+            "name": "@pkgjs/parseargs",
+            "version": "0.11.0"
+          }
+          ,{
+            "name": "@sigstore/bundle",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "@sigstore/core",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "@sigstore/protobuf-specs",
+            "version": "0.4.3"
+          }
+          ,{
+            "name": "@sigstore/sign",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "@sigstore/tuf",
+            "version": "3.1.1"
+          }
+          ,{
+            "name": "@sigstore/verify",
+            "version": "2.1.1"
+          }
+          ,{
+            "name": "@tufjs/canonical-json",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "@tufjs/models",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "abbrev",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "agent-base",
+            "version": "7.1.3"
+          }
+          ,{
+            "name": "alpine-baselayout",
+            "version": "3.7.1-r8"
+          }
+          ,{
+            "name": "alpine-baselayout-data",
+            "version": "3.7.1-r8"
+          }
+          ,{
+            "name": "alpine-keys",
+            "version": "2.6-r0"
+          }
+          ,{
+            "name": "alpine-release",
+            "version": "3.23.3-r0"
+          }
+          ,{
+            "name": "ansi-regex",
+            "version": "5.0.1"
+          }
+          ,{
+            "name": "ansi-regex",
+            "version": "6.1.0"
+          }
+          ,{
+            "name": "ansi-styles",
+            "version": "4.3.0"
+          }
+          ,{
+            "name": "ansi-styles",
+            "version": "6.2.1"
+          }
+          ,{
+            "name": "apk-tools",
+            "version": "3.0.3-r1"
+          }
+          ,{
+            "name": "aproba",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "archy",
+            "version": "1.0.0"
+          }
+          ,{
+            "name": "balanced-match",
+            "version": "1.0.2"
+          }
+          ,{
+            "name": "bin-links",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "binary-extensions",
+            "version": "2.3.0"
+          }
+          ,{
+            "name": "brace-expansion",
+            "version": "2.0.2"
+          }
+          ,{
+            "name": "busybox",
+            "version": "1.37.0-r30"
+          }
+          ,{
+            "name": "busybox-binsh",
+            "version": "1.37.0-r30"
+          }
+          ,{
+            "name": "ca-certificates-bundle",
+            "version": "20251003-r0"
+          }
+          ,{
+            "name": "cacache",
+            "version": "19.0.1"
+          }
+          ,{
+            "name": "chalk",
+            "version": "5.4.1"
+          }
+          ,{
+            "name": "chownr",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "chownr",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "ci-info",
+            "version": "4.2.0"
+          }
+          ,{
+            "name": "cidr-regex",
+            "version": "4.1.3"
+          }
+          ,{
+            "name": "cli-columns",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "cmd-shim",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "color-convert",
+            "version": "2.0.1"
+          }
+          ,{
+            "name": "color-name",
+            "version": "1.1.4"
+          }
+          ,{
+            "name": "common-ancestor-path",
+            "version": "1.0.1"
+          }
+          ,{
+            "name": "corepack",
+            "version": "0.34.0"
+          }
+          ,{
+            "name": "cross-spawn",
+            "version": "7.0.6"
+          }
+          ,{
+            "name": "cssesc",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "debug",
+            "version": "4.4.1"
+          }
+          ,{
+            "name": "diff",
+            "version": "5.2.0"
+          }
+          ,{
+            "name": "eastasianwidth",
+            "version": "0.2.0"
+          }
+          ,{
+            "name": "emoji-regex",
+            "version": "8.0.0"
+          }
+          ,{
+            "name": "emoji-regex",
+            "version": "9.2.2"
+          }
+          ,{
+            "name": "encoding",
+            "version": "0.1.13"
+          }
+          ,{
+            "name": "env-paths",
+            "version": "2.2.1"
+          }
+          ,{
+            "name": "err-code",
+            "version": "2.0.3"
+          }
+          ,{
+            "name": "exponential-backoff",
+            "version": "3.1.2"
+          }
+          ,{
+            "name": "fastest-levenshtein",
+            "version": "1.0.16"
+          }
+          ,{
+            "name": "fdir",
+            "version": "6.4.6"
+          }
+          ,{
+            "name": "foreground-child",
+            "version": "3.3.1"
+          }
+          ,{
+            "name": "fs-minipass",
+            "version": "2.1.0"
+          }
+          ,{
+            "name": "fs-minipass",
+            "version": "3.0.3"
+          }
+          ,{
+            "name": "glob",
+            "version": "10.4.5"
+          }
+          ,{
+            "name": "graceful-fs",
+            "version": "4.2.11"
+          }
+          ,{
+            "name": "hosted-git-info",
+            "version": "8.1.0"
+          }
+          ,{
+            "name": "http-cache-semantics",
+            "version": "4.2.0"
+          }
+          ,{
+            "name": "http-proxy-agent",
+            "version": "7.0.2"
+          }
+          ,{
+            "name": "https-proxy-agent",
+            "version": "7.0.6"
+          }
+          ,{
+            "name": "iconv-lite",
+            "version": "0.6.3"
+          }
+          ,{
+            "name": "ignore-walk",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "imurmurhash",
+            "version": "0.1.4"
+          }
+          ,{
+            "name": "ini",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "init-package-json",
+            "version": "7.0.2"
+          }
+          ,{
+            "name": "ip-address",
+            "version": "9.0.5"
+          }
+          ,{
+            "name": "ip-regex",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "is-cidr",
+            "version": "5.1.1"
+          }
+          ,{
+            "name": "is-fullwidth-code-point",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "isexe",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "isexe",
+            "version": "3.1.1"
+          }
+          ,{
+            "name": "jackspeak",
+            "version": "3.4.3"
+          }
+          ,{
+            "name": "jsbn",
+            "version": "1.1.0"
+          }
+          ,{
+            "name": "json-parse-even-better-errors",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "json-stringify-nice",
+            "version": "1.1.4"
+          }
+          ,{
+            "name": "jsonparse",
+            "version": "1.3.1"
+          }
+          ,{
+            "name": "just-diff",
+            "version": "6.0.2"
+          }
+          ,{
+            "name": "just-diff-apply",
+            "version": "5.5.0"
+          }
+          ,{
+            "name": "libapk",
+            "version": "3.0.3-r1"
+          }
+          ,{
+            "name": "libcrypto3",
+            "version": "3.5.5-r0"
+          }
+          ,{
+            "name": "libgcc",
+            "version": "15.2.0-r2"
+          }
+          ,{
+            "name": "libnpmaccess",
+            "version": "9.0.0"
+          }
+          ,{
+            "name": "libnpmdiff",
+            "version": "7.0.1"
+          }
+          ,{
+            "name": "libnpmexec",
+            "version": "9.0.1"
+          }
+          ,{
+            "name": "libnpmfund",
+            "version": "6.0.1"
+          }
+          ,{
+            "name": "libnpmhook",
+            "version": "11.0.0"
+          }
+          ,{
+            "name": "libnpmorg",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "libnpmpack",
+            "version": "8.0.1"
+          }
+          ,{
+            "name": "libnpmpublish",
+            "version": "10.0.1"
+          }
+          ,{
+            "name": "libnpmsearch",
+            "version": "8.0.0"
+          }
+          ,{
+            "name": "libnpmteam",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "libnpmversion",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "libssl3",
+            "version": "3.5.5-r0"
+          }
+          ,{
+            "name": "libstdc++",
+            "version": "15.2.0-r2"
+          }
+          ,{
+            "name": "lru-cache",
+            "version": "10.4.3"
+          }
+          ,{
+            "name": "make-fetch-happen",
+            "version": "14.0.3"
+          }
+          ,{
+            "name": "minimatch",
+            "version": "9.0.5"
+          }
+          ,{
+            "name": "minipass",
+            "version": "3.3.6"
+          }
+          ,{
+            "name": "minipass",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "minipass",
+            "version": "7.1.2"
+          }
+          ,{
+            "name": "minipass-collect",
+            "version": "2.0.1"
+          }
+          ,{
+            "name": "minipass-fetch",
+            "version": "4.0.1"
+          }
+          ,{
+            "name": "minipass-flush",
+            "version": "1.0.5"
+          }
+          ,{
+            "name": "minipass-pipeline",
+            "version": "1.2.4"
+          }
+          ,{
+            "name": "minipass-sized",
+            "version": "1.0.3"
+          }
+          ,{
+            "name": "minizlib",
+            "version": "2.1.2"
+          }
+          ,{
+            "name": "minizlib",
+            "version": "3.0.2"
+          }
+          ,{
+            "name": "mkdirp",
+            "version": "1.0.4"
+          }
+          ,{
+            "name": "mkdirp",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "ms",
+            "version": "2.1.3"
+          }
+          ,{
+            "name": "musl",
+            "version": "1.2.5-r21"
+          }
+          ,{
+            "name": "musl-utils",
+            "version": "1.2.5-r21"
+          }
+          ,{
+            "name": "mute-stream",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "negotiator",
+            "version": "1.0.0"
+          }
+          ,{
+            "name": "node",
+            "version": "22.22.0"
+          }
+          ,{
+            "name": "node-gyp",
+            "version": "11.2.0"
+          }
+          ,{
+            "name": "nopt",
+            "version": "8.1.0"
+          }
+          ,{
+            "name": "normalize-package-data",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "npm",
+            "version": "10.9.4"
+          }
+          ,{
+            "name": "npm-audit-report",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "npm-bundled",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "npm-install-checks",
+            "version": "7.1.1"
+          }
+          ,{
+            "name": "npm-normalize-package-bin",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "npm-package-arg",
+            "version": "12.0.2"
+          }
+          ,{
+            "name": "npm-packlist",
+            "version": "9.0.0"
+          }
+          ,{
+            "name": "npm-pick-manifest",
+            "version": "10.0.0"
+          }
+          ,{
+            "name": "npm-profile",
+            "version": "11.0.1"
+          }
+          ,{
+            "name": "npm-registry-fetch",
+            "version": "18.0.2"
+          }
+          ,{
+            "name": "npm-user-validate",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "p-map",
+            "version": "7.0.3"
+          }
+          ,{
+            "name": "package-json-from-dist",
+            "version": "1.0.1"
+          }
+          ,{
+            "name": "pacote",
+            "version": "19.0.1"
+          }
+          ,{
+            "name": "pacote",
+            "version": "20.0.0"
+          }
+          ,{
+            "name": "parse-conflict-json",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "path-key",
+            "version": "3.1.1"
+          }
+          ,{
+            "name": "path-scurry",
+            "version": "1.11.1"
+          }
+          ,{
+            "name": "picomatch",
+            "version": "4.0.2"
+          }
+          ,{
+            "name": "postcss-selector-parser",
+            "version": "7.1.0"
+          }
+          ,{
+            "name": "proc-log",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "proggy",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "promise-all-reject-late",
+            "version": "1.0.1"
+          }
+          ,{
+            "name": "promise-call-limit",
+            "version": "3.0.2"
+          }
+          ,{
+            "name": "promise-retry",
+            "version": "2.0.1"
+          }
+          ,{
+            "name": "promzard",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "qrcode-terminal",
+            "version": "0.12.0"
+          }
+          ,{
+            "name": "read",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "read-cmd-shim",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "read-package-json-fast",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "retry",
+            "version": "0.12.0"
+          }
+          ,{
+            "name": "safer-buffer",
+            "version": "2.1.2"
+          }
+          ,{
+            "name": "scanelf",
+            "version": "1.3.8-r2"
+          }
+          ,{
+            "name": "semver",
+            "version": "7.7.2"
+          }
+          ,{
+            "name": "shebang-command",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "shebang-regex",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "signal-exit",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "sigstore",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "smart-buffer",
+            "version": "4.2.0"
+          }
+          ,{
+            "name": "socks",
+            "version": "2.8.5"
+          }
+          ,{
+            "name": "socks-proxy-agent",
+            "version": "8.0.5"
+          }
+          ,{
+            "name": "spdx-correct",
+            "version": "3.2.0"
+          }
+          ,{
+            "name": "spdx-exceptions",
+            "version": "2.5.0"
+          }
+          ,{
+            "name": "spdx-expression-parse",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "spdx-expression-parse",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "spdx-license-ids",
+            "version": "3.0.21"
+          }
+          ,{
+            "name": "sprintf-js",
+            "version": "1.1.3"
+          }
+          ,{
+            "name": "ssl_client",
+            "version": "1.37.0-r30"
+          }
+          ,{
+            "name": "ssri",
+            "version": "12.0.0"
+          }
+          ,{
+            "name": "string-width",
+            "version": "4.2.3"
+          }
+          ,{
+            "name": "string-width",
+            "version": "5.1.2"
+          }
+          ,{
+            "name": "strip-ansi",
+            "version": "6.0.1"
+          }
+          ,{
+            "name": "strip-ansi",
+            "version": "7.1.0"
+          }
+          ,{
+            "name": "supports-color",
+            "version": "9.4.0"
+          }
+          ,{
+            "name": "tar",
+            "version": "6.2.1"
+          }
+          ,{
+            "name": "tar",
+            "version": "7.4.3"
+          }
+          ,{
+            "name": "text-table",
+            "version": "0.2.0"
+          }
+          ,{
+            "name": "tiny-relative-date",
+            "version": "1.3.0"
+          }
+          ,{
+            "name": "tinyglobby",
+            "version": "0.2.14"
+          }
+          ,{
+            "name": "treeverse",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "tuf-js",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "unique-filename",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "unique-slug",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "util-deprecate",
+            "version": "1.0.2"
+          }
+          ,{
+            "name": "validate-npm-package-license",
+            "version": "3.0.4"
+          }
+          ,{
+            "name": "validate-npm-package-name",
+            "version": "6.0.1"
+          }
+          ,{
+            "name": "walk-up-path",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "which",
+            "version": "2.0.2"
+          }
+          ,{
+            "name": "which",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "wrap-ansi",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "wrap-ansi",
+            "version": "8.1.0"
+          }
+          ,{
+            "name": "write-file-atomic",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "yallist",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "yallist",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "yarn",
+            "version": "1.22.22"
+          }
+          ,{
+            "name": "zlib",
+            "version": "1.3.1-r2"
+          }
+        ]
+      }
+      ,{
+        "tag": "node:24-alpine",
+        "architecture": "amd64",
+        "os": "linux",
+        "os_distro": "Alpine Linux",
+        "supported_architectures": [
+          "linux/amd64"
+          ,"linux/arm64"
+          ,"linux/s390x"
+          ,"unknown/unknown"
+        ],
+        "size_mb": "53.59 MB",
+        "total_layers": 4,
+        "efficiency": 99.97,
+        "wasted_bytes": "0.06 MB",
+        "total_packages": 180,
+        "security": {
+          "scan_time": "2026-02-18T04:45:20Z",
+          "summary": {
+            "critical": 0,
+            "high": 2,
+            "medium": 3,
+            "low": 0,
+            "total": 5
+          },
+          "vulnerabilities": [
+            {
+              "id": "GHSA-34x7-hfp2-rc4v",
+              "severity": "High",
+              "package": "tar",
+              "version": "7.5.4"
+            }
+            ,{
+              "id": "GHSA-7h2j-956f-4vf2",
+              "severity": "High",
+              "package": "@isaacs/brace-expansion",
+              "version": "5.0.0"
+            }
+            ,{
+              "id": "CVE-2025-60876",
+              "severity": "Medium",
+              "package": "busybox",
+              "version": "1.37.0-r30"
+            }
+            ,{
+              "id": "CVE-2025-60876",
+              "severity": "Medium",
+              "package": "busybox-binsh",
+              "version": "1.37.0-r30"
+            }
+            ,{
+              "id": "CVE-2025-60876",
+              "severity": "Medium",
+              "package": "ssl_client",
+              "version": "1.37.0-r30"
+            }
+          ]
+        },
+        "packages": [
+          {
+            "name": "@isaacs/balanced-match",
+            "version": "4.0.1"
+          }
+          ,{
+            "name": "@isaacs/brace-expansion",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "@isaacs/fs-minipass",
+            "version": "4.0.1"
+          }
+          ,{
+            "name": "@isaacs/string-locale-compare",
+            "version": "1.1.0"
+          }
+          ,{
+            "name": "@npmcli/agent",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@npmcli/arborist",
+            "version": "9.1.10"
+          }
+          ,{
+            "name": "@npmcli/config",
+            "version": "10.5.0"
+          }
+          ,{
+            "name": "@npmcli/fs",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "@npmcli/git",
+            "version": "7.0.1"
+          }
+          ,{
+            "name": "@npmcli/installed-package-contents",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@npmcli/map-workspaces",
+            "version": "5.0.3"
+          }
+          ,{
+            "name": "@npmcli/metavuln-calculator",
+            "version": "9.0.3"
+          }
+          ,{
+            "name": "@npmcli/name-from-folder",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@npmcli/node-gyp",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "@npmcli/package-json",
+            "version": "7.0.4"
+          }
+          ,{
+            "name": "@npmcli/promise-spawn",
+            "version": "9.0.1"
+          }
+          ,{
+            "name": "@npmcli/query",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "@npmcli/redact",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@npmcli/run-script",
+            "version": "10.0.3"
+          }
+          ,{
+            "name": "@sigstore/bundle",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "@sigstore/core",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "@sigstore/protobuf-specs",
+            "version": "0.5.0"
+          }
+          ,{
+            "name": "@sigstore/sign",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "@sigstore/tuf",
+            "version": "4.0.1"
+          }
+          ,{
+            "name": "@sigstore/verify",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "@tufjs/canonical-json",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "@tufjs/models",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "abbrev",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "agent-base",
+            "version": "7.1.4"
+          }
+          ,{
+            "name": "alpine-baselayout",
+            "version": "3.7.1-r8"
+          }
+          ,{
+            "name": "alpine-baselayout-data",
+            "version": "3.7.1-r8"
+          }
+          ,{
+            "name": "alpine-keys",
+            "version": "2.6-r0"
+          }
+          ,{
+            "name": "alpine-release",
+            "version": "3.23.3-r0"
+          }
+          ,{
+            "name": "ansi-regex",
+            "version": "5.0.1"
+          }
+          ,{
+            "name": "apk-tools",
+            "version": "3.0.3-r1"
+          }
+          ,{
+            "name": "aproba",
+            "version": "2.1.0"
+          }
+          ,{
+            "name": "archy",
+            "version": "1.0.0"
+          }
+          ,{
+            "name": "bin-links",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "binary-extensions",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "busybox",
+            "version": "1.37.0-r30"
+          }
+          ,{
+            "name": "busybox-binsh",
+            "version": "1.37.0-r30"
+          }
+          ,{
+            "name": "ca-certificates-bundle",
+            "version": "20251003-r0"
+          }
+          ,{
+            "name": "cacache",
+            "version": "20.0.3"
+          }
+          ,{
+            "name": "chalk",
+            "version": "5.6.2"
+          }
+          ,{
+            "name": "chownr",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "ci-info",
+            "version": "4.3.1"
+          }
+          ,{
+            "name": "cidr-regex",
+            "version": "5.0.1"
+          }
+          ,{
+            "name": "cli-columns",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "cmd-shim",
+            "version": "8.0.0"
+          }
+          ,{
+            "name": "common-ancestor-path",
+            "version": "2.0.0"
+          }
+          ,{
+            "name": "corepack",
+            "version": "0.34.6"
+          }
+          ,{
+            "name": "cssesc",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "debug",
+            "version": "4.4.3"
+          }
+          ,{
+            "name": "diff",
+            "version": "8.0.3"
+          }
+          ,{
+            "name": "emoji-regex",
+            "version": "8.0.0"
+          }
+          ,{
+            "name": "encoding",
+            "version": "0.1.13"
+          }
+          ,{
+            "name": "env-paths",
+            "version": "2.2.1"
+          }
+          ,{
+            "name": "err-code",
+            "version": "2.0.3"
+          }
+          ,{
+            "name": "exponential-backoff",
+            "version": "3.1.3"
+          }
+          ,{
+            "name": "fastest-levenshtein",
+            "version": "1.0.16"
+          }
+          ,{
+            "name": "fdir",
+            "version": "6.5.0"
+          }
+          ,{
+            "name": "fs-minipass",
+            "version": "3.0.3"
+          }
+          ,{
+            "name": "glob",
+            "version": "13.0.0"
+          }
+          ,{
+            "name": "graceful-fs",
+            "version": "4.2.11"
+          }
+          ,{
+            "name": "hosted-git-info",
+            "version": "9.0.2"
+          }
+          ,{
+            "name": "http-cache-semantics",
+            "version": "4.2.0"
+          }
+          ,{
+            "name": "http-proxy-agent",
+            "version": "7.0.2"
+          }
+          ,{
+            "name": "https-proxy-agent",
+            "version": "7.0.6"
+          }
+          ,{
+            "name": "iconv-lite",
+            "version": "0.6.3"
+          }
+          ,{
+            "name": "ignore-walk",
+            "version": "8.0.0"
+          }
+          ,{
+            "name": "imurmurhash",
+            "version": "0.1.4"
+          }
+          ,{
+            "name": "ini",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "init-package-json",
+            "version": "8.2.4"
+          }
+          ,{
+            "name": "ip-address",
+            "version": "10.1.0"
+          }
+          ,{
+            "name": "ip-regex",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "is-cidr",
+            "version": "6.0.1"
+          }
+          ,{
+            "name": "is-fullwidth-code-point",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "isexe",
+            "version": "3.1.1"
+          }
+          ,{
+            "name": "json-parse-even-better-errors",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "json-stringify-nice",
+            "version": "1.1.4"
+          }
+          ,{
+            "name": "jsonparse",
+            "version": "1.3.1"
+          }
+          ,{
+            "name": "just-diff",
+            "version": "6.0.2"
+          }
+          ,{
+            "name": "just-diff-apply",
+            "version": "5.5.0"
+          }
+          ,{
+            "name": "libapk",
+            "version": "3.0.3-r1"
+          }
+          ,{
+            "name": "libcrypto3",
+            "version": "3.5.5-r0"
+          }
+          ,{
+            "name": "libgcc",
+            "version": "15.2.0-r2"
+          }
+          ,{
+            "name": "libnpmaccess",
+            "version": "10.0.3"
+          }
+          ,{
+            "name": "libnpmdiff",
+            "version": "8.0.13"
+          }
+          ,{
+            "name": "libnpmexec",
+            "version": "10.1.12"
+          }
+          ,{
+            "name": "libnpmfund",
+            "version": "7.0.13"
+          }
+          ,{
+            "name": "libnpmorg",
+            "version": "8.0.1"
+          }
+          ,{
+            "name": "libnpmpack",
+            "version": "9.0.13"
+          }
+          ,{
+            "name": "libnpmpublish",
+            "version": "11.1.3"
+          }
+          ,{
+            "name": "libnpmsearch",
+            "version": "9.0.1"
+          }
+          ,{
+            "name": "libnpmteam",
+            "version": "8.0.2"
+          }
+          ,{
+            "name": "libnpmversion",
+            "version": "8.0.3"
+          }
+          ,{
+            "name": "libssl3",
+            "version": "3.5.5-r0"
+          }
+          ,{
+            "name": "libstdc++",
+            "version": "15.2.0-r2"
+          }
+          ,{
+            "name": "lru-cache",
+            "version": "11.2.4"
+          }
+          ,{
+            "name": "make-fetch-happen",
+            "version": "15.0.3"
+          }
+          ,{
+            "name": "minimatch",
+            "version": "10.1.1"
+          }
+          ,{
+            "name": "minipass",
+            "version": "3.3.6"
+          }
+          ,{
+            "name": "minipass",
+            "version": "7.1.2"
+          }
+          ,{
+            "name": "minipass-collect",
+            "version": "2.0.1"
+          }
+          ,{
+            "name": "minipass-fetch",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "minipass-flush",
+            "version": "1.0.5"
+          }
+          ,{
+            "name": "minipass-pipeline",
+            "version": "1.2.4"
+          }
+          ,{
+            "name": "minipass-sized",
+            "version": "1.0.3"
+          }
+          ,{
+            "name": "minizlib",
+            "version": "3.1.0"
+          }
+          ,{
+            "name": "ms",
+            "version": "2.1.3"
+          }
+          ,{
+            "name": "musl",
+            "version": "1.2.5-r21"
+          }
+          ,{
+            "name": "musl-utils",
+            "version": "1.2.5-r21"
+          }
+          ,{
+            "name": "mute-stream",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "negotiator",
+            "version": "1.0.0"
+          }
+          ,{
+            "name": "node",
+            "version": "24.13.1"
+          }
+          ,{
+            "name": "node-gyp",
+            "version": "12.1.0"
+          }
+          ,{
+            "name": "nopt",
+            "version": "9.0.0"
+          }
+          ,{
+            "name": "npm",
+            "version": "11.8.0"
+          }
+          ,{
+            "name": "npm-audit-report",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "npm-bundled",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "npm-install-checks",
+            "version": "8.0.0"
+          }
+          ,{
+            "name": "npm-normalize-package-bin",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "npm-package-arg",
+            "version": "13.0.2"
+          }
+          ,{
+            "name": "npm-packlist",
+            "version": "10.0.3"
+          }
+          ,{
+            "name": "npm-pick-manifest",
+            "version": "11.0.3"
+          }
+          ,{
+            "name": "npm-profile",
+            "version": "12.0.1"
+          }
+          ,{
+            "name": "npm-registry-fetch",
+            "version": "19.1.1"
+          }
+          ,{
+            "name": "npm-user-validate",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "p-map",
+            "version": "7.0.4"
+          }
+          ,{
+            "name": "pacote",
+            "version": "21.0.4"
+          }
+          ,{
+            "name": "parse-conflict-json",
+            "version": "5.0.1"
+          }
+          ,{
+            "name": "path-scurry",
+            "version": "2.0.1"
+          }
+          ,{
+            "name": "picomatch",
+            "version": "4.0.3"
+          }
+          ,{
+            "name": "postcss-selector-parser",
+            "version": "7.1.1"
+          }
+          ,{
+            "name": "proc-log",
+            "version": "6.1.0"
+          }
+          ,{
+            "name": "proggy",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "promise-all-reject-late",
+            "version": "1.0.1"
+          }
+          ,{
+            "name": "promise-call-limit",
+            "version": "3.0.2"
+          }
+          ,{
+            "name": "promise-retry",
+            "version": "2.0.1"
+          }
+          ,{
+            "name": "promzard",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "qrcode-terminal",
+            "version": "0.12.0"
+          }
+          ,{
+            "name": "read",
+            "version": "5.0.1"
+          }
+          ,{
+            "name": "read-cmd-shim",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "retry",
+            "version": "0.12.0"
+          }
+          ,{
+            "name": "safer-buffer",
+            "version": "2.1.2"
+          }
+          ,{
+            "name": "scanelf",
+            "version": "1.3.8-r2"
+          }
+          ,{
+            "name": "semver",
+            "version": "7.7.3"
+          }
+          ,{
+            "name": "signal-exit",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "sigstore",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "smart-buffer",
+            "version": "4.2.0"
+          }
+          ,{
+            "name": "socks",
+            "version": "2.8.7"
+          }
+          ,{
+            "name": "socks-proxy-agent",
+            "version": "8.0.5"
+          }
+          ,{
+            "name": "spdx-correct",
+            "version": "3.2.0"
+          }
+          ,{
+            "name": "spdx-exceptions",
+            "version": "2.5.0"
+          }
+          ,{
+            "name": "spdx-expression-parse",
+            "version": "3.0.1"
+          }
+          ,{
+            "name": "spdx-expression-parse",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "spdx-license-ids",
+            "version": "3.0.22"
+          }
+          ,{
+            "name": "ssl_client",
+            "version": "1.37.0-r30"
+          }
+          ,{
+            "name": "ssri",
+            "version": "13.0.0"
+          }
+          ,{
+            "name": "string-width",
+            "version": "4.2.3"
+          }
+          ,{
+            "name": "strip-ansi",
+            "version": "6.0.1"
+          }
+          ,{
+            "name": "supports-color",
+            "version": "10.2.2"
+          }
+          ,{
+            "name": "tar",
+            "version": "7.5.4"
+          }
+          ,{
+            "name": "text-table",
+            "version": "0.2.0"
+          }
+          ,{
+            "name": "tiny-relative-date",
+            "version": "2.0.2"
+          }
+          ,{
+            "name": "tinyglobby",
+            "version": "0.2.15"
+          }
+          ,{
+            "name": "treeverse",
+            "version": "3.0.0"
+          }
+          ,{
+            "name": "tuf-js",
+            "version": "4.1.0"
+          }
+          ,{
+            "name": "unique-filename",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "unique-slug",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "util-deprecate",
+            "version": "1.0.2"
+          }
+          ,{
+            "name": "validate-npm-package-license",
+            "version": "3.0.4"
+          }
+          ,{
+            "name": "validate-npm-package-name",
+            "version": "7.0.2"
+          }
+          ,{
+            "name": "walk-up-path",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "which",
+            "version": "6.0.0"
+          }
+          ,{
+            "name": "write-file-atomic",
+            "version": "7.0.0"
+          }
+          ,{
+            "name": "yallist",
+            "version": "4.0.0"
+          }
+          ,{
+            "name": "yallist",
+            "version": "5.0.0"
+          }
+          ,{
+            "name": "yarn",
+            "version": "1.22.22"
+          }
+          ,{
+            "name": "zlib",
+            "version": "1.3.1-r2"
+          }
+        ]
+      }
+    ]
+  }
+}

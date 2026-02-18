@@ -11,7 +11,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:default-image -->
 
 # 🐳 Docker Image Analysis: python:3.14-slim
-![Size](https://img.shields.io/static/v1?label=Size&message=141.49+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=4&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=97.3%&color=green)
+![Size](https://img.shields.io/static/v1?label=Size&message=41.32+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=4&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=96.7%&color=green)
 
 ## ⚙️ Configuration
 ### Environment Variables
@@ -26,12 +26,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/arm64)`
+**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 97.3%
+**Efficiency Score:** 96.7%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:12:40-06:00
+**Last scanned:** 2026-02-18T04:45:39Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -137,7 +137,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -203,7 +203,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.3 |
 | python | 3.14.3 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -221,21 +221,21 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `python:3.12-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=141.66+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=36+Vulns+%280+Crit%29&color=orange) | 97.3% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `python:3.13-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=140.25+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 97.3% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `python:3.14-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=141.49+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 97.3% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `python:3.12-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=41.20+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=36+Vulns+%280+Crit%29&color=orange) | 96.7% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `python:3.13-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=40.90+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 96.7% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `python:3.14-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=41.32+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 96.7% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
 
 <details>
 <summary><strong>🔍 Full Report: python:3.12-slim</strong></summary>
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/arm64)`
+**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 97.3%
+**Efficiency Score:** 96.7%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:13:36-06:00
+**Last scanned:** 2026-02-18T04:46:21Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -346,7 +346,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -412,7 +412,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.0.1 |
 | python | 3.12.12 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -428,12 +428,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/arm64)`
+**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 97.3%
+**Efficiency Score:** 96.7%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:13:35-06:00
+**Last scanned:** 2026-02-18T04:46:20Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -539,7 +539,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -605,7 +605,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.3 |
 | python | 3.13.12 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -621,12 +621,12 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ## 🛡️ Security & Efficiency
 
-**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/arm64)`
+**Base Image:** `Debian GNU/Linux 13 (trixie) (linux/amd64)`
 **Supported Architectures:** `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown`
-**Efficiency Score:** 97.3%
+**Efficiency Score:** 96.7%
 
 ### Vulnerabilities
-**Last scanned:** 2026-02-17T20:13:39-06:00
+**Last scanned:** 2026-02-18T04:46:19Z
 
 | Critical | High | Medium | Low |
 |:---:|:---:|:---:|:---:|
@@ -732,7 +732,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -798,7 +798,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.3 |
 | python | 3.14.3 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -839,9 +839,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency |
 |-----|------|-------|------------|
-| `python:3.12-slim` | 141.66 MB | 0C / 7H | 97.3% |
-| `python:3.13-slim` | 140.25 MB | 0C / 6H | 97.3% |
-| `python:3.14-slim` | 141.49 MB | 0C / 6H | 97.3% |
+| `python:3.12-slim` | 41.20 MB | 0C / 7H | 96.7% |
+| `python:3.13-slim` | 40.90 MB | 0C / 6H | 96.7% |
+| `python:3.14-slim` | 41.32 MB | 0C / 6H | 96.7% |
 
 <!-- END: dock-docs:minimal-comparison -->
 
@@ -853,7 +853,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:detailed-image -->
 
 # 🐳 Docker Image Analysis: python:3.14-slim
-![Size](https://img.shields.io/static/v1?label=Size&message=141.49+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=4&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=97.3%&color=green)
+![Size](https://img.shields.io/static/v1?label=Size&message=41.32+MB&color=blue) ![Layers](https://img.shields.io/static/v1?label=Layers&message=4&color=blue) ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) ![Efficiency](https://img.shields.io/static/v1?label=Efficiency&message=96.7%&color=green)
 
 ## ⚙️ Configuration
 
@@ -879,17 +879,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `python:3.14-slim` |
 | **Base Image OS** | `Debian GNU/Linux 13 (trixie)` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 141.49 MB |
+| **Image Size** | 41.32 MB |
 | **Total Layers** | 4 |
-| **Efficiency Score** | 97.3% |
+| **Efficiency Score** | 96.7% |
 | **Wasted Space** | 5.38 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:13:11-06:00
+**Last scanned:** 2026-02-18T04:45:55Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -992,7 +992,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -1058,7 +1058,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.3 |
 | python | 3.14.3 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -1074,9 +1074,9 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 | Tag | Size | Vulns | Efficiency | Architectures |
 |-----|------|-------|------------|---------------|
-| `python:3.12-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=141.66+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=36+Vulns+%280+Crit%29&color=orange) | 97.3% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `python:3.13-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=140.25+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 97.3% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| `python:3.14-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=141.49+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 97.3% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `python:3.12-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=41.20+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=36+Vulns+%280+Crit%29&color=orange) | 96.7% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `python:3.13-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=40.90+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 96.7% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
+| `python:3.14-slim` | ![Size](https://img.shields.io/static/v1?label=Size&message=41.32+MB&color=blue) | ![Vulns](https://img.shields.io/static/v1?label=Security&message=31+Vulns+%280+Crit%29&color=orange) | 96.7% | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
 
 ---
 
@@ -1088,17 +1088,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `python:3.12-slim` |
 | **Base Image OS** | `Debian GNU/Linux 13 (trixie)` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 141.66 MB |
+| **Image Size** | 41.20 MB |
 | **Total Layers** | 4 |
-| **Efficiency Score** | 97.3% |
+| **Efficiency Score** | 96.7% |
 | **Wasted Space** | 5.38 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:14:25-06:00
+**Last scanned:** 2026-02-18T04:46:51Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -1206,7 +1206,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -1272,7 +1272,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.0.1 |
 | python | 3.12.12 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -1290,17 +1290,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `python:3.13-slim` |
 | **Base Image OS** | `Debian GNU/Linux 13 (trixie)` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 140.25 MB |
+| **Image Size** | 40.90 MB |
 | **Total Layers** | 4 |
-| **Efficiency Score** | 97.3% |
+| **Efficiency Score** | 96.7% |
 | **Wasted Space** | 5.38 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:14:27-06:00
+**Last scanned:** 2026-02-18T04:46:51Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -1403,7 +1403,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -1469,7 +1469,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.3 |
 | python | 3.13.12 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -1487,17 +1487,17 @@ Each template is shown for both **image** (single image analysis) and **comparis
 |----------|-------|
 | **Tag** | `python:3.14-slim` |
 | **Base Image OS** | `Debian GNU/Linux 13 (trixie)` |
-| **Architecture** | `arm64` |
+| **Architecture** | `amd64` |
 | **OS** | `linux` |
 | **Supported Architectures** | `linux/386, linux/amd64, linux/arm, linux/arm64, linux/ppc64le, linux/riscv64, linux/s390x, unknown/unknown` |
-| **Image Size** | 141.49 MB |
+| **Image Size** | 41.32 MB |
 | **Total Layers** | 4 |
-| **Efficiency Score** | 97.3% |
+| **Efficiency Score** | 96.7% |
 | **Wasted Space** | 5.38 MB |
 
 ### Vulnerability Summary
 
-**Last scanned:** 2026-02-17T20:14:27-06:00
+**Last scanned:** 2026-02-18T04:46:51Z
 
 | Critical | High | Medium | Low | Total |
 |:---:|:---:|:---:|:---:|:---:|
@@ -1600,7 +1600,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | dpkg | 1.22.21 |
 | findutils | 4.10.0-3 |
 | gcc-14-base | 14.2.0-19 |
-| grep | 3.11-4+b1 |
+| grep | 3.11-4 |
 | gzip | 1.13-1 |
 | hostname | 3.25 |
 | init-system-helpers | 1.69~deb13u1 |
@@ -1666,7 +1666,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 | pip | 25.3 |
 | python | 3.14.3 |
 | readline-common | 8.2-6 |
-| sed | 4.9-2+b1 |
+| sed | 4.9-2 |
 | sqv | 1.3.0-3+b2 |
 | sysvinit-utils | 3.14-4 |
 | tar | 1.35+dfsg-3.1 |
@@ -1684,7 +1684,7 @@ Each template is shown for both **image** (single image analysis) and **comparis
 
 ### Image Analysis
 <!-- BEGIN: dock-docs:compact-image -->
-**python:3.14-slim** | Size: 141.49 MB | Layers: 4 | Efficiency: 97.3% | Vulns: 0C/6H/22M/3L
+**python:3.14-slim** | Size: 41.32 MB | Layers: 4 | Efficiency: 96.7% | Vulns: 0C/6H/22M/3L
 | ENV | Default | Req |
 |-----|---------|:---:|
 | `NAME` | `World` | ❌ |
@@ -1698,8 +1698,8 @@ Each template is shown for both **image** (single image analysis) and **comparis
 <!-- BEGIN: dock-docs:compact-comparison -->
 | Tag | Size | Vulns | Efficiency |
 |-----|------|-------|------------|
-| `python:3.12-slim` | 141.66 MB | 0C/7H/26M | 97.3% |
-| `python:3.13-slim` | 140.25 MB | 0C/6H/22M | 97.3% |
-| `python:3.14-slim` | 141.49 MB | 0C/6H/22M | 97.3% |
+| `python:3.12-slim` | 41.20 MB | 0C/7H/26M | 96.7% |
+| `python:3.13-slim` | 40.90 MB | 0C/6H/22M | 96.7% |
+| `python:3.14-slim` | 41.32 MB | 0C/6H/22M | 96.7% |
 
 <!-- END: dock-docs:compact-comparison -->
