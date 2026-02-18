@@ -73,7 +73,7 @@ func (r *DiveRunner) Run(ctx context.Context, image string, verbose bool) (*type
 	}
 	defer func() {
 		// Attempt to remove file, ignore error (best effort cleanup)
-		_ = os.Remove(tmpFile.Name())
+		_ = os.Remove(tmpFile.Name()) //nolint:gosec // path from os.CreateTemp, not user input
 	}()
 	// Close immediately, dive will write to it. Ignore error.
 	_ = tmpFile.Close()
@@ -86,7 +86,7 @@ func (r *DiveRunner) Run(ctx context.Context, image string, verbose bool) (*type
 
 	runCtx, cancel := context.WithTimeout(ctx, TimeoutScan)
 	defer cancel()
-	cmd := exec.CommandContext(runCtx, r.binary, image, "--json", tmpFile.Name())
+	cmd := exec.CommandContext(runCtx, r.binary, image, "--json", tmpFile.Name()) //nolint:gosec // binary resolved from trusted lookup
 
 	// Podman Support: If docker is missing but podman is present and DOCKER_HOST
 	// is not set, try to detect the Podman machine socket automatically.
@@ -121,7 +121,7 @@ func (r *DiveRunner) Run(ctx context.Context, image string, verbose bool) (*type
 		slog.Debug("command output", "bytes", len(output), "output", string(output)) //nolint:gosec // G706: output is from a tool we invoked
 	}
 
-	content, err := os.ReadFile(tmpFile.Name())
+	content, err := os.ReadFile(tmpFile.Name()) //nolint:gosec // path from os.CreateTemp, not user input
 	if err != nil {
 		return nil, fmt.Errorf("failed to read dive output: %w", err)
 	}

@@ -194,7 +194,7 @@ func latestReleaseTag(repo string) (string, error) {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
 
-	resp, err := httpClient.Do(req)
+	resp, err := httpClient.Do(req) //nolint:gosec // URL is constructed from trusted GitHub API constants
 	if err != nil {
 		return "", fmt.Errorf("HTTP request failed: %w", err)
 	}
@@ -230,7 +230,7 @@ func httpGet(url string) (io.ReadCloser, error) {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
 
-	resp, err := httpClient.Do(req)
+	resp, err := httpClient.Do(req) //nolint:gosec // URL is constructed from trusted GitHub API constants
 	if err != nil {
 		return nil, fmt.Errorf("HTTP request failed: %w", err)
 	}

@@ -51,10 +51,6 @@ linters:
         - G304 # File inclusion via variable - expected for CLI tool reading user-specified files
         - G301 # Directory permissions 0750 - 0755 is standard for tool install dirs
         - G306 # WriteFile permissions 0600 - 0644 is standard for generated docs
-        - G702 # Command injection via taint analysis - binary paths resolved from trusted lookups
-        - G703 # Path traversal via taint - false positive on temp file reads
-        - G704 # SSRF via taint - downloading from GitHub API is expected
-        - G705 # XSS via taint - CLI stderr debug output, not web context
 
     nestif:
       min-complexity: 6
